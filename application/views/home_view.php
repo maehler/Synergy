@@ -1,6 +1,6 @@
 <article>
     <header>
-        <h2>Welcome to $title</h2>
+        <h2>Welcome to Synergy</h2>
     </header>
     <aside class="box small float-right" style="width:200px;">
         <span class="bold">syn&bull;er&bull;gy</span> [ˈsinərjē]<br />
