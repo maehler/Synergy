@@ -21,9 +21,16 @@ body > footer, .push {
 }
 
 /* Header and footer */
+.page-footer {
+	border: 1px solid #000;
+	border-bottom: none;
+}
 .page-header {
 	padding: 15px;
 	margin-bottom: 20px;
+	position: relative;
+	border: 1px solid #000;
+	border-top: none;
 }
 
 .page-footer p {
@@ -42,5 +49,37 @@ main {
 }
 /* End header and footer */
 
+/* Navigation */
+nav {
+	position: absolute;
+	bottom: -1px;
+	left: -10px;
+}
+	nav ul {
+		list-style-type: none;
+		margin: 0 !important;
+	}
+	nav li {
+		display: inline-block;
+		margin: 0;
+	}
+	nav a {
+		display: block;
+		border: 1px solid #000;
+		border-radius: 5px 5px 0 0;
+		text-decoration: none;
+		padding: 5px;
+		background-color: #148F29;
+		font-size: 12pt;
+		color: #000;
+	}
+	nav a:hover { background-color: #FFF; }
+	nav a.active {
+		background-color: #FFF;
+		border-bottom: 1px solid #FFF;
+	}
+/* End navigation */
+
 /* Alignment */
 .align-center { text-align: center; }
+/* End alignment */
