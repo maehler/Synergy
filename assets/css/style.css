@@ -1,0 +1,46 @@
+/* Sticky footer */
+html, body { height: 100%; }
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -40px;
+}
+body > footer, .push {
+	height: 40px;
+	clear: both;
+}
+/* End sticky footer */
+
+/* Page width */
+.wrapper, .page-footer {
+	background-color: #FFF;
+	max-width: 1280px;
+	min-width: 550px;
+	margin: 0 auto;
+}
+
+/* Header and footer */
+.page-header {
+	padding: 15px;
+	margin-bottom: 20px;
+}
+
+.page-footer p {
+	display: inline-block;
+	margin: 10px 0 0 0;
+	font-size: 0.9em;
+}
+
+.page-header, .page-footer {
+	background-color: #0AB53C;
+}
+
+main {
+	padding: 0 20px;
+	margin-bottom: 40px;
+}
+/* End header and footer */
+
+/* Alignment */
+.align-center { text-align: center; }
