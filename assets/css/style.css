@@ -64,12 +64,13 @@ nav {
 	nav ul {
 		list-style-type: none;
 		margin: 0 !important;
+		padding-left: 20px;
 	}
 	nav li {
 		display: inline-block;
 		margin: 0;
 		padding: 0;
-		/*margin-right: 4px;*/
+		margin-right: 4px;
 	}
 	nav a {
 		display: block;
