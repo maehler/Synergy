@@ -1,12 +1,15 @@
 /* Sticky footer */
-html, body { height: 100%; }
+html, body {
+	height: 100%;
+	background-color: #EEE;
+}
 .wrapper {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	margin: 0 auto -40px;
+	margin: 0 auto -41px !important;
 }
-body > footer, .push {
+.page-footer, .push {
 	height: 40px;
 	clear: both;
 }
@@ -22,11 +25,13 @@ body > footer, .push {
 
 /* Header and footer */
 .page-footer {
+	font-family: 'Raleway', sans-serif;
 	border: 1px solid #000;
 	border-bottom: none;
 }
 .page-header {
 	padding: 15px;
+	padding-top: 10px;
 	margin-bottom: 20px;
 	position: relative;
 	border: 1px solid #000;
@@ -40,7 +45,8 @@ body > footer, .push {
 }
 
 .page-header, .page-footer {
-	background-color: #0AB53C;
+	background-color: #19BD58;
+	font-family: 'Raleway', sans-serif;
 }
 
 main {
@@ -62,6 +68,8 @@ nav {
 	nav li {
 		display: inline-block;
 		margin: 0;
+		padding: 0;
+		/*margin-right: 4px;*/
 	}
 	nav a {
 		display: block;
@@ -69,7 +77,7 @@ nav {
 		border-radius: 5px 5px 0 0;
 		text-decoration: none;
 		padding: 5px;
-		background-color: #148F29;
+		background-color: #139327;
 		font-size: 12pt;
 		color: #000;
 	}
@@ -82,4 +90,25 @@ nav {
 
 /* Alignment */
 .align-center { text-align: center; }
+.float-right { float: right; }
 /* End alignment */
+
+/* Text styles */
+.small { font-size: 0.8em; }
+.bold { font-weight: bold; }
+.italic { font-style: italic; }
+/* End text styles */
+
+.box {
+    font-family: 'Raleway', sans-serif;
+    background-color: #eee;
+    color: #444;
+    box-shadow: 2px 2px 8px 0px #555;
+    padding: 10px; margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.narrow {
+	width: 200px;
+}

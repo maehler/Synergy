@@ -1,7 +1,5 @@
-<header>
-    <h2>Welcome to Synergy</h2>
-</header>
-<aside class="box small float-right" style="width:200px;">
+<h2>Welcome to Synergy</h2>
+<aside class="box small float-right narrow">
     <span class="bold">syn&bull;er&bull;gy</span> [ˈsinərjē]<br />
     the interaction or cooperation of two or more organizations,
     substances, or other agents to produce a combined effect greater
@@ -47,12 +45,12 @@
     recommend it.
 </p>
 <section>
-    <header><h3>Something not working?</h3></header>
+    <h3>Something not working?</h3>
     <p>
         If you find something that is not working as expected, or
         you come up with some feature you'd like to have, feel free
         to contact me. You can reach me at <a
-        href="mailto:niklas.mahler@umb.no">niklas.mahler@umb.no</a>.
+        href="mailto:niklas.mahler@nmbu.no?subject=Synergy">niklas.mahler@umb.no</a>.
         It could be anything, ranging from how data is presented to
         colors of buttons.
     </p>

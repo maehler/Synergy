@@ -2,7 +2,7 @@
 		<div class="push"></div>
 	</div> <!-- end wrapper -->
 	<footer class="page-footer align-center">
-		<p>&copy; <a href="mailto:niklas.mahler@umb.no">Niklas Mähler</a> 2012-2013</p>
+		<p>&copy; <a href="mailto:niklas.mahler@nmbu.no?subject=Synergy">Niklas Mähler</a> 2012-2013</p>
 	</footer>
 
 	<noscript>

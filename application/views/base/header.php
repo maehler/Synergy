@@ -5,6 +5,7 @@
 	<title><?php echo !empty($title_prefix) ? "$title_prefix | " : ""; ?>Synergy</title>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(array("assets", "css", "normalize.css")) ?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(array("assets", "css", "style.css")) ?>">
+	<link href='http://fonts.googleapis.com/css?family=Raleway:400,500' rel='stylesheet' type='text/css'>
 </head>
 <body>
 	<noscript>
@@ -12,7 +13,7 @@
 	</noscript>
 	<div class="wrapper">
 		<header class="page-header">
-			<h1>Synergy</h1>
+			<h1><span class="italic">Syn</span>ergy</h1>
 			<nav>
 				<ul>
 					<li>
