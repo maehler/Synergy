@@ -6,7 +6,7 @@
 	</footer>
 
 	<noscript>
-        <section id=\"noscript-warn\"><em>Syn</em>ergy works best with
+        <section id="noscript-warn"><em>Syn</em>ergy works best with
         JavaScript enabled</section>
     </noscript>
     <?php if (isset($scripts) && $scripts !== NULL): ?>
