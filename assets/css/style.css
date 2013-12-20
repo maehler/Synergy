@@ -25,10 +25,16 @@ html, body {
 
 /* Header and footer */
 .page-footer {
-	font-family: 'Raleway', sans-serif;
 	border: 1px solid #000;
 	border-bottom: none;
 }
+
+	.page-footer p {
+		display: inline-block;
+		margin: 10px 0 0 0;
+		font-size: 0.9em;
+	}
+
 .page-header {
 	padding: 15px;
 	padding-top: 10px;
@@ -38,11 +44,9 @@ html, body {
 	border-top: none;
 }
 
-.page-footer p {
-	display: inline-block;
-	margin: 10px 0 0 0;
-	font-size: 0.9em;
-}
+	.page-header h1 {
+		margin: 5px 0 25px 0;
+	}
 
 .page-header, .page-footer {
 	background-color: #19BD58;
@@ -54,6 +58,11 @@ main {
 	margin-bottom: 40px;
 }
 /* End header and footer */
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Raleway', sans-serif;
+}
 
 /* Navigation */
 nav {
