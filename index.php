@@ -42,7 +42,19 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+	// define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+switch ($_SERVER['HTTP_HOST']) {
+	case 'localhost':
+	case '127.0.0.1':
+		define('ENVIRONMENT', 'development');
+		break;
+	case 'synergy.plantgenie.org':
+		define('ENVIRONMENT', 'production');
+		break;
+	default:
+		define('ENVIRONMENT', 'production');
+		break;
+}
 
 /*
  *---------------------------------------------------------------
