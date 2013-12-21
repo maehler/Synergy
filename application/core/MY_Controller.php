@@ -18,5 +18,6 @@ class MY_Controller extends CI_Controller {
     public function get_foot_data($scripts=NULL, $inlinejs="") {
     	$data['inlinejs'] = $inlinejs;
     	$data['scripts'] = $scripts;
+        return $data;
     }
 }
