@@ -6,6 +6,9 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(array("assets", "css", "normalize.css")) ?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(array("assets", "css", "style.css")) ?>">
 	<link href='http://fonts.googleapis.com/css?family=Raleway:400,500' rel='stylesheet' type='text/css'>
+	<?php foreach ($ssheets as $ss): ?>
+	<link rel="stylesheet" type="text/css" href="<?php echo $ss; ?>">
+	<?php endforeach ?>
 </head>
 <body>
 	<noscript>
