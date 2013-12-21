@@ -1,6 +1,6 @@
 <h2>Gene search</h2>
 
-<table id="gene-table">
+<table id="gene-table" class="datatable">
 	<thead>
 		<th>Selected</th>
 		<th>ORF</th>

@@ -11,7 +11,10 @@ class Search extends MY_Controller {
 		$this->load->view('base/header', $this->get_head_data("search", "Gene search"));
 		$this->load->view('search_view');
 		$this->load->view('base/footer', $this->get_foot_data(
-			array(base_url(array('assets', 'js', 'search.js')))
+			array(
+				base_url(array('assets', 'js', 'search.js')),
+				base_url(array('assets', 'js', 'jquery.dataTables.min.js'))
+			)
 		));
 	}
 }
