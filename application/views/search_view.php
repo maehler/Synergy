@@ -1,6 +1,7 @@
 <h2>Gene search</h2>
 
-<table id="gene-table" class="datatable">
+<div class="box narrow"><span id="select-count">0</span> genes selected</div>
+<table id="gene-table" class="datatable small">
 	<thead>
 		<th>Selected</th>
 		<th>ORF</th>

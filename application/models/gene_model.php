@@ -10,8 +10,13 @@ class Gene_model extends CI_Model {
 			'g.symbol', 'g.category', 'g.definition', 'g.tf',
 			'og.operon_id');
 
-		$this->db->select("SQL_CALC_FOUND_ROWS CONCAT('<input type=\"checkbox\" id=\"',g.id,'\" />') AS `checkbox`,
-						   g.orf_id, g.refseq_id, g.symbol, g.category, g.definition, g.tf, og.operon_id", FALSE)
+		$this->db->select("SQL_CALC_FOUND_ROWS
+						   CONCAT('<input type=\"checkbox\" id=\"',g.id,'\" />') AS `checkbox`,
+						   CONCAT('<a href=\"gene/', g.orf_id, '\">', g.orf_id, '</a>'),
+						   g.refseq_id, g.symbol, g.category, g.definition,
+						   (case when g.tf = 1 then \"&#x2713;\" else \"\" end),
+						   (case when og.operon_id IS NOT NULL then \"&#x2713;\" else \"\" end)",
+						   FALSE)
 			->from('gene AS g')
 			->join('operon_gene AS og', 'og.gene_id = g.id', 'left');
 
