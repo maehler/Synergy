@@ -12,7 +12,7 @@ class Gene_model extends CI_Model {
 
 		$this->db->select("SQL_CALC_FOUND_ROWS
 						   CONCAT('<input type=\"checkbox\" id=\"',g.id,'\" />') AS `checkbox`,
-						   CONCAT('<a href=\"gene/', g.orf_id, '\">', g.orf_id, '</a>'),
+						   CONCAT('<a href=\"gene/details/', g.orf_id, '\">', g.orf_id, '</a>'),
 						   g.refseq_id, g.symbol, g.category, g.definition,
 						   (case when g.tf = 1 then \"&#x2713;\" else \"\" end),
 						   (case when og.operon_id IS NOT NULL then \"&#x2713;\" else \"\" end)",
@@ -69,6 +69,32 @@ class Gene_model extends CI_Model {
 			$output['aaData'][] = array_values($row);
 		}
 		return $output;
+	}
+
+	function get_orf_gene($orf_id) {
+		$this->db->select('id, orf_id, refseq_id, symbol, category, definition, tf')
+			->from('gene')
+			->where('orf_id', $orf_id)
+			->limit(1);
+		$query = $this->db->get();
+		$gene = $query->result_array();
+		if ($query->num_rows() == 0) {
+			return FALSE;
+		}
+		return $gene[0];
+	}
+
+	function get_accession_gene($acc) {
+		$this->db->select('id, orf_id, refseq_id, symbol, category, definition, tf')
+			->from('gene')
+			->where('refseq_id', $acc)
+			->limit(1);
+		$query = $this->db->get();
+		$gene = $query->result_array();
+		if ($query->num_rows() == 0) {
+			return FALSE;
+		}
+		return $gene[0];
 	}
 
 	function get_all() {
