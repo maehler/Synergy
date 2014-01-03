@@ -13,6 +13,9 @@
 	<?php endif ?>
 </head>
 <body>
+	<?php if (ENVIRONMENT == 'development'): ?>
+		<?php $this->output->enable_profiler(TRUE); ?>
+	<?php endif ?>
 	<noscript>
 		<div id="noscript-padding"></div>
 	</noscript>
