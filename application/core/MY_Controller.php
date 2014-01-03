@@ -6,7 +6,7 @@ class MY_Controller extends CI_Controller {
         parent::__construct();
     }
 
-    public function get_head_data($current_pane, $title_prefix='', $stylesheets=NULL) {
+    public function get_head_data($current_pane='', $title_prefix='', $stylesheets=NULL) {
     	$data['current_pane'] = $current_pane;
     	$data['title_prefix'] = $title_prefix;
     	if ($stylesheets !== NULL) {
