@@ -100,6 +100,7 @@ nav {
 
 /* Alignment */
 .align-center { text-align: center; }
+.align-right { text-align: right; }
 .float-right { float: right; }
 /* End alignment */
 
