@@ -14,6 +14,14 @@ class Network extends MY_Controller {
 		}
 
 		$this->load->view('base/header', $this->get_head_data('network', 'Network'));
-		$this->load->view('base/footer');
+		$this->load->view('network_view');
+		$this->load->view('base/footer', $this->get_foot_data(
+			array(
+				base_url(array('assets', 'js', 'cytoscape', 'arbor.js')),
+				base_url(array('assets', 'js', 'cytoscape', 'cytoscape.min.js')),
+				base_url(array('assets', 'js', 'cytoscape', 'jquery.cytoscape-panzoom.min.js')),
+				base_url(array('assets', 'js', 'cytoscape', 'cytoscape.min.js'))
+			)
+		));
 	}
 }
