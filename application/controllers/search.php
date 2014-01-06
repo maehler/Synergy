@@ -8,11 +8,16 @@ class Search extends MY_Controller {
 	}
 
 	public function index() {
+		$basket = $this->session->userdata('basket');
+		if (!$basket) {
+			$basket = array();
+		}
+
 		$this->load->view('base/header', $this->get_head_data(
 			"search", "Gene search",
 			array(base_url(array('assets', 'css', 'datatables', 'jquery.dataTables.css')))
 		));
-		$this->load->view('search_view');
+		$this->load->view('search_view', array('basket' => $basket));
 		$this->load->view('base/footer', $this->get_foot_data(
 			array(
 				base_url(array('assets', 'js', 'search.js')),

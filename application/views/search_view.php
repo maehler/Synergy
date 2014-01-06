@@ -25,3 +25,7 @@
 		<th>Operon member</th>
 	</tfoot>
 </table>
+
+<script type="text/javascript">
+	var selected = <?php echo json_encode($basket); ?>
+</script>

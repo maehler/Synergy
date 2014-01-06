@@ -1,7 +1,5 @@
 "use strict";
 
-var selected = [];
-
 function updateCount(newCount) {
 	$('#select-count').html(newCount);
 }
@@ -51,7 +49,7 @@ $(function () {
 	$('#gene-table').delegate('input', 'click', function () {
 		var aData = geneTable.fnGetData($(this).closest('tr')[0]);
 		var id = aData[0].match(/id="(\d+)"/)[1];
-		var index = jQuery.inArray(id, selected);
+		var index = selected.indexOf(id);
 
 		if (index === -1) {
 			selected.push(id);
@@ -60,6 +58,15 @@ $(function () {
 			selected.splice(index, 1);
 			$(this).find('input[type="checkbox"]').attr('checked', false);
 		}
-		updateCount(selected.length);
+
+		// Update the contents of the gene basket
+		$.ajax({
+			url: 'api/update_basket',
+			data: { gene: id },
+			type: 'GET',
+			success: function () {
+				updateCount(selected.length);
+			}
+		});
 	})
 });
