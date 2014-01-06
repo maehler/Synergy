@@ -71,6 +71,15 @@ class Gene_model extends CI_Model {
 		return $output;
 	}
 
+	function get_genes($gene_ids) {
+		$this->db->select('id, orf_id, refseq_id, symbol, category, definition, tf')
+			->from('gene')
+			->where_in('id', $gene_ids);
+		$query = $this->db->get();
+		$genes = $query->result_array();
+		return $genes;
+	}
+
 	function get_orf_gene($orf_id) {
 		$this->db->select('id, orf_id, refseq_id, symbol, category, definition, tf')
 			->from('gene')
