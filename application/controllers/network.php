@@ -13,7 +13,11 @@ class Network extends MY_Controller {
 			$basket = FALSE;
 		}
 
-		$this->load->view('base/header', $this->get_head_data('network', 'Network'));
+		$this->load->view('base/header', $this->get_head_data('network', 'Network',
+			array(
+				base_url(array('assets', 'css', 'network.css'))
+			)
+		));
 		$this->load->view('network_view');
 		$this->load->view('base/footer', $this->get_foot_data(
 			array(
