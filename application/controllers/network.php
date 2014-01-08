@@ -19,7 +19,7 @@ class Network extends MY_Controller {
 				base_url(array('assets', 'css', 'network.css'))
 			)
 		));
-		$this->load->view('network_view');
+		$this->load->view('network_view', array('basket' => $basket));
 		$this->load->view('base/footer', $this->get_foot_data(
 			array(
 				base_url(array('assets', 'js', 'cytoscape', 'arbor.js')),
