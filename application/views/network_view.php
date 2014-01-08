@@ -1,4 +1,4 @@
-<aside id="network-menu">
+<aside id="network-menu" class="small">
 	<h3>Settings</h3>
 	<hr>
 	<div>

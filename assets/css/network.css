@@ -1,7 +1,7 @@
 #network-menu {
 	float: left;
 	background-color: #27B149;
-	width: 250px;
+	width: 200px;
 	padding: 0 10px 10px 10px;
 	margin-right: 20px;
 	margin-left: -20px;
@@ -11,14 +11,14 @@
 	border-left: none;
 }
 
+	#network-menu button {
+		display: block;
+		margin: 0 auto;
+		width: 70%;
+	}
+
 #network-container {
 	border: 1px solid black;
 	height: 600px;
-	margin-left: 270px;
-}
-
-#network-menu button {
-	display: block;
-	margin: 4px auto;
-	width: 50%;
+	margin-left: 220px;
 }
