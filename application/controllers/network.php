@@ -5,6 +5,7 @@ class Network extends MY_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->model('gene_model');
+		$this->load->model('network_model');
 	}
 
 	function index() {
