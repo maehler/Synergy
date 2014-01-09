@@ -34,4 +34,9 @@ class Api extends MY_Controller {
 	function empty_basket() {
 		$this->session->set_userdata(array('basket' => array()));
 	}
+
+	function replace_basket() {
+		$genes = $this->input->post('genes');
+		$this->session->set_userdata(array('basket' => $genes));
+	}
 }

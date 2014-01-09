@@ -4,6 +4,27 @@ function updateCount(newCount) {
 	$('#select-count').html(newCount);
 }
 
+function loadPhotosynthesisGenes() {
+    // An example gene set that can be used.
+    var photoGenes = [
+        208, 315, 446, 536, 588, 609, 610, 888, 1324, 2048, 2174, 2191, 2481, 
+        2638, 2718, 2848, 2849, 3257, 3258, 3259, 3262, 3263, 3265, 3292, 3318, 
+        3345, 3348, 3520, 3533
+    ];
+    var redirect = 'basket';
+    $.ajax({
+        url: 'api/replace_basket',
+        type: 'POST',
+        data: {
+            'genes': photoGenes
+        },
+        success: function () {
+            console.log('Photosynthesis genes loaded!');
+            window.location = redirect;
+        }
+    });
+}
+
 $(function () {
 	updateCount(selected.length);
 
@@ -68,5 +89,8 @@ $(function () {
 				updateCount(selected.length);
 			}
 		});
-	})
+	});
+
+	// Button listeners
+	$('#load-example').click(loadPhotosynthesisGenes);
 });

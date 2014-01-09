@@ -25,6 +25,7 @@
 		<th>Operon member</th>
 	</tfoot>
 </table>
+<button id="load-example">Load example gene set</button>
 
 <script type="text/javascript">
 	var selected = <?php echo json_encode($basket); ?>
