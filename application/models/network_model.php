@@ -7,13 +7,25 @@ Will not include co-regulation.
 class Network_model extends CI_Model {
 
 	function get_network($genes, $ntype='clr_complete', $th=5, $expand=FALSE, $json=TRUE) {
+		$network = array(
+			'nodes' => array(),
+			'edges' => array()
+		);
+		if (!$genes) {
+			if ($json) {
+				return json_encode($network);
+			} else {
+				return $network;
+			}
+		}
 		// Find all neighboring genes of the input genes if expansion is wanted
 		if ($expand) {
 			$this->db->select('g1.id as id1, g1.orf_id as orf1, g1.tf as tf1, g2.id as id2, g2.orf_id as orf2, g2.tf as tf2')
 				->from('corr as c')
 				->join('gene AS g1', 'g1.id = c.gene1_id', 'left')
 				->join('gene AS g2', 'g2.id = c.gene2_id', 'left')
-				->where('(gene1_id IN (\'' . implode($genes, '\',\'') . '\') OR gene2_id IN (\''.implode($genes, '\',\'').'\'))')
+				->where('(gene1_id IN (\'' . implode($genes, '\',\'') . 
+					'\') OR gene2_id IN (\'' . implode($genes, '\',\'').'\'))')
 				->where("$ntype >", $th)
 				->where("$ntype IS NOT NULL");
 			$gene_query = $this->db->get();
@@ -78,11 +90,6 @@ class Network_model extends CI_Model {
 			->where("$ntype IS NOT NULL");
 		$query = $this->db->get();
 		$result = $query->result_array();
-
-		$network = array(
-			'nodes' => array(),
-			'edges' => array()
-		);
 
 		// Format the nodes
 		foreach ($nodes as $nid => $vals) {
