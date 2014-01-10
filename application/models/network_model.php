@@ -6,7 +6,111 @@ Will not include co-regulation.
 */
 class Network_model extends CI_Model {
 
-	function get_network($genes, $expand=FALSE, $json=TRUE) {
-		;;
+	function get_network($genes, $ntype='clr_complete', $th=5, $expand=FALSE, $json=TRUE) {
+		// Find all neighboring genes of the input genes if expansion is wanted
+		if ($expand) {
+			$this->db->select('g1.id as id1, g1.orf_id as orf1, g1.tf as tf1, g2.id as id2, g2.orf_id as orf2, g2.tf as tf2')
+				->from('corr as c')
+				->join('gene AS g1', 'g1.id = c.gene1_id', 'left')
+				->join('gene AS g2', 'g2.id = c.gene2_id', 'left')
+				->where('(gene1_id IN (\'' . implode($genes, '\',\'') . '\') OR gene2_id IN (\''.implode($genes, '\',\'').'\'))')
+				->where("$ntype >", $th)
+				->where("$ntype IS NOT NULL");
+			$gene_query = $this->db->get();
+			$gene_results = $gene_query->result_array();
+			$nodes = array();
+			foreach ($gene_results as $edge) {
+				if (!array_key_exists($edge['id1'], $nodes)) {
+					$nodes[$edge['id1']] = array(
+						$edge['orf1'],
+						$edge['tf1'] ? TRUE : FALSE,
+						in_array($edge['id1'], $genes)
+					);
+				}
+				if (!array_key_exists($edge['id2'], $nodes)) {
+					$nodes[$edge['id2']] = array(
+						$edge['orf2'],
+						$edge['tf2'] ? TRUE : FALSE,
+						in_array($edge['id2'], $genes)
+					);
+				}
+			}
+			// Make sure that genes that might be disconnected also are included
+			$this->db->select('id, orf_id, tf')
+				->from('gene')
+				->where_in('id', $genes);
+			$basket_query = $this->db->get();
+			$basket_results = $basket_query->result_array();
+			foreach ($basket_results as $gene) {
+				if (!array_key_exists($gene['id'], $nodes)) {
+					$nodes[$gene['id']] = array(
+						$gene['orf_id'],
+						$gene['tf'] ? TRUE : FALSE,
+						TRUE
+					);
+				}
+			}
+		} else {
+			// Select genes
+			$this->db->select('id, orf_id, tf')
+				->from('gene')
+				->where_in('id', $genes);
+			$gene_query = $this->db->get();
+			$gene_result = $gene_query->result_array();
+			$nodes = array();
+			foreach ($gene_result as $gene) {
+				$nodes[$gene['id']] = array(
+					$gene['orf_id'],
+					$gene['tf'] ? TRUE : FALSE,
+					TRUE
+				);
+			}
+		}
+
+		// Select edges among the genes
+		$this->db->select("gene1_id, g1.orf_id as orf1, g1.tf as tf1, gene2_id, g2.orf_id as orf2, g2.tf as tf2, $ntype")
+			->from('corr as c')
+			->join('gene as g1', 'g1.id = c.gene1_id', 'left')
+			->join('gene as g2', 'g2.id = c.gene2_id', 'left')
+			->where_in('gene1_id', array_keys($nodes))
+			->where_in('gene2_id', array_keys($nodes))
+			->where("$ntype >", $th)
+			->where("$ntype IS NOT NULL");
+		$query = $this->db->get();
+		$result = $query->result_array();
+
+		$network = array(
+			'nodes' => array(),
+			'edges' => array()
+		);
+
+		// Format the nodes
+		foreach ($nodes as $nid => $vals) {
+			$classes = $vals[1] ? "tf" : "";
+			$classes .= $vals[2] ? "basket" : "";
+			$network['nodes'][] = array(
+				'data' => array(
+					'id' => strval($nid),
+					'orf' => $vals[0]
+				),
+				'classes' => $classes
+			);
+		}
+		// Format the edges
+		foreach ($result as $edge) {
+			$network['edges'][] = array(
+				'data' => array(
+					'source' => $edge['gene1_id'],
+					'target' => $edge['gene2_id'],
+					'weight' => floatval($edge[$ntype])
+				)
+			);
+		}
+
+		if ($json) {
+			return json_encode($network);
+		} else {
+			return $network;
+		}
 	}
 }
