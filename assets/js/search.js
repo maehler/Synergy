@@ -30,8 +30,52 @@ function clearSelection() {
 		url: 'api/empty_basket',
 		type: 'POST',
 		success: function () {
-			console.log('Selection cleared!');
+			var rows = $('#gene-table').dataTable().fnGetNodes();
+			$.each(rows, function () {
+				$(this).find('input:checked').attr('checked', false);
+			})
+			selected = [];
 			updateCount(0);
+			console.log('Selection cleared!');
+		}
+	})
+}
+
+function selectAll() {
+	// Select all genes with the current filters applied
+	$.ajax({
+		url: 'api/genetable',
+		dataType: 'json',
+		type: 'POST',
+		data: {
+			'selgenes': 'all',
+			'sQuery': $('.dataTables_filter input').val()
+		},
+		success: function (json) {
+			if (json.selected_genes) {
+				if (selected == undefined || selected.length === 0) {
+					selected = json.selected_genes;
+				} else {
+					$.each(json.selected_genes, function (index, g) {
+						if (jQuery.inArray(g, selected) == -1) {
+							selected.push(g);
+						}
+					});
+				}
+			}
+			updateBasket();
+			$('#gene-table').dataTable()._fnAjaxUpdate();
+		}
+	});
+}
+
+function updateBasket() {
+	$.ajax({
+		url: 'api/replace_basket',
+		type: 'POST',
+		data: { 'genes': selected },
+		success: function () {
+			updateCount(selected.length);
 		}
 	})
 }
@@ -105,4 +149,5 @@ $(function () {
 	// Button listeners
 	$('#load-example').click(loadPhotosynthesisGenes);
 	$('#clear-selection').click(clearSelection);
+	$('#select-all').click(selectAll);
 });

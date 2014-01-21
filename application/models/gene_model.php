@@ -10,6 +10,36 @@ class Gene_model extends CI_Model {
 			'g.symbol', 'g.category', 'g.definition', 'g.tf',
 			'og.operon_id');
 
+		// If the user only wants the filtered results
+		if ($this->input->post('selgenes') == 'all') {
+			$this->db->select('g.id')
+				->from('gene AS g')
+				->join('operon_gene AS og', 'og.gene_id = g.id', 'left');
+
+			$sQuery = $this->input->post('sQuery');
+
+			if ($sQuery !== FALSE) {
+				for ($i = 0; $i < count($taColumns); $i++) {
+					if ($i == 0) {
+						$this->db->like($taColumns[$i], $sQuery);
+					} else {
+						$this->db->or_like($taColumns[$i], $sQuery);
+					}
+				}
+			}
+
+			$query = $this->db->get();
+			$res = $query->result_array();
+
+			$selgenes = array();
+			foreach ($res as $row) {
+				$selgenes[] = $row['id'];
+			}
+
+			return array('selected_genes' => array_values($selgenes));
+		}
+
+		// Continue with the standard datatable
 		$this->db->select("SQL_CALC_FOUND_ROWS
 						   CONCAT('<input type=\"checkbox\" id=\"',g.id,'\" />') AS `checkbox`,
 						   CONCAT('<a href=\"gene/details/', g.orf_id, '\">', g.orf_id, '</a>'),

@@ -29,6 +29,7 @@
 
 <button id="load-example">Load example gene set</button>
 <button id="clear-selection">Clear selection</button>
+<button id="select-all">Select all</button>
 
 <script type="text/javascript">
 	var selected = <?php echo json_encode($basket); ?>
