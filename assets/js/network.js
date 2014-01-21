@@ -69,8 +69,10 @@ $(function () {
 
 		ready: function () {
 			console.log('network is ready');
-			$('#network-container').cytoscapePanzoom();
 			cy = this;
+			$('#network-container').cytoscapePanzoom({
+				autodisableForMobile: true
+			});
 		},
 		done: function () {
 			console.log('layout done');

@@ -32,6 +32,8 @@ class Network extends MY_Controller {
 		// Load views
 		$this->load->view('base/header', $this->get_head_data('network', 'Network',
 			array(
+				base_url(array('assets', 'css', 'font-awesome-4.0.3', 'css', 'font-awesome.min.css')),
+				base_url(array('assets', 'js', 'cytoscape-panzoom', 'jquery.cytoscape.js-panzoom.css')),
 				base_url(array('assets', 'css', 'network.css'))
 			)
 		));
@@ -47,7 +49,7 @@ class Network extends MY_Controller {
 		$this->load->view('base/footer', $this->get_foot_data(
 			array(
 				base_url(array('assets', 'js', 'cytoscape', 'arbor.js')),
-				base_url(array('assets', 'js', 'cytoscape', 'jquery.cytoscape-panzoom.min.js')),
+				base_url(array('assets', 'js', 'cytoscape-panzoom', 'jquery.cytoscape.js-panzoom.js')),
 				base_url(array('assets', 'js', 'cytoscape', 'cytoscape.min.js')),
 				base_url(array('assets', 'js', 'network.js'))
 			)
