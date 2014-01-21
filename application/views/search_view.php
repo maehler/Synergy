@@ -25,6 +25,8 @@
 		<th>Operon member</th>
 	</tfoot>
 </table>
+<div class="clear-fix"></div>
+
 <button id="load-example">Load example gene set</button>
 
 <script type="text/javascript">

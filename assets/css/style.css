@@ -102,6 +102,7 @@ nav {
 .align-center { text-align: center; }
 .align-right { text-align: right; }
 .float-right { float: right; }
+.clear-fix { clear: both; }
 /* End alignment */
 
 /* Text styles */

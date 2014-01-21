@@ -26,11 +26,11 @@
 </p>
 <ul>
     <li><a class="external" href="https://www.google.com/intl/en/chrome/browser/">
-            Google Chrome</a> (v19+)
+            Google Chrome</a>
     </li>
     <li><a class="external" href="http://www.mozilla.org/en-US/firefox/new/">
-            Firefox</a> (v12+)</li>
-    <li><a class="external" href="http://www.apple.com/safari/">Safari</a> (v5+)</li>
+            Firefox</a></li>
+    <li><a class="external" href="http://www.apple.com/safari/">Safari</a></li>
 </ul>
 <p>
     Functionality has been tested in all of the above browsers, but
@@ -50,7 +50,7 @@
         If you find something that is not working as expected, or
         you come up with some feature you'd like to have, feel free
         to contact me. You can reach me at <a
-        href="mailto:niklas.mahler@nmbu.no?subject=Synergy">niklas.mahler@umb.no</a>.
+        href="mailto:niklas.mahler@nmbu.no?subject=Synergy">niklas.mahler@nmbu.no</a>.
         It could be anything, ranging from how data is presented to
         colors of buttons.
     </p>
