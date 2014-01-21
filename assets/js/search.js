@@ -25,6 +25,17 @@ function loadPhotosynthesisGenes() {
     });
 }
 
+function clearSelection() {
+	$.ajax({
+		url: 'api/empty_basket',
+		type: 'POST',
+		success: function () {
+			console.log('Selection cleared!');
+			updateCount(0);
+		}
+	})
+}
+
 $(function () {
 	updateCount(selected.length);
 
@@ -93,4 +104,5 @@ $(function () {
 
 	// Button listeners
 	$('#load-example').click(loadPhotosynthesisGenes);
+	$('#clear-selection').click(clearSelection);
 });
