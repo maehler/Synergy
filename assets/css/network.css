@@ -18,7 +18,14 @@
 	}
 
 #network-container {
+	position: relative;
 	border: 1px solid black;
 	height: 600px;
 	margin-left: 220px;
+}
+
+#network-stats {
+	position: absolute;
+	right: 5px;
+	top: 3px;
 }

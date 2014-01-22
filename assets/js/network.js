@@ -16,6 +16,13 @@ function invertSelection() {
 	selected.unselect();
 }
 
+function updateCount() {
+	var no_nodes = cy.nodes().length;
+	var no_edges = cy.edges().length;
+	$('#node-count').html(no_nodes);
+	$('#edge-count').html(no_edges);
+}
+
 function expandNode(json) {
 	// Calculate the positions of the objects
 	var n_nodes = json.nodes.length;
@@ -95,6 +102,7 @@ $(function () {
 		ready: function () {
 			console.log('network is ready');
 			cy = this;
+			updateCount();
 		},
 		done: function () {
 			console.log('layout done');

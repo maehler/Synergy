@@ -34,7 +34,9 @@
 
 <h2>Network</h2>
 
-<div id="network-container"></div>
+<div id="network-container">
+	<div id="network-stats" class="small"><span id="node-count">0</span> nodes, <span id="edge-count">0</span> edges</div>
+</div>
 <?php endif ?>
 <script type="text/javascript">
 	var network_data = <?php echo $network; ?>;
