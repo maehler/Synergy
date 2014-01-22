@@ -107,8 +107,8 @@ class Network_model extends CI_Model {
 		foreach ($result as $edge) {
 			$network['edges'][] = array(
 				'data' => array(
-					'source' => $edge['gene1_id'],
-					'target' => $edge['gene2_id'],
+					'source' => strval($edge['gene1_id']),
+					'target' => strval($edge['gene2_id']),
 					'weight' => floatval($edge[$ntype])
 				)
 			);
@@ -139,8 +139,8 @@ class Network_model extends CI_Model {
 		foreach ($result as $edge) {
 			$network['edges'][] = array(
 				'data' => array(
-					'source' => $edge['id1'],
-					'target' => $edge['id2'],
+					'source' => strval($edge['id1']),
+					'target' => strval($edge['id2']),
 					'weight' => floatval($edge[$ntype])
 				)
 			);
