@@ -120,4 +120,48 @@ class Network_model extends CI_Model {
 			return $network;
 		}
 	}
+
+	function get_neighbors($orf, $th, $ntype) {
+		$this->db->select("g1.id AS id1, g1.orf_id AS orf1, g1.tf AS tf1, g2.id AS id2, g2.orf_id AS orf2, g2.tf AS tf2, $ntype")
+			->from('corr AS c')
+			->join('gene AS g1', 'g1.id = c.gene1_id', 'left')
+			->join('gene AS g2', 'g2.id = c.gene2_id', 'left')
+			->where("(g1.orf_id = '$orf' OR g2.orf_id = '$orf')")
+			->where($ntype . " >", $th)
+			->where($ntype . " IS NOT NULL");
+		$query = $this->db->get();
+		$result = $query->result_array();
+
+		$network = array();
+		$nodes = array();
+
+		// Format the edges
+		foreach ($result as $edge) {
+			$network['edges'][] = array(
+				'data' => array(
+					'source' => $edge['id1'],
+					'target' => $edge['id2'],
+					'weight' => floatval($edge[$ntype])
+				)
+			);
+			$nodes[$edge['id1']] = array(
+				'data' => array(
+					'id' => $edge['id1'],
+					'orf' => $edge['orf1']
+				),
+				'classes' => $edge['tf1'] ? "tf" : ""
+			);
+			$nodes[$edge['id2']] = array(
+				'data' => array(
+					'id' => $edge['id2'],
+					'orf' => $edge['orf2']
+				),
+				'classes' => $edge['tf2'] ? "tf" : ""
+			);
+		}
+
+		$network['nodes'] = array_values($nodes);
+
+		return $network;
+	}
 }

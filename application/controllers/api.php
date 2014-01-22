@@ -39,4 +39,14 @@ class Api extends MY_Controller {
 		$genes = $this->input->post('genes');
 		$this->session->set_userdata(array('basket' => $genes));
 	}
+
+	function network_neighbors($orf, $th=5, $ntype='clr_complete') {
+		$this->load->model('network_model');
+
+		$network = $this->network_model->get_neighbors($orf, floatval($th), $ntype);
+
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($network));
+	}
 }

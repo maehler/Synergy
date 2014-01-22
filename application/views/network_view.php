@@ -16,6 +16,8 @@
 		</select><br>
 		<label for="network-threshold">Correlation threshold</label>
 		<input name="network-threshold" id="network-threshold" type="number" value="<?php echo $settings['network_threshold']; ?>"><br>
+		<label for="expand-threshold">Expansion threshold</label>
+		<input name="expand-threshold" id="expand-threshold" type="number" value="<?php echo $settings['expand-threshold']; ?>"></br>
 		<label for="expand-network">Expand network</label>
 		<input type="checkbox" name="expand-network" id="expand-network"<?php echo $settings['expand'] ? " checked" : ""; ?>>
 		<button id="submit" type="submit">Redraw</button>

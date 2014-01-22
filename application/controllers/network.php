@@ -18,12 +18,16 @@ class Network extends MY_Controller {
 		// Set up the network type and threshold values
 		$ntype = $this->input->post('network-type');
 		$th = $this->input->post('network-threshold');
+		$eth = $this->input->post('expand-threshold');
 		$expand = $this->input->post('expand-network');
 		if (!$ntype) {
 			$ntype = 'clr_complete'; // Default
 		}
 		if (!$th) {
 			$th = 5; // Default
+		}
+		if (!$eth) {
+			$eth = 6; // Default
 		}
 		$expand = $expand == NULL ? FALSE : TRUE;
 
@@ -43,6 +47,7 @@ class Network extends MY_Controller {
 			'settings' => array(
 				'network_type' => $ntype,
 				'network_threshold' => $th,
+				'expand-threshold' => $eth,
 				'expand' => $expand
 			)
 		));
@@ -50,6 +55,7 @@ class Network extends MY_Controller {
 			array(
 				base_url(array('assets', 'js', 'cytoscape', 'arbor.js')),
 				base_url(array('assets', 'js', 'cytoscape-panzoom', 'jquery.cytoscape.js-panzoom.js')),
+				base_url(array('assets', 'js', 'cytoscape-cxtmenu', 'jquery.cytoscape.js-cxtmenu.js')),
 				base_url(array('assets', 'js', 'cytoscape', 'cytoscape.min.js')),
 				base_url(array('assets', 'js', 'network.js'))
 			)

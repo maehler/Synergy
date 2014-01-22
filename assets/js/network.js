@@ -10,13 +10,32 @@ function selectNone() {
 	cy.nodes().unselect();
 }
 
+function expandNode(json) {
+	// Calculate the positions of the objects
+	var n_nodes = json.nodes.length;
+	var r = 100;
+	var x = this.position().x;
+	var y = this.position().y;
+	var angle_incr = (2 * Math.PI) / n_nodes;
+	for (var i = 0; i < n_nodes; i++) {
+		var angle = angle_incr * i;
+		var x_offset = Math.cos(angle) * r;
+		var y_offset = Math.sin(angle) * r;
+		json.nodes[i].position = { 'x': x + x_offset, 'y': y + y_offset };
+	}
+	// Remove duplicate edges
+	var expand_threshold = $('#expand-threshold').val();
+	cy.remove(this.neighborhood().edges("[weight>"+expand_threshold+"]"));
+	cy.add(json);
+}
+
 $(function () {
 	$('#network-container').cytoscape({
 		elements: network_data,
 
 		layout: {
 			name: 'arbor',
-			liveUpdate: true,
+			liveUpdate: false,
 			maxSimulationTime: 2000,
 			fit: true,
 			padding: [50, 50, 50, 50],
@@ -70,13 +89,64 @@ $(function () {
 		ready: function () {
 			console.log('network is ready');
 			cy = this;
-			$('#network-container').cytoscapePanzoom({
-				autodisableForMobile: true
-			});
 		},
 		done: function () {
 			console.log('layout done');
 		}
+	});
+
+	$('#network-container').cytoscapePanzoom({
+		autodisableForMobile: true
+	});
+
+	$('#network-container').cytoscapeCxtmenu({
+	    menuRadius: 80,
+	    selector: 'node',
+	    commands: [
+	        {
+	            content: 'Log ID',
+	            select: function () {
+	                console.log(this.id());
+	            }
+	        }, {
+	            content: 'Expand',
+	            select: function () {
+	                console.log('Expanding neighborhood...');
+	                $.ajax({
+	                	url: 'api/network_neighbors/' + this.data().orf + '/' + $('#expand-threshold').val() + '/' + $('#network-type').val(),
+	                	type: 'GET',
+	                	datatype: 'json',
+	                	context: this,
+	                	success: expandNode
+	                });
+	            }
+	        }, {
+	        	content: 'Select',
+	        	select: function () {
+	        		if (this.selected()) {
+	        			this.unselect();
+	        		} else {
+	        			this.select();
+	        		}
+	        	}
+	        }, {
+	        	content: 'Annotation',
+	        	select: function () {
+	        		console.log('Annotation');
+	        	}
+	        }
+	    ], 
+	    fillColor: 'rgba(0, 0, 0, 0.75)',
+	    activeFillColor: 'rgba(40, 187, 91, 0.75)',
+	    activePadding: 5,
+	    indicatorSize: 18,
+	    separatorWidth: 3,
+	    spotlightPadding: 3,
+	    minSpotlightRadius: 24,
+	    maxSpotlightRadius: 38,
+	    itemColor: 'white',
+	    itemTextShadowColor: 'black',
+	    zIndex: 9999
 	});
 
 	// Button listeners
