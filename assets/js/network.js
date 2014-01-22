@@ -134,6 +134,19 @@ $(function () {
 	        	select: function () {
 	        		console.log('Annotation');
 	        	}
+	        }, {
+	        	content: 'Toggle basket',
+	        	select: function () {
+	        		$.ajax({
+	        			url: 'api/update_basket',
+	        			type: 'GET',
+	        			context: this,
+	        			data: { gene: this.id() },
+		        		success: function () {
+		        			this.toggleClass('basket');
+		        		}
+	        		});
+	        	}
 	        }
 	    ], 
 	    fillColor: 'rgba(0, 0, 0, 0.75)',
