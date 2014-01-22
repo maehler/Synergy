@@ -10,6 +10,12 @@ function selectNone() {
 	cy.nodes().unselect();
 }
 
+function invertSelection() {
+	var selected = cy.nodes(':selected');
+	selectAll();
+	selected.unselect();
+}
+
 function expandNode(json) {
 	// Calculate the positions of the objects
 	var n_nodes = json.nodes.length;
@@ -165,4 +171,5 @@ $(function () {
 	// Button listeners
 	$('#select-all').click(selectAll);
 	$('#select-none').click(selectNone);
+	$('#select-invert').click(invertSelection);
 });

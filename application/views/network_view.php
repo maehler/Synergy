@@ -28,6 +28,7 @@
 	<div>
 		<button id="select-all">Select all</button>
 		<button id="select-none">Select none</button>
+		<button id="select-invert">Invert selection</button>
 	</div>
 </aside>
 
