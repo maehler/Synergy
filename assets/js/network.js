@@ -169,15 +169,6 @@ $(function () {
 	                });
 	            }
 	        }, {
-	        	content: 'Select',
-	        	select: function () {
-	        		if (this.selected()) {
-	        			this.unselect();
-	        		} else {
-	        			this.select();
-	        		}
-	        	}
-	        }, {
 	        	content: 'Toggle basket',
 	        	select: function () {
 	        		$.ajax({
