@@ -16,6 +16,7 @@ function selectNone() {
 
 function removeSelected() {
 	cy.remove(cy.nodes(':selected'));
+	updateCount();
 }
 
 function invertSelection() {
