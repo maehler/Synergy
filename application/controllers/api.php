@@ -58,7 +58,7 @@ class Api extends MY_Controller {
 				unset($basket[$idx]);
 			}
 		}
-		$this->session->set_userdata(array('basket' => $basket));
+		$this->session->set_userdata(array('basket' => array_values($basket)));
 	}
 
 	function empty_basket() {
