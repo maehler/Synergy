@@ -193,7 +193,7 @@ $(function () {
 	    maxSpotlightRadius: 38,
 	    itemColor: 'white',
 	    itemTextShadowColor: 'black',
-	    zIndex: 9999
+	    zIndex: 100000
 	});
 
 	// Button listeners
