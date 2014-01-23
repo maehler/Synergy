@@ -93,14 +93,15 @@ class Network_model extends CI_Model {
 
 		// Format the nodes
 		foreach ($nodes as $nid => $vals) {
-			$classes = $vals[1] ? "tf" : "";
-			$classes .= $vals[2] ? "basket" : "";
+			$classes = array();
+			$classes[] = $vals[1] ? 'tf' : '';
+			$classes[] = $vals[2] ? 'basket' : '';
 			$network['nodes'][] = array(
 				'data' => array(
 					'id' => strval($nid),
 					'orf' => $vals[0]
 				),
-				'classes' => $classes
+				'classes' => implode(' ', $classes)
 			);
 		}
 		// Format the edges
