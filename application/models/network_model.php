@@ -122,7 +122,7 @@ class Network_model extends CI_Model {
 	}
 
 	function get_neighbors($orf, $th, $ntype) {
-		$this->db->select("g1.id AS id1, g1.orf_id AS orf1, g1.tf AS tf1, g2.id AS id2, g2.orf_id AS orf2, g2.tf AS tf2, $ntype")
+		$this->db->select("g1.id AS id1, g1.orf_id AS orf1, g1.tf AS tf1, g2.id AS id2, g2.orf_id AS orf2, g2.tf AS tf2")
 			->from('corr AS c')
 			->join('gene AS g1', 'g1.id = c.gene1_id', 'left')
 			->join('gene AS g2', 'g2.id = c.gene2_id', 'left')
@@ -132,18 +132,10 @@ class Network_model extends CI_Model {
 		$query = $this->db->get();
 		$result = $query->result_array();
 
-		$network = array();
 		$nodes = array();
 
-		// Format the edges
+		// Format the nodes
 		foreach ($result as $edge) {
-			$network['edges'][] = array(
-				'data' => array(
-					'source' => strval($edge['id1']),
-					'target' => strval($edge['id2']),
-					'weight' => floatval($edge[$ntype])
-				)
-			);
 			$nodes[$edge['id1']] = array(
 				'data' => array(
 					'id' => $edge['id1'],
@@ -160,9 +152,7 @@ class Network_model extends CI_Model {
 			);
 		}
 
-		$network['nodes'] = array_values($nodes);
-
-		return array('nodes' => $network['nodes']);
+		return array('nodes' => array_values($nodes));
 	}
 
 	function get_edges($genes, $th, $ntype) {
