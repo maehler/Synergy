@@ -2,6 +2,10 @@
 
 var cy;
 
+function redraw() {
+	cy.forceRender();
+}
+
 function selectAll() {
 	cy.nodes().select();
 }
@@ -38,8 +42,31 @@ function expandNode(json) {
 	}
 	// Remove duplicate edges
 	var expand_threshold = $('#expand-threshold').val();
-	cy.remove(this.neighborhood().edges("[weight>"+expand_threshold+"]"));
 	cy.add(json);
+	// Nodes are now added, but not all edges. Do that now.
+	var ids = [];
+	$.each(cy.nodes(), function (i, element) {
+		ids.push(element.id());
+	});
+	$.ajax({
+		url: 'api/network_edges',
+		type: 'POST',
+		datatype: 'json',
+		data: {
+			genes: ids,
+			th: expand_threshold,
+			ntype: $('#network-type').val()
+		},
+		success: function (edges) {
+			cy.remove(cy.edges("[weight>"+expand_threshold+"]"));
+			cy.add(edges);
+			updateCount();
+			// For some reason the edges aren't drawn straight away,
+			// and can't seem to force a redraw directly, but with
+			// a small delay it works...
+			window.setTimeout(redraw, 1);
+		}
+	});
 }
 
 $(function () {
@@ -127,7 +154,10 @@ $(function () {
 	            select: function () {
 	                console.log('Expanding neighborhood...');
 	                $.ajax({
-	                	url: 'api/network_neighbors/' + this.data().orf + '/' + $('#expand-threshold').val() + '/' + $('#network-type').val(),
+	                	url: 'api/network_neighbors/' + 
+	                		this.data().orf + '/' + 
+	                		$('#expand-threshold').val() + '/' + 
+	                		$('#network-type').val(),
 	                	type: 'GET',
 	                	datatype: 'json',
 	                	context: this,

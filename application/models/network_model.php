@@ -162,6 +162,34 @@ class Network_model extends CI_Model {
 
 		$network['nodes'] = array_values($nodes);
 
-		return $network;
+		return array('nodes' => $network['nodes']);
+	}
+
+	function get_edges($genes, $th, $ntype) {
+		$this->db->select("g1.id AS id1, g1.orf_id AS orf1, g2.id AS id2, g2.orf_id AS orf2, $ntype")
+			->from('corr AS c')
+			->join('gene AS g1', 'g1.id = c.gene1_id', 'left')
+			->join('gene AS g2', 'g2.id = c.gene2_id', 'left')
+			->where_in('g1.id', $genes)
+			->where_in('g2.id', $genes)
+			->where("$ntype >", floatval($th))
+			->where("$ntype IS NOT NULL");
+		$query = $this->db->get();
+		$res = $query->result_array();
+
+		$edges = array();
+
+		// Format the edges
+		foreach ($res as $edge) {
+			$edges[] = array(
+				'data' => array(
+					'source' => strval($edge['id1']),
+					'target' => strval($edge['id2']),
+					'weight' => floatval($edge[$ntype])
+				)
+			);
+		}
+
+		return array('edges' => $edges);
 	}
 }

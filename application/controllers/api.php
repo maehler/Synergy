@@ -49,4 +49,18 @@ class Api extends MY_Controller {
 			->set_content_type('application/json')
 			->set_output(json_encode($network));
 	}
+
+	function network_edges() {
+		$this->load->model('network_model');
+
+		$genes = $this->input->post('genes');
+		$th = $this->input->post('th');
+		$ntype = $this->input->post('ntype');
+
+		$edges = $this->network_model->get_edges($genes, $th, $ntype);
+
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($edges));
+	}
 }
