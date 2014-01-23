@@ -149,9 +149,9 @@ $(function () {
 	    selector: 'node',
 	    commands: [
 	        {
-	            content: 'Log ID',
+	            content: 'Delete',
 	            select: function () {
-	                console.log(this.id());
+	            	cy.remove(this);
 	            }
 	        }, {
 	            content: 'Expand',
