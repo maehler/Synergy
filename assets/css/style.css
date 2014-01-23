@@ -115,6 +115,17 @@ nav {
 
 .hidden { display: none; }
 
+/* Loading animation */
+.loading {
+	display: inline-block;
+    background-image: url('img/loading_light.gif');
+    background-size: 15px;
+    margin-bottom: -2px;
+    margin-right: 5px;
+    height: 15px;
+    width: 15px;
+}
+
 .box {
     font-family: 'Raleway', sans-serif;
     background-color: #eee;
