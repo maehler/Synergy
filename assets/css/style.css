@@ -103,6 +103,8 @@ nav {
 .align-right { text-align: right; }
 .float-right { float: right; }
 .clear-fix { clear: both; }
+.clear-right { clear: right; }
+.clear-left { clear: left; }
 /* End alignment */
 
 /* Text styles */
