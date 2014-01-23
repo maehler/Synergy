@@ -18,7 +18,7 @@
 	<tbody>
 	<?php foreach ($genes as $gene): ?>
 		<tr>
-			<td><?php echo $gene['orf_id'] ?></td>
+			<td><a href="<?php echo base_url(array('gene', 'details', $gene['orf_id'])); ?>"><?php echo $gene['orf_id'] ?></a></td>
 			<td><?php echo $gene['refseq_id'] ?></td>
 			<td><em><?php echo $gene['symbol'] ?></em></td>
 			<td><?php echo $gene['category'] ?></td>
