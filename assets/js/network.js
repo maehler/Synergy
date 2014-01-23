@@ -62,6 +62,15 @@ function removeFromBasket() {
 	})
 }
 
+function searchNetwork() {
+	cy.nodes().unselect();
+	var sstring = $('#network-search-input').val();
+	if (sstring == '') {
+		return;
+	}
+	cy.nodes('[orf="'+sstring+'"]').select();
+}
+
 function updateCount() {
 	var no_nodes = cy.nodes().length;
 	var no_edges = cy.edges().length;
@@ -231,6 +240,14 @@ $(function () {
 	    itemTextShadowColor: 'black',
 	    zIndex: 100000
 	});
+
+	// Search listener
+	$('#network-search-button').click(searchNetwork);
+	$('#network-search-input').keyup(function (e) {
+		if (e.which === 13) {
+			searchNetwork();
+		}
+	})
 
 	// Button listeners
 	$('#select-all').click(selectAll);

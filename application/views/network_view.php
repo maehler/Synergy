@@ -34,14 +34,18 @@
 	</div>
 	<hr>
 	<div>
-		<button id="basket-add">Add selection to basket</button>
-		<button id="basket-remove">Remove selection from basket</button>
+		<button id="basket-add">Add to basket</button>
+		<button id="basket-remove">Remove from basket</button>
 	</div>
 </aside>
 
 <h2>Network</h2>
 
-<div id="network-container">
+<div id="network-search" class="small">
+	<input type="text" id="network-search-input">
+	<button id="network-search-button">Search</button>
+</div>
+<div id="network-container" class="clear-right">
 	<div id="network-stats" class="small"><span id="node-count">0</span> nodes, <span id="edge-count">0</span> edges</div>
 </div>
 <?php endif ?>
