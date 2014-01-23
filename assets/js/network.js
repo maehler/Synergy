@@ -104,7 +104,7 @@ $(function () {
 					'text_align': 'center',
 					'font-family': 'helvetica, arial, sans-serif',
 					'border-width': 1,
-					'background-color': '#12AA12',
+					'background-color': '#AAA',
 					'cursor': 'pointer',
 					'shape': 'ellipse',
 					'width': 20,
@@ -113,12 +113,11 @@ $(function () {
 				})
 			.selector('node.basket')
 				.css({
-					'background-color': '#3995FF'
+					'background-color': '#12AA12'
 				})
 			.selector('node.tf')
 				.css({
-					'shape': 'rectangle',
-					'background-color': '#B2A72C'
+					'shape': 'rectangle'
 				})
 			.selector('node:selected')
 				.css({
@@ -131,7 +130,6 @@ $(function () {
 					'opacity': 0.5,
 					'width': 'mapData(weight, 0, 20, 0.5, 8)',
 					'line-color': '#666'
-					// 'line-color': 'mapData(weight, 0, 20, blue, red)'
 				})
 		,
 
