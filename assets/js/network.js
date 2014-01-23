@@ -50,6 +50,18 @@ function addToBasket() {
 	})
 }
 
+function removeFromBasket() {
+	var selected = nodeIds(':selected');
+	$.ajax({
+		url: 'api/remove_from_basket',
+		type: 'GET',
+		data: { genes: selected },
+		success: function () {
+			cy.nodes(':selected').removeClass('basket');
+		}
+	})
+}
+
 function updateCount() {
 	var no_nodes = cy.nodes().length;
 	var no_edges = cy.edges().length;
@@ -228,4 +240,5 @@ $(function () {
 	$('#select-neighbors').click(selectNeighbors);
 
 	$('#basket-add').click(addToBasket);
+	$('#basket-remove').click(removeFromBasket);
 });

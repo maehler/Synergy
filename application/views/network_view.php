@@ -35,6 +35,7 @@
 	<hr>
 	<div>
 		<button id="basket-add">Add selection to basket</button>
+		<button id="basket-remove">Remove selection from basket</button>
 	</div>
 </aside>
 
