@@ -2,6 +2,15 @@
 
 var cy;
 
+function nodeIds(selector) {
+	selector = typeof(selector) !== 'undefined' ? selector : '';
+	var ids = [];
+	$.each(cy.nodes(selector), function (i, element) {
+		ids.push(element.id());
+	});
+	return ids;
+}
+
 function redraw() {
 	cy.forceRender();
 }
@@ -27,6 +36,18 @@ function invertSelection() {
 	var selected = cy.nodes(':selected');
 	selectAll();
 	selected.unselect();
+}
+
+function addToBasket() {
+	var selected = nodeIds(':selected');
+	$.ajax({
+		url: 'api/update_basket',
+		type: 'GET',
+		data: { gene: selected },
+		success: function () {
+			cy.nodes(':selected').addClass('basket');
+		}
+	})
 }
 
 function updateCount() {
@@ -205,4 +226,6 @@ $(function () {
 	$('#select-invert').click(invertSelection);
 	$('#remove-selection').click(removeSelected);
 	$('#select-neighbors').click(selectNeighbors);
+
+	$('#basket-add').click(addToBasket);
 });

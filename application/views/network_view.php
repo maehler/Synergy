@@ -32,6 +32,10 @@
 		<button id="select-neighbors">Grow selection</button>
 		<button id="remove-selection">Remove selection</button>
 	</div>
+	<hr>
+	<div>
+		<button id="basket-add">Add selection to basket</button>
+	</div>
 </aside>
 
 <h2>Network</h2>
