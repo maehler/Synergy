@@ -113,6 +113,8 @@ nav {
 .italic { font-style: italic; }
 /* End text styles */
 
+.hidden { display: none; }
+
 .box {
     font-family: 'Raleway', sans-serif;
     background-color: #eee;
