@@ -13,6 +13,7 @@ function nodeIds(selector) {
 
 function redraw() {
 	cy.forceRender();
+	window.setTimeout(updateCount, 50);
 }
 
 function selectAll() {
@@ -111,7 +112,6 @@ function expandNode(json) {
 		success: function (edges) {
 			cy.remove(cy.edges("[weight>"+expand_threshold+"]"));
 			cy.add(edges);
-			updateCount();
 			// For some reason the edges aren't drawn straight away,
 			// and can't seem to force a redraw directly, but with
 			// a small delay it works...
@@ -163,8 +163,8 @@ $(function () {
 				})
 			.selector('node:selected')
 				.css({
-					'border-color': '#D72A1D',
-					'border-width': 2,
+					'border-color': '#CA281D',
+					'border-width': 3,
 					'box-shadow': '2px 2px 2px 2px black'
 				})
 			.selector('edge')
