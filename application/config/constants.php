@@ -109,5 +109,16 @@ define('EXIT_DATABASE', 8); // database error
 define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
+/*
+|--------------------------------------------------------------------------
+| Python constants
+|--------------------------------------------------------------------------
+|
+| Python executables and scripts.
+|
+*/
+define('PYTHON', APPPATH . '../.venv/bin/python');
+define('PYTHON_SCRIPTS', APPPATH . '../src/python/');
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
