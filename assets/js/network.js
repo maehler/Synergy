@@ -14,6 +14,10 @@ function selectNone() {
 	cy.nodes().unselect();
 }
 
+function removeSelected() {
+	cy.remove(cy.nodes(':selected'));
+}
+
 function invertSelection() {
 	var selected = cy.nodes(':selected');
 	selectAll();
@@ -210,4 +214,5 @@ $(function () {
 	$('#select-all').click(selectAll);
 	$('#select-none').click(selectNone);
 	$('#select-invert').click(invertSelection);
+	$('#remove-selection').click(removeSelected);
 });
