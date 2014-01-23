@@ -19,15 +19,27 @@ class Api extends MY_Controller {
 		}
 
 		$basket = $this->session->userdata('basket');
-		$idx = array_search($gene_id, $basket);
-		if ($idx !== FALSE) {
-			// Remove gene id from basket
-			unset($basket[$idx]);
+
+		if (gettype($gene_id) == 'array') {
+			foreach ($gene_id as $gid) {
+				$idx = array_search($gid, $basket);
+				if ($idx === FALSE) {
+					// Just add to the basket, don't remove if it already exists
+					$basket[] = $gid;
+				}
+			}
 			$this->session->set_userdata(array('basket' => array_values($basket)));
 		} else {
-			// Add gene id to basket
-			$basket[] = $gene_id;
-			$this->session->set_userdata(array('basket' => $basket));
+			$idx = array_search($gene_id, $basket);
+			if ($idx !== FALSE) {
+				// Remove gene id from basket
+				unset($basket[$idx]);
+				$this->session->set_userdata(array('basket' => array_values($basket)));
+			} else {
+				// Add gene id to basket
+				$basket[] = $gene_id;
+				$this->session->set_userdata(array('basket' => $basket));
+			}
 		}
 	}
 
