@@ -28,4 +28,7 @@
 	position: absolute;
 	right: 5px;
 	top: 3px;
+	background-color: rgba(200,200,200,0.75);
+	padding: 3px 5px;
+	border-radius: 3px;
 }
