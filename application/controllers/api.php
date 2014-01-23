@@ -43,6 +43,24 @@ class Api extends MY_Controller {
 		}
 	}
 
+	function remove_from_basket() {
+		$gene_ids = $this->input->get('genes');
+
+		if (!$this->session->userdata('basket')) {
+			$this->session->set_userdata(array('basket' => array()));
+		}
+
+		$basket = $this->session->userdata('basket');
+
+		foreach ($gene_ids as $gid) {
+			$idx = array_search($gid, $basket);
+			if ($idx !== FALSE) {
+				unset($basket[$idx]);
+			}
+		}
+		$this->session->set_userdata(array('basket' => $basket));
+	}
+
 	function empty_basket() {
 		$this->session->set_userdata(array('basket' => array()));
 	}
