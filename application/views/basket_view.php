@@ -6,6 +6,7 @@
 <section>
 	<table id="basket-table" class="datatable small">
 		<thead>
+			<th></th>
 			<th>ORF</th>
 			<th>Accession</th>
 			<th>Symbol</th>
@@ -16,6 +17,7 @@
 		<tbody>
 		<?php foreach ($genes as $gene): ?>
 			<tr>
+				<td><input type="checkbox" value="<?php echo $gene['id']; ?>"></td>
 				<td><a href="<?php echo base_url(array('gene', 'details', $gene['orf_id'])); ?>"><?php echo $gene['orf_id'] ?></a></td>
 				<td><?php echo $gene['refseq_id'] ?></td>
 				<td><em><?php echo $gene['symbol'] ?></em></td>
@@ -26,6 +28,7 @@
 		<?php endforeach ?>
 		</tbody>
 		<tfoot>
+			<th></th>
 			<th>ORF</th>
 			<th>Accession</th>
 			<th>Symbol</th>
@@ -35,6 +38,8 @@
 		</tfoot>
 	</table>
 	<div class="clear-fix small">
+		<button id="select-all">Select all</button>
+		<button id="select-none">Select none</button>
 		<button id="empty-basket">Empty basket</button>
 	</div>
 </section>

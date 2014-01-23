@@ -26,7 +26,32 @@ function goEnrichment() {
 }
 
 function motifEnrichment() {
-	
+
+}
+
+function selectAll() {
+	var rows = $('#basket-table').dataTable().fnGetNodes();
+	$.each(rows, function () {
+		$(this).find('input[type="checkbox"]').prop('checked', true);
+	});
+}
+
+function selectNone() {
+	var rows = $('#basket-table').dataTable().fnGetNodes();
+	$.each(rows, function () {
+		$(this).find('input[type="checkbox"]').prop('checked', false);
+	});
+}
+
+function getSelection() {
+	var sel = [];
+	var rows = $('#basket-table').dataTable().fnGetNodes();
+	$.each(rows, function () {
+		if ($(this).find('input[type="checkbox"]').prop('checked')) {
+			sel.push($(this).find('input').val());
+		}
+	});
+	return sel;
 }
 
 $(function () {
@@ -34,6 +59,8 @@ $(function () {
 
 	// Table button listeners
 	$('#empty-basket').click(emptyBasket);
+	$('#select-all').click(selectAll);
+	$('#select-none').click(selectNone);
 
 	// Enrichment
 	$('[name="enrichment-radio"]').change(enrichmentToggle);
