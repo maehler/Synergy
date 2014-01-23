@@ -178,11 +178,6 @@ $(function () {
 	        		}
 	        	}
 	        }, {
-	        	content: 'Annotation',
-	        	select: function () {
-	        		console.log('Annotation');
-	        	}
-	        }, {
 	        	content: 'Toggle basket',
 	        	select: function () {
 	        		$.ajax({
