@@ -14,6 +14,10 @@ function selectNone() {
 	cy.nodes().unselect();
 }
 
+function selectNeighbors() {
+	cy.nodes(':selected').nodes().neighborhood().nodes().select();
+}
+
 function removeSelected() {
 	cy.remove(cy.nodes(':selected'));
 	updateCount();
@@ -202,4 +206,5 @@ $(function () {
 	$('#select-none').click(selectNone);
 	$('#select-invert').click(invertSelection);
 	$('#remove-selection').click(removeSelected);
+	$('#select-neighbors').click(selectNeighbors);
 });
