@@ -106,9 +106,11 @@ def calc_enrichment(genes, go, set_p, set_m, set_c, underrep=False, adj_p=True):
 def parse_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('pth', help='p-value threshold', type=float)
     parser.add_argument('genes', metavar='gene',
         nargs='+', type=int, help='gene ids to test for enrichment')
+
+    parser.add_argument('-p', dest='pth', metavar='dec', 
+        help='p-value threshold', type=float, default=0.05)
 
     args = parser.parse_args()
 
