@@ -106,8 +106,8 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<th>GO term</th>
-					<th>Category</th>
+					<th>Motif</th>
+					<th>Length</th>
 					<th>Description</th>
 					<th>FDR</th>
 				</tr>
