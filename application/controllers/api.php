@@ -96,4 +96,21 @@ class Api extends MY_Controller {
 			->set_content_type('application/json')
 			->set_output(json_encode($edges));
 	}
+
+	// Enrichment functions
+	function goenrichment() {
+		$this->load->helper('python_helper');
+
+		$genes = $this->input->post('genes');
+		$pth = $this->input->post('pth');
+
+		$output = run_python('goenrich.py', array(
+			$pth,
+			$genes
+		));
+
+		$this->output
+			->set_content_type('application/json')
+			->set_output($output);
+	}
 }
