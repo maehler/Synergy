@@ -23,6 +23,7 @@ class Basket extends MY_Controller {
 		$this->load->view('base/footer', $this->get_foot_data(
 			array(
 				base_url(array('assets', 'js', 'jquery.dataTables.min.js')),
+				base_url(array('assets', 'js', 'jquery.dataTables.sorting.js')),
 				base_url(array('assets', 'js', 'basket.js'))
 			)
 		));
