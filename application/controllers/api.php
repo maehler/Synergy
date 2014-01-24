@@ -2,6 +2,7 @@
 
 class Api extends MY_Controller {
 
+	// Search functions
 	function genetable ($datatable=TRUE) {
 		$this->load->model('gene_model');
 		$genes = $this->gene_model->get_datatable();
@@ -11,6 +12,7 @@ class Api extends MY_Controller {
 			->set_output(json_encode($genes));
 	}
 
+	// Basket functions
 	function update_basket() {
 		$gene_id = $this->input->get('gene');
 
@@ -70,6 +72,7 @@ class Api extends MY_Controller {
 		$this->session->set_userdata(array('basket' => $genes));
 	}
 
+	// Network functions
 	function network_neighbors($orf, $th=5, $ntype='clr_complete') {
 		$this->load->model('network_model');
 
