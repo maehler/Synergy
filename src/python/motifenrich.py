@@ -1,32 +1,15 @@
-#!/usr/bin/python26
-
 import sys
-from pprint import pprint
 import MySQLdb
 import numpy as np
 from scipy.stats import fisher_exact
 import itertools
+import argparse
+import json
 
 import padjust
 import config
 
-def query_database(gene_set, operon_set, cursor, getall=False, fimoq=0.125):
-    # Find the genes associated to the operons and add them to the gene set.
-    for operon in operon_set:
-        opquery = '''
-        
-        SELECT
-            og.gene_id
-        FROM operon_gene AS og
-        LEFT OUTER JOIN operon AS o
-            ON o.id = og.operon_id
-        WHERE o.name IN %s''' % operon_array
-
-        opresult = cursor.execute(opquery)
-        oprows = cursor.fetchall()
-        for row in oprows:
-            gene_set.add(str(row[0]))
-
+def query_database(gene_set, cursor, central=False, getall=False, fimoq=0.125):
     try:
         gene_array = ''.join(['(', 
             ','.join(['%s' % x for x in gene_set if x[-2:] != 'op']), ')'])
@@ -35,8 +18,7 @@ def query_database(gene_set, operon_set, cursor, getall=False, fimoq=0.125):
         gene_array = '(' + ', '.join([str(x) for x in gene_set]) + ')'
     
     # Get the motifs associated with each gene
-    query = ''' 
-
+    query = '''
     SELECT 
         g.orf_id AS 'orf',
         g.id AS 'geneid',
@@ -51,6 +33,10 @@ def query_database(gene_set, operon_set, cursor, getall=False, fimoq=0.125):
         ON pm.motif_id = m.id '''
     if not getall:
         query += '''WHERE g.id IN %s''' % (gene_array)
+    if central and not getall:
+        query += ' AND m.central = 1'
+    if central and getall:
+        query += 'WHERE m.central = 1'
 
     result = cursor.execute(query)
 
@@ -130,7 +116,7 @@ def motif_enrich(mgdict, genes, adj_p=True):
             # All of the genes contain this motif
             enrich.append([mid, p, odds, fentry])
 
-    # Correct p-values
+    # Adjust p-values
     if adj_p:
         padj = padjust.fdr([x[1] for x in enrich])
 
@@ -141,75 +127,44 @@ def motif_enrich(mgdict, genes, adj_p=True):
 
     return enrich
 
-def print_html(enrich, mnamedict):
-    print '''
-    <a href="?p=doc#motifenrichment" target="_blank">Explanation</a>
-    <table class="small datatable" id="enrichtable">
-        <thead>
-            <tr>
-                <th>Motif</th>
-                <th>q-value</th>
-                <th>m &cap; G</th>
-                <th>m - G</th>
-                <th>G - m</th>
-                <th>M - m &cup; G</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>'''
-    for line in enrich:
-        if line[1] > 0.3: break
-        print '''
-            <tr>
-                <td><a href="?p=motif&id=%d">%s</a></td>
-                <td>%.2e</td>
-                <td>%d</td>
-                <td>%d</td>
-                <td>%d</td>
-                <td>%d</td>
-                <td><button class="nHighlight motifHighlight" 
-                    data-name="%s" title="Highlight nodes in network">Highlight</button></td>
-            </tr>''' % \
-            (line[0], mnamedict[line[0]], line[1], 
-                line[3][0][0], line[3][1][0], line[3][0][1], line[3][1][1],
-                mnamedict[line[0]])
-    print '''
-        </tbody>
-        <tfoot>
-            <th>Motif</th>
-            <th>q-value</th>
-            <th>m &cap; G</th>
-            <th>m - G</th>
-            <th>G - m</th>
-            <th>M - m &cup; G</th>
-            <th></th>
-        </tfoot>
-    </table>
-    <div class="clearfix"></div>'''
+def parse_args():
+    parser = argparse.ArgumentParser()
 
-if __name__ == '__main__':
-    try:
-        gene_set = set([x.strip() for x in sys.argv[1].strip().split(',')])
-    except IndexError:
-        print 'No genes submitted...'
-        sys.exit(1)
+    parser.add_argument('genes', metavar='gene',
+        nargs='+', type=int, help='gene ids to test for enrichment')
 
-    operon_set = []
-    gene_motifs = []
+    parser.add_argument('--central', help='only use central motifs',
+        action='store_true')
+    parser.add_argument('-p', dest='pth', metavar='dec',
+        help='p-value threshold', type=float, default=0.05)
+
+    args = parser.parse_args()
+
+    return args
+
+def main():
+    args = parse_args()
+
     db = MySQLdb.connect(config.DATABASE['host'],
-                         config.DATABASE['user'],
-                         config.DATABASE['pass'],
-                         config.DATABASE['database'])
+                     config.DATABASE['user'],
+                     config.DATABASE['pass'],
+                     config.DATABASE['database'])
     cursor = db.cursor()
 
-    # Extract the operons if there are any
-    operon_set = [x for x in gene_set if x[-2:] == 'op']
-    operon_array = ''.join(['(', ','.join(['"%s"' % x for x in operon_set]), ')'])
-
-    mgdict, mnamedict, genes = query_database(gene_set, operon_set, cursor)
+    mgdict, mnamedict, genes = query_database(set(args.genes), cursor, central=args.central)
 
     enrich = motif_enrich(mgdict, genes)
-    print_html(enrich, mnamedict)
 
     cursor.close()
     db.close()
+
+    result = []
+    for mid, p, odds, stats in enrich:
+        if p > args.pth:
+            break
+        result.append([mnamedict[mid], 10, 'lala', p])
+
+    print json.dumps(result)
+
+if __name__ == '__main__':
+    main()
