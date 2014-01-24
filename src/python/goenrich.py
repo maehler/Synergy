@@ -1,6 +1,3 @@
-import sys
-#print sys.path
-import time
 import numpy as np
 from scipy import stats
 import MySQLdb
@@ -11,37 +8,6 @@ import config
 import padjust
 
 def read_go():
-    d = {}
-    set_p = []
-    set_m = []
-    set_c = []
-    descr = {}
-    with open(config.go_def) as f:
-        for line in f:
-            line = line.strip().split('\t')
-            
-            if line[0].startswith('0'):
-                return read_old_go()
-
-            gset = set(x.lower() for x in line[3:])
-            if len(gset) == 0: continue
-            
-            go = line[0]
-            category = line[1]
-            description = line[2]
-
-            d[go] = (gset, category)
-            descr[go] = description
-
-            if category.lower() == 'p':
-                set_p += [x for x in gset]
-            elif category.lower() == 'm':
-                set_m += [x for x in gset]
-            elif category.lower() == 'c':
-                set_c += [x for x in gset]
-    return (d, set(set_p), set(set_m), set(set_c), descr)
-
-def read_db_go():
     go_g = {}
     set_p = set()
     set_m = set()
@@ -151,17 +117,8 @@ def parse_args():
 def main():
     args = parse_args()
 
-    go_terms = read_db_go()
+    go_terms = read_go()
     enrichment = calc_enrichment(set(args.genes), *go_terms[:-1])
-
-    # print set(map(int, args.genes))
-
-    # if len(enrichment) == 0:
-    #     print 'found nothing'
-    #     json.dumps('no results')
-    # else:
-    #     print 'found something'
-    #     json.dumps(enrichment)
 
     results = []
     for go, p, odds, stats, category in enrichment:
@@ -169,112 +126,7 @@ def main():
             break
         results.append([go, category, go_terms[-1][go], p])
 
-    # print results
-
     print json.dumps(results)
 
 if __name__ == '__main__':
     main()
-
-# if __name__ == '__main__':
-#     try:
-#         genes = set([x.strip() for x in sys.argv[1].strip().split(',')])
-#     except IndexError:
-#         print 'No genes selected'
-#         sys.exit(1)
-
-#     operons = [x for x in genes if x[-2:] == 'op']
-#     if len(operons) > 0:
-#         db = MySQLdb.connect(config.DATABASE['host'],
-#                              config.DATABASE['user'],
-#                              config.DATABASE['pass'],
-#                              config.DATABASE['database'])
-#         cursor = db.cursor()
-
-#         operon_array = ''.join(['(', ','.join(['"%s"' % x for x in operons]), ')'])
-
-#         query = '''
-            
-#             SELECT
-#                 g.orf_id
-#             FROM gene AS g
-#             LEFT OUTER JOIN operon_gene AS og
-#                 ON og.gene_id = g.id
-#             LEFT OUTER JOIN operon AS o
-#                 ON o.id = og.operon_id
-#             WHERE o.name IN %s''' % operon_array
-
-#         result = cursor.execute(query)
-#         allrows = cursor.fetchall()
-#         for row in allrows:
-#             genes.add(row[0])
-
-#         cursor.close()
-#         db.close()
-
-#     go_terms = read_go()
-#     enrichment = calc_enrichment(genes, *go_terms[:-1])
-
-#     if len(enrichment) == 0:
-#         print 'No results found.'
-#         sys.exit(0)
-
-#     print '''
-#     <p><a href="?p=doc#goenrichment" target="_blank">Explanation</a></p>
-#     <table class="small datatable" id="enrichtable">
-#         <thead>
-#             <tr>
-#                 <th>GO</th>
-#                 <th>q-value</th>
-#                 <th>Description</th>
-#                 <th>S &cap; GO</th>
-#                 <th>GO - S</th>
-#                 <th>S &cap; A - GO</th>
-#                 <th>A - S &cup; GO</th>
-#                 <th></th>
-#             </tr>
-#         </thead>
-#         <tbody>
-#     '''
-#     for line in enrichment:
-#         if line[1] > 0.3: break
-#         print '''
-#             <tr>
-#                 <td><a
-#                 class="external" href="http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=%s" target="_blank">%s</a></td>
-#                 <td>%.2e</td>
-#                 <td>%s</td>
-#                 <td>%d</td>
-#                 <td>%d</td>
-#                 <td>%d</td>
-#                 <td>%d</td>
-#                 <td><button class="nHighlight goHighlight" data-name="%s" title="Highlight nodes in network">Highlight</button></td>
-#             </tr>
-#         ''' % (line[0], line[0], line[1], go_terms[-1][line[0]],
-#                 line[3][0][0], line[3][1][0], line[3][0][1], line[3][1][1],
-#                 line[0])
-# #    print '''
-# #        <p>
-# #            <span class="tooltip">
-# #                %s:
-# #                <span class="box small">
-# #                    %s
-# #                </span>
-# #            </span>p=%.2e, %d, %d, %d, %d, category: %s
-# #        </p>''' % (line[0], go_terms[-1][line[0]], line[1],
-# #                   line[3][0][0], line[3][1][0], line[3][0][1], line[3][1][1],
-# #                   line[-1])
-#     print '''
-#         </tbody>
-#         <tfoot>
-#             <th>GO</th>
-#             <th>q-value</th>
-#             <th>Description</th>
-#             <th>S &cap; GO</th>
-#             <th>GO - S</th>
-#             <th>S &cap; A - GO</th>
-#             <th>A - S &cup; GO</th>
-#             <th></th>
-#         </tfoot>
-#     </table>
-#     '''
