@@ -105,7 +105,25 @@ class Api extends MY_Controller {
 		$pth = $this->input->post('pth');
 
 		$output = run_python('goenrich.py', array(
-			$pth,
+			'-p', $pth,
+			$genes
+		));
+
+		$this->output
+			->set_content_type('application/json')
+			->set_output($output);
+	}
+
+	function motifenrichment() {
+		$this->load->helper('python_helper');
+
+		$genes = $this->input->post('genes');
+		$pth = $this->input->post('pth');
+		$central = $this->input->post('central') === 'true' ? '--central' : '';
+
+		$output = run_python('motifenrich.py', array(
+			$central,
+			'-p', $pth,
 			$genes
 		));
 
