@@ -122,7 +122,11 @@ $(function () {
 		aoColumnDefs: [{sType: 'scientific', aTargets: [3]}],
 		aaSorting: [[3, 'asc']],
 		fnRowCallback: function (nRow, aData, iDisplayIndex) {
-			var roundp = Number(aData[3].toPrecision(3)).toExponential();
+			if (aData[3] > 0.001) {
+				var roundp = aData[3].toPrecision(2);
+			} else {
+				var roundp = Number(aData[3].toPrecision(3)).toExponential();
+			}
 			$('td:eq(3)', nRow).html(roundp);
 			return nRow;
 		}
@@ -135,7 +139,11 @@ $(function () {
 		aoColumnDefs: [{sType: 'scientific', aTargets: [3]}],
 		aaSorting: [[3, 'asc']],
 		fnRowCallback: function (nRow, aData, iDisplayIndex) {
-			var roundp = Number(aData[3].toPrecision(3)).toExponential();
+			if (aData[3] > 0.001) {
+				var roundp = aData[3].toPrecision(2);
+			} else {
+				var roundp = Number(aData[3].toPrecision(3)).toExponential();
+			}
 			$('td:eq(3)', nRow).html(roundp);
 			return nRow;
 		}
