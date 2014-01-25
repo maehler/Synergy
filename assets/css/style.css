@@ -106,6 +106,7 @@ nav {
 .clear-right { clear: right; }
 .clear-left { clear: left; }
 .auto-width { display: inline-block; }
+.narrow { width: 200px; }
 /* End alignment */
 
 /* Text styles */
@@ -137,6 +138,4 @@ nav {
     border-radius: 5px;
 }
 
-.narrow {
-	width: 200px;
-}
+td, th { padding-right: 10px; }
