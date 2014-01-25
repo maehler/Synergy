@@ -5,16 +5,31 @@ class Gene extends MY_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->model('gene_model');
+		$this->load->model('motif_model');
 	}
 
 	public function details ($orf_id) {
-		$data = $this->gene_model->get_orf_gene($orf_id);
-		if (!$data) {
-			$data = $this->gene_model->get_accession_gene($orf_id);
+		$gene_data = $this->gene_model->get_orf_gene($orf_id);
+		if (!$gene_data) {
+			$gene_data = $this->gene_model->get_accession_gene($orf_id);
 		}
 
-		$this->load->view('base/header', $this->get_head_data('', $orf_id));
-		$this->load->view('gene_details', $data);
-		$this->load->view('base/footer');
+		$motif_data = $this->motif_model->get_gene_motifs($gene_data['id']);
+
+		$gene_data['motifs'] = $motif_data;
+
+		$this->load->view('base/header', $this->get_head_data('', $orf_id, 
+			array(
+				base_url(array('assets', 'css', 'datatables', 'jquery.dataTables.css'))
+			)
+		));
+		$this->load->view('gene_details', $gene_data);
+		$this->load->view('base/footer', $this->get_foot_data(
+			array(
+				base_url(array('assets', 'js', 'jquery.dataTables.min.js')),
+				base_url(array('assets', 'js', 'jquery.dataTables.sorting.js')),
+				base_url(array('assets', 'js', 'gene.js'))
+			)
+		));
 	}
 }
