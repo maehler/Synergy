@@ -105,6 +105,7 @@ nav {
 .clear-fix { clear: both; }
 .clear-right { clear: right; }
 .clear-left { clear: left; }
+.auto-width { display: inline-block; }
 /* End alignment */
 
 /* Text styles */
