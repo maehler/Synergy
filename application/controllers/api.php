@@ -120,10 +120,12 @@ class Api extends MY_Controller {
 		$genes = $this->input->post('genes');
 		$pth = $this->input->post('pth');
 		$central = $this->input->post('central') === 'true' ? '--central' : '';
+		$qth = $this->input->post('qth');
 
 		$output = run_python('motifenrich.py', array(
 			$central,
 			'-p', $pth,
+			'--fimoq', $qth,
 			$genes
 		));
 

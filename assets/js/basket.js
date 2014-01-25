@@ -63,6 +63,7 @@ function motifEnrichment() {
 		data: {
 			genes: gids,
 			pth: $('#motif-p-th').val(),
+			qth: $('#motif-q-th').val(),
 			central: $('#central-motifs').prop('checked')
 		},
 		success: function (json) {
