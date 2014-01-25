@@ -1,3 +1,6 @@
+<?php if (!isset($orf_id)): ?>
+	<h2>No gene found...</h2>
+<?php else: ?>
 <h2>Details for <?php echo $orf_id; ?></h2>
 
 <section class="box">
@@ -24,3 +27,4 @@
 		</tr>
 	</table>
 </section>
+<?php endif ?>
