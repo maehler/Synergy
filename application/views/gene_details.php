@@ -3,7 +3,7 @@
 <?php else: ?>
 <h2>Details for <?php echo $orf_id; ?></h2>
 
-<section class="box">
+<section class="box auto-width">
 	<table>
 		<tr>
 			<th class="align-right">ORF</th>
@@ -25,6 +25,44 @@
 			<th class="align-right">Regulatory function</th>
 			<td><?php echo $tf == 1 ? 'Yes' : 'No' ?></td>
 		</tr>
+	</table>
+</section>
+
+<section>
+	<h3>Promoter profile</h3>
+	<table id="motif-table" class="small">
+		<thead>
+			<tr>
+				<th>Motif</th>
+				<th>Direction</th>
+				<th>Start</th>
+				<th>Stop</th>
+				<th>FIMO score</th>
+				<th>FIMO <span class="italic">q-value</span></th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php foreach ($motifs as $motif): ?>
+			<tr>
+				<td><?php echo $motif['name']; ?></td>
+				<td><?php echo $motif['startpos'] > $motif['stoppos'] ? 'Reverse' : 'Forward'; ?></td>
+				<td><?php echo $motif['startpos']; ?></td>
+				<td><?php echo $motif['stoppos']; ?></td>
+				<td><?php echo $motif['score']; ?></td>
+				<td><?php echo $motif['q']; ?></td>
+			</tr>
+		<?php endforeach ?>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th>Motif</th>
+				<th>Direction</th>
+				<th>Start</th>
+				<th>Stop</th>
+				<th>FIMO score</th>
+				<th>FIMO <span class="italic">q-value</span></th>
+			</tr>
+		</tfoot>
 	</table>
 </section>
 <?php endif ?>
