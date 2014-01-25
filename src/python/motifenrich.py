@@ -30,13 +30,12 @@ def query_database(gene_set, cursor, central=False, getall=False, fimoq=0.125):
     LEFT OUTER JOIN promoter_motif AS pm
         ON pm.promoter_id = p.id
     LEFT OUTER JOIN motif AS m
-        ON pm.motif_id = m.id '''
+        ON pm.motif_id = m.id
+    WHERE pm.q < %.3f''' % (fimoq)
     if not getall:
-        query += '''WHERE g.id IN %s''' % (gene_array)
-    if central and not getall:
+        query += ' AND g.id IN %s' % (gene_array)
+    if central:
         query += ' AND m.central = 1'
-    if central and getall:
-        query += 'WHERE m.central = 1'
 
     result = cursor.execute(query)
 
@@ -59,7 +58,9 @@ def query_database(gene_set, cursor, central=False, getall=False, fimoq=0.125):
                     ON pm.motif_id = m.id
                 LEFT OUTER JOIN promoter as p
                     ON pm.promoter_id = p.id
-                WHERE pm.q < %.2f''' % fimoq
+                WHERE pm.q < %.3f''' % (fimoq)
+    if central:
+        query += ' AND m.central = 1'
 
     result = cursor.execute(query)
 
@@ -137,6 +138,8 @@ def parse_args():
         action='store_true')
     parser.add_argument('-p', dest='pth', metavar='dec',
         help='p-value threshold', type=float, default=0.05)
+    parser.add_argument('--fimoq', dest='fimoq', metavar='dec',
+        help='FIMO q-value threshold', type=float, default=0.125)
 
     args = parser.parse_args()
 
@@ -151,7 +154,8 @@ def main():
                      config.DATABASE['database'])
     cursor = db.cursor()
 
-    mgdict, mnamedict, genes = query_database(set(args.genes), cursor, central=args.central)
+    mgdict, mnamedict, genes = query_database(set(args.genes), 
+        cursor, central=args.central, fimoq=args.fimoq)
 
     enrich = motif_enrich(mgdict, genes)
 
