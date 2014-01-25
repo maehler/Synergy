@@ -87,7 +87,17 @@
 		<select id="motif-p-th">
 			<option value="0.01">0.01</option>
 			<option value="0.05" selected>0.05</option>
-			<option value="0.1">0.1</option>
+			<option value="0.1">0.10</option>
+		</select><br>
+		<label for="motif-q-th">FIMO q-value threshold</label>
+		<select id="motif-q-th">
+			<option value="0.01">0.01</option>
+			<option value="0.05">0.05</option>
+			<option value="0.10">0.10</option>
+			<option value="0.15" selected>0.15</option>
+			<option value="0.20">0.20</option>
+			<option value="0.25">0.25</option>
+			<option value="0.30">0.30</option>
 		</select><br>
 		<label for="central-motifs">Central motifs</label>
 		<input id="central-motifs" type="checkbox" checked><br>
