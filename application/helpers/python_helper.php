@@ -5,6 +5,9 @@ if (!function_exists('run_python')) {
         // Escape the shell parameters
         $clean_params = array();
         foreach ($params as $p) {
+            if (empty($p)) {
+                continue;
+            }
             if (is_array($p)) {
                 foreach ($p as $np) {
                     $clean_params[] = escapeshellarg($np);
@@ -23,7 +26,7 @@ if (!function_exists('run_python')) {
             $data .= fgets($handle);
         }
         fclose($handle);
-        // return implode($implode_char, $data);
+        
         return $data;
     }
 }
