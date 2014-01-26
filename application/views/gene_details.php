@@ -73,6 +73,6 @@
 
 <script type="text/javascript">
 	var expression = <?php echo json_encode($expression['data']); ?>;
-	var expAnnot = <?php echo json_encode($expression['annotation']); ?>
+	var expAnnot = <?php echo json_encode($expression['annotation']); ?>;
 </script>
 <?php endif ?>
