@@ -4,8 +4,8 @@ class Expression_model extends CI_Model {
 
 	function get_flot_expression($gene_id) {
 		$this->db->select('sg.exp, s.name, s.descr')
-			->from('gene AS g')
-			->join('sample_gene AS sg', 'sg.gene_id = g.id', 'left')
+			->from('sample_gene AS sg')
+			->join('gene AS g', 'g.id = sg.gene_id')
 			->join('sample AS s', 's.id = sg.sample_id', 'left')
 			->where('g.id', $gene_id)
 			->order_by('s.id');
