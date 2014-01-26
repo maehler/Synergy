@@ -65,4 +65,14 @@
 		</tfoot>
 	</table>
 </section>
+
+<section>
+	<h3>Expression profile</h3>
+	<div id="flot-expression" class="flot"></div>
+</section>
+
+<script type="text/javascript">
+	var expression = <?php echo json_encode($expression['data']); ?>;
+	var expAnnot = <?php echo json_encode($expression['annotation']); ?>
+</script>
 <?php endif ?>
