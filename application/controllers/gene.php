@@ -6,6 +6,7 @@ class Gene extends MY_Controller {
 		parent::__construct();
 		$this->load->model('gene_model');
 		$this->load->model('motif_model');
+		$this->load->model('expression_model');
 	}
 
 	public function details ($orf_id) {
@@ -15,8 +16,10 @@ class Gene extends MY_Controller {
 		}
 
 		$motif_data = $this->motif_model->get_gene_motifs($gene_data['id']);
+		$expression_data = $this->expression_model->get_flot_expression($gene_data['id']);
 
 		$gene_data['motifs'] = $motif_data;
+		$gene_data['expression'] = $expression_data;
 
 		$this->load->view('base/header', $this->get_head_data('', $orf_id, 
 			array(
@@ -28,6 +31,8 @@ class Gene extends MY_Controller {
 			array(
 				base_url(array('assets', 'js', 'jquery.dataTables.min.js')),
 				base_url(array('assets', 'js', 'jquery.dataTables.sorting.js')),
+				base_url(array('assets', 'js', 'jquery.flot.js')),
+				base_url(array('assets', 'js', 'jquery.flot.selection.js')),
 				base_url(array('assets', 'js', 'gene.js'))
 			)
 		));
