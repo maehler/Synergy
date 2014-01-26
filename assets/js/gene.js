@@ -15,4 +15,6 @@ $(function () {
 			return nRow;
 		}
 	});
+
+	$.plot('#flot-expression', [expression]);
 });
