@@ -16,5 +16,14 @@ $(function () {
 		}
 	});
 
-	$.plot('#flot-expression', [expression]);
+	if (expression.length === 0) {
+		$('#flot-expression').append($('</p>').html('No expression data available'))
+	} else {
+		$.plot('#flot-expression', [expression], {
+			series: {
+				lines: {show: true},
+				points: {show: true}
+			}
+		});
+	}
 });
