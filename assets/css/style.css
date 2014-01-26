@@ -139,3 +139,9 @@ nav {
 }
 
 td, th { padding-right: 10px; }
+
+/* Flot */
+.flot {
+	height: 300px;
+	width: 100%;
+}
