@@ -28,6 +28,12 @@ $(function () {
 		yaxis: { axisLabel: 'log<sub>2</sub> expression' }
 	}
 
+	// Button listeners
+	$('#reset-zoom').click(function () {
+		var plot = $.plot('#flot-expression', [expression], plotOptions);
+		overview.setSelection({}, true);
+	});
+
 	// Plot expression profile and overview
 	if (expression.length === 0) {
 		$('#flot-expression').append($('</p>').html('No expression data available'))
