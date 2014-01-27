@@ -14,4 +14,37 @@ class Motif_model extends CI_Model {
 
 		return $res;
 	}
+
+	function get($motif) {
+		$this->db->select('id, name AS motif_name, length, pspm, regex, central')
+			->from('motif')
+			->where('name', $motif)
+			->limit(1);
+
+		$query = $this->db->get();
+		$res = $query->row_array();
+
+		$res['pspm'] = $this->format_matrix($res['pspm']);
+
+		return $res;
+	}
+
+	private function format_matrix($matstring) {
+		$array_matrix = array();
+		$rows = array();
+		$tok = strtok($matstring, ';');
+		while ($tok !== FALSE) {
+			$rows[] = $tok;
+			$tok = strtok(';');
+		}
+		foreach($rows as $k => $v) {
+			$array_matrix[$k] = array();
+			$tok = strtok($v, ',');
+			while($tok !== FALSE) {
+				$array_matrix[$k][] = floatval($tok);
+				$tok = strtok(',');
+			} 
+		}
+		return $array_matrix;
+	}
 }
