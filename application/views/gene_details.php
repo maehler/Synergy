@@ -64,6 +64,7 @@
 			</tr>
 		</tfoot>
 	</table>
+	<div class="clear-fix"></div>
 </section>
 
 <section>
