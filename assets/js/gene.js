@@ -23,7 +23,41 @@ $(function () {
 			series: {
 				lines: {show: true},
 				points: {show: true}
+			},
+			grid: {
+				hoverable: true
 			}
 		});
 	}
+
+	var previousPoint = null;
+	$("#flot-expression").bind("plothover", function (event, pos, item) {
+		if (item) {
+			var x = item.dataIndex;
+			if (previousPoint != x) {
+				$('#tooltip').fadeOut(200).remove();
+				var y = item.datapoint[1].toFixed(2);
+
+				previousPoint = x;
+
+				$('<div id="tooltip">' + expAnnot[x][0] + '</div>').css({
+	                position: 'absolute',
+	                'max-width': '300px',
+	                display: 'none',
+	                top: item.pageY + 10,
+	                left: item.pageX + 10,
+	                border: '1px solid #CCC',
+	                'font-size': '10pt',
+	                'border-radius': '5px',
+	                'box-shadow': '2px 2px 8px 0px #555',
+	                padding: '2px',
+	                'background-color': '#EEE',
+	                opacity: 0.8
+	            }).appendTo('body').fadeIn(200);
+	    	}
+		} else {
+			$('#tooltip').fadeOut(200).remove();
+			previousPoint = null;
+		}
+	});
 });
