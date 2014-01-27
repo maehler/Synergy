@@ -69,8 +69,13 @@
 
 <section>
 	<h3>Expression profile</h3>
+	<?php if (count($expression['data']) !== 0): ?>		
 	<div class="plot-overview"></div>
+	<button id="reset-zoom" class="small">Reset zoom</button>
 	<div id="flot-expression" class="flot"></div>
+	<?php else: ?>
+	<p>No expression data available</p>
+	<?php endif ?>
 </section>
 
 <script type="text/javascript">
