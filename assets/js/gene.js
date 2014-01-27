@@ -23,7 +23,9 @@ $(function () {
 			points: { show: true }
 		},
 		grid: { hoverable: true },
-		selection: { mode: 'x' }
+		selection: { mode: 'x' },
+		xaxis: { tickDecimals: 0 },
+		yaxis: { axisLabel: 'log<sub>2</sub> expression' }
 	}
 
 	// Plot expression profile and overview
