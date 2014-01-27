@@ -36,11 +36,14 @@ $(function () {
 			var x = item.dataIndex;
 			if (previousPoint != x) {
 				$('#tooltip').fadeOut(200).remove();
-				var y = item.datapoint[1].toFixed(2);
+				var y = item.datapoint[1].toFixed(3);
 
 				previousPoint = x;
 
-				$('<div id="tooltip">' + expAnnot[x][0] + '</div>').css({
+				$('<div id="tooltip"><b>Experiment:</b> ' + expAnnot[x][0] + '<br>' +
+						'<b>Sample:</b> ' + expAnnot[x][1] + '<br>' +
+						'<b>log<sub>2</sub> expression:</b> ' + y + '<br>' +
+						'</div>').css({
 	                position: 'absolute',
 	                'max-width': '300px',
 	                display: 'none',
