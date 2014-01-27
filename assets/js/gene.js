@@ -35,9 +35,7 @@ $(function () {
 	});
 
 	// Plot expression profile and overview
-	if (expression.length === 0) {
-		$('#flot-expression').append($('</p>').html('No expression data available'))
-	} else {
+	if (expression.length !== 0) {
 		var plot = $.plot('#flot-expression', [expression], plotOptions);
 		var overview = $.plot('.plot-overview', [expression], {
 			series: { 
