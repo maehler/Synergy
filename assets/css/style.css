@@ -149,3 +149,8 @@ td, th { padding-right: 10px; }
 	height: 300px;
 	width: 100%;
 }
+
+.plot-overview {
+	height: 150px;
+	width: 300px;
+}

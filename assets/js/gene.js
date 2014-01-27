@@ -16,20 +16,63 @@ $(function () {
 		}
 	});
 
+	// Plotting options
+	var plotOptions = {
+		series: {
+			lines: { show: true },
+			points: { show: true }
+		},
+		grid: { hoverable: true },
+		selection: { mode: 'x' }
+	}
+
+	// Plot expression profile and overview
 	if (expression.length === 0) {
 		$('#flot-expression').append($('</p>').html('No expression data available'))
 	} else {
-		$.plot('#flot-expression', [expression], {
-			series: {
-				lines: {show: true},
-				points: {show: true}
+		var plot = $.plot('#flot-expression', [expression], plotOptions);
+		var overview = $.plot('.plot-overview', [expression], {
+			series: { 
+				lines: { show: true, lineWidth: 1 },
+				shadowSize: 0
 			},
-			grid: {
-				hoverable: true
-			}
+			selection: { mode: 'x' }
 		});
 	}
 
+	// Range selection
+	$('#flot-expression').bind('plotselected', function (event, ranges) {
+		if (ranges.xaxis.to - ranges.xaxis.from < 0.00001)
+			ranges.xaxis.to = ranges.xaxis.from + 0.00001;
+		if (ranges.yaxis.to - ranges.yaxis.from < 0.00001)
+			ranges.yaxis.to = ranges.yaxis.from + 0.00001;
+
+		ranges.xaxis.to = Math.floor(ranges.xaxis.to);
+		ranges.xaxis.from = Math.floor(ranges.xaxis.from);
+
+		plot = $.plot('#flot-expression', 
+			[expression.slice(ranges.xaxis.from, ranges.xaxis.to + 2)],
+			$.extend(true, {}, plotOptions, {
+				xaxis: {
+					min: ranges.xaxis.from + 1,
+					max: ranges.xaxis.to
+				},
+				yaxis: {
+					min: ranges.yaxis.from,
+					max: ranges.yaxis.to
+				}
+			})
+		);
+
+		overview.setSelection(ranges, true);
+	});
+
+	// Range selection in overview
+	$('.plot-overview').bind('plotselected', function (event, ranges) {
+		plot.setSelection(ranges);
+	});
+
+	// Tooltip
 	var previousPoint = null;
 	$("#flot-expression").bind("plothover", function (event, pos, item) {
 		if (item) {

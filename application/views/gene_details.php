@@ -69,6 +69,7 @@
 
 <section>
 	<h3>Expression profile</h3>
+	<div class="plot-overview"></div>
 	<div id="flot-expression" class="flot"></div>
 </section>
 
