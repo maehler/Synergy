@@ -33,6 +33,7 @@ class Gene extends MY_Controller {
 				base_url(array('assets', 'js', 'jquery.dataTables.sorting.js')),
 				base_url(array('assets', 'js', 'jquery.flot.js')),
 				base_url(array('assets', 'js', 'jquery.flot.selection.js')),
+				base_url(array('assets', 'js', 'jquery.flot.resize.js')),
 				base_url(array('assets', 'js', 'gene.js'))
 			)
 		));
