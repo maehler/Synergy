@@ -20,7 +20,7 @@ $(function () {
 	var plotOptions = {
 		series: {
 			lines: { show: true },
-			points: { show: true }
+			points: { show: true, radius: 2 }
 		},
 		grid: { hoverable: true },
 		selection: { mode: 'x' },
