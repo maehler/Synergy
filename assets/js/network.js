@@ -14,6 +14,10 @@ function nodeIds(selector) {
 function redraw() {
 	cy.forceRender();
 	window.setTimeout(updateCount, 50);
+	cy.layout({
+		name: 'arbor',
+		liveUpdate: true
+	});
 }
 
 function selectAll() {
@@ -110,6 +114,10 @@ function expandNode(json) {
 			ntype: $('#network-type').val()
 		},
 		success: function (edges) {
+			// Don't do anything if there aren't any new edges
+			if (edges.edges.length === cy.edges("[weight>"+expand_threshold+"]").length) {
+				return;
+			}
 			cy.remove(cy.edges("[weight>"+expand_threshold+"]"));
 			cy.add(edges);
 			// For some reason the edges aren't drawn straight away,
