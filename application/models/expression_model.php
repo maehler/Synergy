@@ -19,7 +19,7 @@ class Expression_model extends CI_Model {
 		$data = array();
 		for ($i = 0; $i < count($res); $i++) {
 			$annot[] = array($res[$i]['title'], $res[$i]['name'], $res[$i]['descr']);
-			$data[] = array($i, floatval($res[$i]['exp']));
+			$data[] = array($i, $res[$i]['exp'] == NULL ? NULL : floatval($res[$i]['exp']));
 		}
 
 		return array('data' => $data, 'annotation' => $annot);
