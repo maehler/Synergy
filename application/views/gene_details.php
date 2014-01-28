@@ -44,7 +44,7 @@
 		<tbody>
 		<?php foreach ($motifs as $motif): ?>
 			<tr>
-				<td><?php echo $motif['name']; ?></td>
+				<td><a href="<?php echo base_url(array('motif', 'details', $motif['name'])) ?>"><?php echo $motif['name']; ?></a></td>
 				<td><?php echo $motif['startpos'] > $motif['stoppos'] ? 'Reverse' : 'Forward'; ?></td>
 				<td><?php echo $motif['startpos']; ?></td>
 				<td><?php echo $motif['stoppos']; ?></td>
