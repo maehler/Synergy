@@ -26,6 +26,7 @@
 
 <section>
 	<h3>Motif logo</h3>
+	<div id="motif-logo"></div>
 </section>
 
 <script type="text/javascript">
