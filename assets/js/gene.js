@@ -31,7 +31,7 @@ $(function () {
 	// Button listeners
 	$('#reset-zoom').click(function () {
 		var plot = $.plot('#flot-expression', [expression], plotOptions);
-		overview.setSelection({}, true);
+		overview.clearSelection();
 	});
 
 	// Plot expression profile and overview
