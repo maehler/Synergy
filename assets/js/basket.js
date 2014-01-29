@@ -145,6 +145,10 @@ $(function () {
 				var roundp = Number(aData[3].toPrecision(3)).toExponential();
 			}
 			$('td:eq(3)', nRow).html(roundp);
+			$('td:eq(0)', nRow).empty().append($('<a/>')
+				.attr('href', 'motif/details/' + aData[0])
+				.html(aData[0])
+			);
 			return nRow;
 		}
 	});
