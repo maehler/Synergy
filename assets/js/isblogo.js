@@ -10,11 +10,11 @@ if (!isblogo) {
         MARGIN_BOTTOM = 30, DEFAULT_OPTIONS, NUCLEOTIDE_COLORS,
         AMINO_COLORS, MEASURE_CANVAS, STRETCH = 0.65;
     NUCLEOTIDE_COLORS = {
-        'A': 'rgb(0, 200, 50)',
-        'G': 'rgb(230, 200, 0)',
-        'T': 'rgb(255, 0, 0)',
-        'U': 'rgb(255, 0, 0)',
-        'C': 'rgb(0, 0, 230)'
+        'A': '#BC0011',
+        'G': '#FBA221',
+        'T': '#146E0F',
+        'U': '#146E0F',
+        'C': '#0300BA'
     };
     AMINO_COLORS = {
         // polar amino acids
