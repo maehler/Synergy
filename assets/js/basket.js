@@ -97,7 +97,6 @@ function selectNone() {
 
 function exportSelection() {
 	var sel = getSelection();
-	console.log(sel);
 	if (sel.length === 0) {
 		alert('No genes selected');
 		return;

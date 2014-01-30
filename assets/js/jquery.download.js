@@ -1,15 +1,12 @@
 jQuery.download = function(url, data, method){
 	//url and data options required
 	if( url && data ){
-		console.log('ok');
 		//data can be string of parameters or array/object
 		// data = typeof data == 'string' ? data : jQuery.param(data);
 		var inputs = '';
 		if ($.isPlainObject(data)) {
-			console.log('ok2');
 			for (key in data) {
 				if ($.isArray(data[key])) {
-					console.log('ok3');
 					for (var i = 0; i < data[key].length; i++) {
 						inputs += '<input type="hidden" name="'+key+'[]" value="'+data[key][i]+'" />';
 					}
