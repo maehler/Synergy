@@ -12,6 +12,10 @@ class MY_Controller extends CI_Controller {
     	if ($stylesheets !== NULL) {
     		$data['ssheets'] = $stylesheets;
     	}
+        $error_message = $this->session->flashdata('errormessage');
+        if ($error_message) {
+            $data['error_message'] = $error_message;
+        }
     	return $data;
     }
 

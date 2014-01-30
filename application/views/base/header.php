@@ -41,3 +41,8 @@
 			</nav>
 		</header>
 		<main>
+		<?php if (isset($error_message)): ?>
+			<div class="error-message">
+				<?php echo $error_message; ?>
+			</div>
+		<?php endif ?>
