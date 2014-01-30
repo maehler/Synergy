@@ -125,4 +125,8 @@
 		</table>
 	</section>
 </section>
+
+<script>
+	var baseURL = '<?php echo base_url(); ?>';
+</script>
 <?php endif ?>
