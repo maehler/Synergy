@@ -72,6 +72,16 @@ class Api extends MY_Controller {
 		$this->session->set_userdata(array('basket' => $genes));
 	}
 
+	function export_selection() {
+		$genes = $this->input->post('genes');
+		$this->load->helper('python_helper');
+		$this->load->helper('download');
+
+		$data = run_python('export_genes.py', $genes);
+
+		force_download('gene_list.txt', $data);
+	}
+
 	// Network functions
 	function network_neighbors($orf, $th=5, $ntype='clr_complete') {
 		$this->load->model('network_model');

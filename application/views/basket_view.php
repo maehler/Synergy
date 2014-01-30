@@ -41,6 +41,7 @@
 		<button id="select-all">Select all</button>
 		<button id="select-none">Select none</button>
 		<button id="empty-basket">Empty basket</button>
+		<button id="export-selection">Export selection</button>
 	</div>
 </section>
 

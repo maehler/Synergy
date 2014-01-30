@@ -95,6 +95,16 @@ function selectNone() {
 	});
 }
 
+function exportSelection() {
+	var sel = getSelection();
+	console.log(sel);
+	if (sel.length === 0) {
+		alert('No genes selected');
+		return;
+	}
+	$.download('api/export_selection', {'genes': sel}, 'POST');
+}
+
 function getSelection() {
 	var sel = [];
 	var rows = $('#basket-table').dataTable().fnGetNodes();
@@ -113,6 +123,7 @@ $(function () {
 	$('#empty-basket').click(emptyBasket);
 	$('#select-all').click(selectAll);
 	$('#select-none').click(selectNone);
+	$('#export-selection').click(exportSelection);
 
 	// GO enrichment
 	$('[name="enrichment-radio"]').change(enrichmentToggle);
