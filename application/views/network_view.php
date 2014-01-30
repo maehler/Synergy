@@ -37,6 +37,10 @@
 		<button id="basket-add">Add to basket</button>
 		<button id="basket-remove">Remove from basket</button>
 	</div>
+	<hr>
+	<div>
+		<button id="export-gml">Export GML</button>
+	</div>
 </aside>
 
 <h2>Network</h2>

@@ -67,6 +67,11 @@ function removeFromBasket() {
 	})
 }
 
+function exportGML() {
+	var jsonNetwork = JSON.stringify(cy.json().elements);
+	$.download('api/export_gml_network', {'json': encodeURI(jsonNetwork)}, 'POST');
+}
+
 function searchNetwork() {
 	cy.nodes().unselect();
 	var sstring = $('#network-search-input').val();
@@ -266,4 +271,6 @@ $(function () {
 
 	$('#basket-add').click(addToBasket);
 	$('#basket-remove').click(removeFromBasket);
+
+	$('#export-gml').click(exportGML);
 });

@@ -107,6 +107,21 @@ class Api extends MY_Controller {
 			->set_output(json_encode($edges));
 	}
 
+	function export_gml_network() {
+		$jsonNetwork = $this->input->post('json');
+		$this->load->helper('python_helper');
+		$this->load->helper('download');
+
+		$data = run_python('export_network.py',
+			array(
+				$jsonNetwork,
+				'--type', 'gml'
+			)
+		);
+
+		force_download('network.gml', $data);
+	}
+
 	// Enrichment functions
 	function goenrichment() {
 		$this->load->helper('python_helper');
