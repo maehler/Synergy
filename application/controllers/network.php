@@ -20,16 +20,28 @@ class Network extends MY_Controller {
 		$th = $this->input->post('network-threshold');
 		$eth = $this->input->post('expand-threshold');
 		$expand = $this->input->post('expand-network');
+		// If no post values are given, try to take them from the session
+		if (!$this->session->userdata('network')) {
+			$this->session->set_userdata(array('network' => array()));
+		}
+		$s_options = $this->session->userdata('network');
 		if (!$ntype) {
-			$ntype = 'clr_complete'; // Default
+			$ntype = isset($s_options['ntype']) ? $s_options['ntype'] : 'clr_complete';
 		}
 		if (!$th) {
-			$th = 5; // Default
+			$th = isset($s_options['th']) ? $s_options['th'] : 5;
 		}
 		if (!$eth) {
-			$eth = 6; // Default
+			$eth = isset($s_options['eth']) ? $s_options['eth'] : 6;
 		}
 		$expand = $expand == NULL ? FALSE : TRUE;
+
+		// Update the session
+		$this->session->set_userdata(array('network' => array(
+			'ntype' => $ntype,
+			'th' => $th,
+			'eth' => $eth
+		)));
 
 		$network = $this->network_model->get_network($basket, $ntype, $th, $expand, TRUE);
 
