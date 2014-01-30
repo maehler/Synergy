@@ -13,6 +13,8 @@ class Search extends MY_Controller {
 			$basket = array();
 		}
 
+		$this->load->helper('form');
+
 		$this->load->view('base/header', $this->get_head_data(
 			"search", "Gene search",
 			array(base_url(array('assets', 'css', 'datatables', 'jquery.dataTables.css')))
@@ -24,5 +26,23 @@ class Search extends MY_Controller {
 				base_url(array('assets', 'js', 'jquery.dataTables.min.js'))
 			)
 		));
+	}
+
+	public function upload() {
+		$this->load->helper('python_helper');
+
+		$parse_string = run_python('parse_genelist.py', array($_FILES['gene-file']['tmp_name']));
+
+		$ids = json_decode($parse_string);
+
+		$this->session->set_userdata(array('basket' => $ids->success));
+
+		if (count($ids->fail) > 0) {
+			$message = 'The following terms could not be found: ';
+			$message .= implode(', ', $ids->fail);
+			$this->session->set_flashdata('errormessage', $message);
+		}
+
+		redirect(base_url('basket'), 'refresh');
 	}
 }

@@ -32,6 +32,17 @@
 	<button id="select-all">Select all</button>
 </div>
 
+<section>
+	<h3>Upload gene list</h3>
+	<div class="small">
+	<?php echo form_open_multipart('search/upload'); ?>
+		<label for="gene-file">Upload gene list:</label>
+		<input type="file" name="gene-file", id="gene-file">
+		<input type="submit" value="Upload">
+	<?php echo form_close(); ?>
+	</div>
+</section>
+
 <script type="text/javascript">
 	var selected = <?php echo json_encode($basket); ?>
 </script>
