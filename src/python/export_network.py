@@ -17,7 +17,7 @@ def as_network(d):
 				'graphics': {
 					'x': n['position']['x'],
 					'y': n['position']['y'],
-					'type': 'rectangle' if 'tf' in n['classes'] else 'circle',
+					'type': 'rectangle' if 'tf' in n['classes'].split() else 'circle',
 				}
 			}
 		)
