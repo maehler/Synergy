@@ -128,6 +128,16 @@ nav {
     width: 15px;
 }
 
+.error-message {
+	display: table;
+	max-width: 70%;
+	background-color: #AF0110;
+	color: #FFF;
+	padding: 7px 10px 5px 10px;
+	margin: 0 auto 0 auto;
+	border: 1px solid #4E0107;
+}
+
 .box {
     font-family: 'Raleway', sans-serif;
     background-color: #eee;
