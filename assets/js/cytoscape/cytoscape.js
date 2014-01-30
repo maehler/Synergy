@@ -2,7 +2,7 @@
 /* cytoscape.js */
 
 /**
- * This file is part of cytoscape.js github-snapshot-2014.01.22-16.43.42.
+ * This file is part of cytoscape.js github-snapshot-2014.01.30-13.14.20.
  * 
  * Cytoscape.js is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the Free
@@ -783,6 +783,28 @@ var cytoscape;
 	
 	$$.math = {};
 	
+	$$.math.signum = function(x){
+		if( x > 0 ){
+			return 1;
+		} else if( x < 0 ){
+			return -1;
+		} else {
+			return 0;
+		}
+	};
+
+	// from http://en.wikipedia.org/wiki/Bézier_curve#Quadratic_curves
+	$$.math.qbezierAt = function(p0, p1, p2, t){
+		return (1 - t)*(1 - t)*p0 + 2*(1 - t)*t*p1 + t*t*p2;
+	}
+
+	$$.math.qbezierPtAt = function(p0, p1, p2, t){
+		return {
+			x: $$.math.qbezierAt( p0.x, p1.x, p2.x, t ),
+			y: $$.math.qbezierAt( p0.y, p1.y, p2.y, t )
+		};
+	}
+
 	$$.math.roundRectangleIntersectLine = function(
 		x, y, nodeX, nodeY, width, height, padding) {
 		
@@ -1184,14 +1206,9 @@ var cytoscape;
 	$$.math.checkBezierInBox = function(
 		x1box, y1box, x2box, y2box, x1, y1, x2, y2, x3, y3, tolerance) {
 
-
-		function qbezierAt(p0, p1, p2, t){
-			return (1 - t)*(1 - t)*p0 + 2*(1 - t)*t*p1 + t*t*p2;
-		}
-
 		function sampleInBox(t){
-			var x = qbezierAt(x1, x2, x3, t);
-			var y = qbezierAt(y1, y2, y3, t);
+			var x = $$.math.qbezierAt(x1, x2, x3, t);
+			var y = $$.math.qbezierAt(y1, y2, y3, t);
 
 			return x1box <= x && x <= x2box
 				&& y1box <= y && y <= y2box
@@ -1400,6 +1417,27 @@ var cytoscape;
 
 	$$.math.inBezierVicinity = function(
 		x, y, x1, y1, x2, y2, x3, y3, toleranceSquared) {
+
+		// unfortunately yue's function makes several assumptions about the beziers
+		// and is not generic enough to be used properly
+		// a rough bounding box of the bezier curve
+		var bb = {
+			x1: Math.min( x1, x3, x2 ),
+			x2: Math.max( x1, x3, x2 ),
+			y1: Math.min( y1, y3, y2 ),
+			y2: Math.max( y1, y3, y2 )
+		};
+
+		// if outside the rough bounding box for the bezier, then it can't be a hit
+		if( x < bb.x1 || x > bb.x2 || y < bb.y1 || y > bb.y2 ){
+			// console.log('bezier out of rough bb')
+			return false;
+		} else {
+			// console.log('do more expensive check');
+			return true;
+		}
+
+		/// END STOP USING YUE'S IMPL
 		
 		// Middle point occurs when t = 0.5, this is when the Bezier
 		// is closest to (x2, y2)
@@ -1420,6 +1458,7 @@ var cytoscape;
 			return false;
 		} else {
 			// console.log('do more expensive check');
+			return true;
 		}
 		
 		var displacementX, displacementY, offsetX, offsetY;
@@ -2329,10 +2368,10 @@ var cytoscape;
 		var lenRatio = (length - amount) / length;
 		
 		if (lenRatio < 0) {
-			return [];
-		} else {
-			return [offset[0] + lenRatio * disp[0], offset[1] + lenRatio * disp[1]];
+			lenRatio = 0.00001;
 		}
+
+		return [offset[0] + lenRatio * disp[0], offset[1] + lenRatio * disp[1]];
 	};
 
 	$$.math.generateUnitNgonPoints = function(sides, rotationRadians) {
@@ -2792,7 +2831,9 @@ var cytoscape;
 				settingTriggersEvent: false,
 				triggerFnName: "trigger",
 				immutableKeys: {}, // key => true if immutable
-				updateMappers: false
+				updateMappers: false,
+				onSet: function( self ){},
+				canSet: function( self ){ return true }
 			};
 			params = $$.util.extend({}, defaults, params);
 
@@ -2819,13 +2860,17 @@ var cytoscape;
 					} else if( p.allowSetting && value !== undefined ) { // set
 						var valid = !p.immutableKeys[name];
 						if( valid ){
-
 							for( var i = 0, l = all.length; i < l; i++ ){
-								all[i]._private[ p.field ][ name ] = value;
+								if( p.canSet( all[i] ) ){
+									all[i]._private[ p.field ][ name ] = value;
+								}
 							}
 
 							// update mappers if asked
 							if( p.updateMappers ){ self.updateMappers(); }
+
+							// call onSet callback
+							p.onSet( self );
 
 							if( p.settingTriggersEvent ){
 								self[ p.triggerFnName ]( p.settingEvent );
@@ -2844,13 +2889,18 @@ var cytoscape;
 						var valid = !p.immutableKeys[k];
 						if( valid ){
 							for( var i = 0, l = all.length; i < l; i++ ){
-								all[i]._private[ p.field ][ k ] = v;
+								if( p.canSet( all[i] ) ){
+									all[i]._private[ p.field ][ k ] = v;
+								}
 							}
 						}
 					}
 					
 					// update mappers if asked
 					if( p.updateMappers ){ self.updateMappers(); }
+
+					// call onSet callback
+					p.onSet( self );
 
 					if( p.settingTriggersEvent ){
 						self[ p.triggerFnName ]( p.settingEvent );
@@ -4596,11 +4646,15 @@ var cytoscape;
 				ele._private.style = {};
 			}
 
+			// console.log('APPLYING STYLESHEET\n--\n');
+
 			// apply the styles
 			for( var i = 0; i < this.length; i++ ){
 				var context = this[i];
 				var contextSelectorMatches = context.selector && context.selector.filter( ele ).length > 0; // NB: context.selector may be null for "core"
 				var props = context.properties;
+
+				// console.log(i + ' : looking at selector: ' + context.selector);
 
 				if( contextSelectorMatches ){ // then apply its properties
 
@@ -4608,10 +4662,15 @@ var cytoscape;
 					
 					for( var j = 0; j < props.length; j++ ){ // for each prop
 						var prop = props[j];
+						var newCxt = !ele._private.styleCxts[i];
+						var currentEleProp = ele._private.style[prop.name];
+						var propIsFirstInEle = currentEleProp && currentEleProp.context === context;
+						var needToUpdateCxtMapping = prop.mapped && propIsFirstInEle;
 
 						//if(prop.mapped) debugger;
 
-						if( !ele._private.styleCxts[i] || prop.mapped ){
+						if( newCxt || needToUpdateCxtMapping ){
+							// console.log(i + ' + MATCH: applying property: ' + prop.name);
 							this.applyParsedProperty( ele, prop, context );
 						}
 					}
@@ -4622,6 +4681,7 @@ var cytoscape;
 
 					// roll back style cxts that don't match now
 					if( ele._private.styleCxts[i] ){
+						// console.log(i + ' x MISS: rolling back context');
 						this.rollBackContext( ele, context );
 					}
 
@@ -5194,8 +5254,6 @@ var cytoscape;
 
 			cy.notifications(false);
 			
-			var processedElements = [];
-
 			if( elements != null ){
 				if( $$.is.plainObject(elements) || $$.is.array(elements) ){
 					cy.add( elements );
@@ -5209,8 +5267,7 @@ var cytoscape;
 
 					cy.notify({
 						type: "load",
-						collection: cy.elements(),
-						style: cy._private.style
+						collection: cy.elements()
 					});
 
 					cy.one("load", onload);
@@ -5609,7 +5666,7 @@ var cytoscape;
 			
 			this._private.layoutRunning = true;
 			this.one('layoutstop', function(){
-				this._private.layoutRunning = false;
+				cy._private.layoutRunning = false;
 			});
 
 			this._private.layout.run();
@@ -5729,6 +5786,14 @@ var cytoscape;
 			);
 			
 			
+		},
+
+		recalculateRenderedStyle: function(){
+			var renderer = this.renderer();
+
+			if( renderer.recalculateRenderedStyle ){
+				renderer.recalculateRenderedStyle();
+			}
 		}
 		
 	});	
@@ -6113,6 +6178,12 @@ var cytoscape;
 			var eles = this.$( selector );
 
 			return eles.boundingBox();
+		},
+
+		renderedBoundingBox: function( selector ){
+			var eles = this.$( selector );
+
+			return eles.renderedBoundingBox();
 		},
 
 		center: function(elements){
@@ -7061,42 +7132,10 @@ var cytoscape;
 
 ;(function($$){
 	
-	var borderWidthMultiplier = 1.4;
-	var borderWidthAdjustment = 1;
+	var borderWidthMultiplier = 2 * 0.5;
+	var borderWidthAdjustment = 0;
 
 	$$.fn.eles({
-
-		// fully updates (recalculates) the style for the elements
-		updateStyle: function( notifyRenderer ){
-			var cy = this._private.cy;
-			var style = cy.style();
-			notifyRenderer = notifyRenderer || notifyRenderer === undefined ? true : false;
-
-			style.apply( this );
-
-			if( notifyRenderer ){
-				this.rtrigger("style"); // let renderer know we changed style
-			} else {
-				this.trigger("style"); // just fire the event
-			}
-			return this; // chaining
-		},
-
-		// just update the mappers in the elements' styles; cheaper than eles.updateStyle()
-		updateMappers: function( notifyRenderer ){
-			var cy = this._private.cy;
-			var style = cy.style();
-			notifyRenderer = notifyRenderer || notifyRenderer === undefined ? true : false;
-
-			style.updateMappers( this );
-
-			if( notifyRenderer ){
-				this.rtrigger("style"); // let renderer know we changed style
-			} else {
-				this.trigger("style"); // just fire the event
-			}
-			return this; // chaining
-		},
 
 		data: $$.define.data({
 			field: "data",
@@ -7186,7 +7225,33 @@ var cytoscape;
 			settingTriggersEvent: true,
 			triggerFnName: "rtrigger",
 			allowGetting: true,
-			validKeys: ["x", "y"]
+			validKeys: ["x", "y"],
+			onSet: function( eles ){
+				var updatedEles = eles.updateCompoundBounds();
+				updatedEles.rtrigger("position");
+			},
+			canSet: function( ele ){
+				return !ele.locked();
+			}
+		}),
+
+		// position but no notification to renderer
+		silentPosition: $$.define.data({
+			field: "position",
+			bindingEvent: "position",
+			allowBinding: false,
+			allowSetting: true,
+			settingEvent: "position",
+			settingTriggersEvent: false,
+			triggerFnName: "trigger",
+			allowGetting: true,
+			validKeys: ["x", "y"],
+			onSet: function( eles ){
+				eles.updateCompoundBounds();
+			},
+			canSet: function( ele ){
+				return !ele.locked();
+			}
 		}),
 
 		positions: function( pos ){
@@ -7207,11 +7272,69 @@ var cytoscape;
 						elePos.y = pos.y;
 					}
 				}
+
+				var updatedEles = this.updateCompoundBounds();
 				
-				this.rtrigger("position");
+				this.add( updatedEles ).rtrigger("position");
 			}
 
 			return this; // chaining
+		},
+
+		updateCompoundBounds: function(){
+			var cy = this.cy();
+
+			if( !cy.hasCompoundNodes() ){ return cy.collection(); } // save cycles for non compound graphs
+
+			var updated = [];
+
+			function update( parent ){
+				var children = parent.children();
+				var style = parent._private.style;
+				var bb = children.boundingBox({ includeLabels: false, includeEdges: false });
+				var padding = {
+					top: style["padding-top"].pxValue,
+					bottom: style["padding-bottom"].pxValue,
+					left: style["padding-left"].pxValue,
+					right: style["padding-right"].pxValue
+				};
+				var pos = parent._private.position;
+				var didUpdate = false;
+
+				if( style["width"].value === "auto" ){
+					parent._private.autoWidth = bb.w + padding.left + padding.right;
+					pos.x = (bb.x1 + bb.x2 - padding.left + padding.right)/2;
+					didUpdate = true;
+				}
+
+				if( style["height"].value === "auto" ){
+					parent._private.autoHeight = bb.h + padding.top + padding.bottom;
+					pos.y = (bb.y1 + bb.y2 - padding.top + padding.bottom)/2;
+					didUpdate = true;
+				}
+
+				if( didUpdate ){
+					updated.push( parent );
+				}
+			}
+
+			// go up, level by level
+			var eles = this.parent();
+			while( eles.nonempty() ){
+
+				// update each parent node in this level
+				for( var i = 0; i < eles.length; i++ ){
+					var ele = eles[i];
+
+					update( ele );
+				}
+
+				// next level
+				eles = eles.parent();
+			}
+
+			// return changed
+			return new $$.Collection( cy, updated );
 		},
 
 		// get/set the rendered (i.e. on screen) positon of the element
@@ -7252,138 +7375,11 @@ var cytoscape;
 						return rpos[ dim ];
 					}
 				}
+			} else if( !setting ){
+				return undefined; // for empty collection case
 			}
 
 			return this; // chaining
-		},
-
-		// get the specified css property as a rendered value (i.e. on-screen value)
-		// or get the whole rendered style if no property specified (NB doesn't allow setting)
-		renderedCss: function( property ){
-			var ele = this[0];
-
-			if( ele ){
-				var renstyle = ele.cy().style().getRenderedStyle( ele );
-
-				if( property === undefined ){
-					return renstyle;
-				} else {
-					return renstyle[ property ];
-				}
-			}
-		},
-
-		// read the calculated css style of the element or override the style (via a bypass)
-		css: function( name, value ){
-			var style = this.cy().style();
-
-			if( $$.is.plainObject(name) ){ // then extend the bypass
-				var props = name;
-				style.applyBypass( this, props );
-				this.rtrigger("style"); // let the renderer know we've updated style
-
-			} else if( $$.is.string(name) ){
-	
-				if( value === undefined ){ // then get the property from the style
-					var ele = this[0];
-
-					if( ele ){
-						return ele._private.style[ name ].strValue;
-					} else { // empty collection => can't get any value
-						return;
-					}
-
-				} else { // then set the bypass with the property value
-					style.applyBypass( this, name, value );
-					this.rtrigger("style"); // let the renderer know we've updated style
-				}
-
-			} else if( name === undefined ){
-				var ele = this[0];
-
-				if( ele ){
-					return style.getRawStyle( ele );
-				} else { // empty collection => can't get any value
-					return;
-				}
-			}
-
-			return this; // chaining
-		},
-
-		removeCss: function(){
-			var style = this.cy().style();
-			var eles = this;
-
-			for( var i = 0; i < eles.length; i++ ){
-				var ele = eles[i];
-
-				style.removeAllBypasses( ele );
-			}
-
-			this.rtrigger('style');
-		},
-
-		show: function(){
-			this.css("display", "element");
-			return this; // chaining
-		},
-
-		hide: function(){
-			this.css("display", "none");
-			return this; // chaining
-		},
-
-		visible: function(){
-			var ele = this[0];
-
-			if( ele ){
-				if(
-					ele.css("visibility") !== "visible"
-				||  ele.css("display") !== "element"
-				// ||  parseFloat( ele.css("opacity") ) === 0
-				){
-					return false;
-				}
-				
-				if( ele.isNode() ){
-					var parents = ele.parents();
-					for( var i = 0; i < parents.length; i++ ){
-						var parent = parents[i];
-						var pVis = parent.css("visibility");
-						var pDis = parent.css("display");
-						var pOpac = parseFloat( parent.css("opacity") );
-
-						if( pVis !== "visible" || pDis !== "element" ){
-							return false;
-						}
-					}
-
-					return true;
-				} else if( ele.isEdge() ){
-					var src = ele.source();
-					var tgt = ele.target();
-
-					return src.visible() && tgt.visible();
-				}
-
-			}
-		},
-
-		hidden: function(){
-			var ele = this[0];
-
-			if( ele ){
-				return !this.visible();
-			}
-		},
-
-		transparent: function(){
-			var ele = this[0];
-
-			if( ele ){
-				return parseFloat( this.css("opacity") ) === 0;
-			}
 		},
 
 		// convenience function to get a numerical value for the width of the node/edge
@@ -7391,7 +7387,7 @@ var cytoscape;
 			var ele = this[0];
 
 			if( ele ){
-				var w = this._private.style.width;
+				var w = ele._private.style.width;
 				return w.strValue === "auto" ? ele._private.autoWidth : w.pxValue;
 			}
 		},
@@ -7400,7 +7396,7 @@ var cytoscape;
 			var ele = this[0];
 
 			if( ele ){
-				var style = this._private.style;
+				var style = ele._private.style;
 				var width = style.width.strValue === "auto" ? ele._private.autoWidth : style.width.pxValue;;
 				var border = style["border-width"] ? style["border-width"].pxValue * borderWidthMultiplier + borderWidthAdjustment : 0;
 
@@ -7412,7 +7408,7 @@ var cytoscape;
 			var ele = this[0];
 
 			if( ele ){
-				var width = this.width();
+				var width = ele.width();
 				return width * this.cy().zoom();
 			}
 		},
@@ -7421,17 +7417,17 @@ var cytoscape;
 			var ele = this[0];
 
 			if( ele ){
-				var owidth = this.outerWidth();
+				var owidth = ele.outerWidth();
 				return owidth * this.cy().zoom();
 			}
 		},
 
 		// convenience function to get a numerical value for the height of the node
-		height: function(){
+		height: function(){ 
 			var ele = this[0];
 
 			if( ele && ele.isNode() ){
-				var h = this._private.style.height;
+				var h = ele._private.style.height;
 				return h.strValue === "auto" ? ele._private.autoHeight : h.pxValue;
 			}
 		},
@@ -7440,7 +7436,7 @@ var cytoscape;
 			var ele = this[0];
 
 			if( ele ){
-				var style = this._private.style;
+				var style = ele._private.style;
 				var height = style.height.strValue === "auto" ? ele._private.autoHeight : style.height.pxValue;
 				var border = style["border-width"] ? style["border-width"].pxValue * borderWidthMultiplier + borderWidthAdjustment : 0;
 
@@ -7452,7 +7448,7 @@ var cytoscape;
 			var ele = this[0];
 
 			if( ele ){
-				var height = this.height();
+				var height = ele.height();
 				return height * this.cy().zoom();
 			}
 		},
@@ -7461,61 +7457,44 @@ var cytoscape;
 			var ele = this[0];
 
 			if( ele ){
-				var oheight = this.outerHeight();
+				var oheight = ele.outerHeight();
 				return oheight * this.cy().zoom();
 			}
 		},
 
-		// get the position of the element relative to the container (i.e. not relative to parent node)
-		offset: function(){
-			var ele = this[0];
+		renderedBoundingBox: function( options ){
+			var bb = this.boundingBox( options );
+			var cy = this.cy();
+			var zoom = cy.zoom();
+			var pan = cy.pan();
 
-			if( ele && ele.isNode() ){
-				var offset = {
-					x: ele._private.position.x,
-					y: ele._private.position.y
-				};
+			var x1 = bb.x1 * zoom + pan.x;
+			var x2 = bb.x2 * zoom + pan.x;
+			var y1 = bb.y1 * zoom + pan.y;
+			var y2 = bb.y2 * zoom + pan.y;
 
-				var parents = ele.parents();
-				for( var i = 0; i < parents.length; i++ ){
-					var parent = parents[i];
-					var parentPos = parent._private.position;
-
-					offset.x += parentPos.x;
-					offset.y += parentPos.y;
-				}
-
-				return offset;
-			}
-		},
-
-		renderedOffset: function(){
-			var ele = this[0];
-
-			if( ele && ele.isNode() ){
-				var offset = this.offset();
-				var cy = this.cy();
-				var zoom = cy.zoom();
-				var pan = cy.pan();
-
-				return {
-					x: offset.x * zoom + pan.x,
-					y: offset.y * zoom + pan.y
-				};
-			}
+			return {
+				x1: x1,
+				x2: x2,
+				y1: y1,
+				y2: y2,
+				w: x2 - x1,
+				h: y2 - y1
+			};
 		},
 
 		// get the bounding box of the elements (in raw model position)
-		boundingBox: function( selector ){
+		boundingBox: function( options ){
 			var eles = this;
 
-			if( !selector || ( $$.is.elementOrCollection(selector) && selector.length === 0 ) ){
-				eles = this;
-			} else if( $$.is.string(selector) ){
-				eles = this.filter( selector );
-			} else if( $$.is.elementOrCollection(selector) ){
-				eles = selector;
-			}
+			options = $$.util.extend({
+				includeNodes: true,
+				includeEdges: true,
+				includeLabels: true
+			}, options);
+
+			// recalculate projections etc
+			this.cy().recalculateRenderedStyle();
 
 			var x1 = Infinity;
 			var x2 = -Infinity;
@@ -7525,9 +7504,14 @@ var cytoscape;
 			// find bounds of elements
 			for( var i = 0; i < eles.length; i++ ){
 				var ele = eles[i];
-				var ex1, ex2, ey1, ey2, x, y;				
+				var ex1, ex2, ey1, ey2, x, y;
+				var includedEle = false;
 
-				if( ele.isNode() ){
+				if( ele.css("display") === "none" ){ continue; } // then ele doesn't take up space			
+
+				if( ele.isNode() && options.includeNodes ){
+					includedEle = true;
+
 					var pos = ele._private.position;
 					x = pos.x;
 					y = pos.y;
@@ -7549,16 +7533,16 @@ var cytoscape;
 					y1 = ey1 < y1 ? ey1 : y1;
 					y2 = ey2 > y2 ? ey2 : y2;
 
-				} else { // is edge
+				} else if( ele.isEdge() && options.includeEdges ){ 
+					includedEle = true;
+
 					var n1pos = ele.source()[0]._private.position;
 					var n2pos = ele.target()[0]._private.position;
 
 					// handle edge dimensions (rough box estimate)
 					//////////////////////////////////////////////
 
-					var rstyle = ele._private.rstyle;
-					x = rstyle.labelX;
-					y = rstyle.labelY;
+					var rstyle = ele._private.rstyle || {};
 
 					ex1 = n1pos.x;
 					ex2 = n2pos.x;
@@ -7586,7 +7570,7 @@ var cytoscape;
 					//////////////////////////////////////////
 
 					var bpts = rstyle.bezierPts || [];
-					var w = ele._private.style['width'].value;
+					var w = ele._private.style['width'].pxValue;
 					for( var j = 0; j < bpts.length; j++ ){
 						var bpt = bpts[j];
 
@@ -7602,59 +7586,60 @@ var cytoscape;
 				//////////////////////////
 
 				var style = ele._private.style;
-				var label = style['content'].value;
+				var rstyle = ele._private.rstyle;
+				var label = style['content'].strValue;
 				var fontSize = style['font-size'];
 				var halign = style['text-halign'];
 				var valign = style['text-valign'];
-				var labelWidth = ele._private.rstyle.labelWidth;
+				var labelWidth = rstyle.labelWidth;
+				var labelHeight = rstyle.labelHeight || fontSize.pxValue;
+				var labelX = rstyle.labelX;
+				var labelY = rstyle.labelY;
 
-				if( label && fontSize && labelWidth != undefined && halign && valign ){
-					var lh = fontSize.value;
+				if( includedEle && options.includeLabels && label && fontSize && labelHeight != undefined && labelWidth != undefined && labelX != undefined && labelY != undefined && halign && valign ){
+					var lh = labelHeight;
 					var lw = labelWidth;
 					var lx1, lx2, ly1, ly2;
 
-					switch( halign.value ){
-						case "left":
-							lx1 = ex1 - lw;
-							lx2 = ex1;
-							break;
+					if( ele.isEdge() ){
+						lx1 = labelX - lw/2;
+						lx2 = labelX + lw/2;
+						ly1 = labelY - lh/2;
+						ly2 = labelY + lh/2;
+					} else {
+						switch( halign.value ){
+							case "left":
+								lx1 = labelX - lw;
+								lx2 = labelX;
+								break;
 
-						case "center":
-							lx1 = x - lw/2;
-							lx2 = x + lw/2;
-							break;
+							case "center":
+								lx1 = labelX - lw/2;
+								lx2 = labelX + lw/2;
+								break;
 
-						case "right":
-							lx1 = ex2;
-							lx2 = ex2 + lw;
-							break;
-					}
+							case "right":
+								lx1 = labelX;
+								lx2 = labelX + lw;
+								break;
+						}
 
-					if( ele.isEdge() ){ // force center case
-						lx1 = x - lw/2;
-						lx2 = x + lw/2;
-					}
+						switch( valign.value ){
+							case "top":
+								ly1 = labelY - lh;
+								ly2 = labelY;
+								break;
 
-					switch( valign.value ){
-						case "top":
-							ly1 = ey1 - lh;
-							ly2 = ey1;
-							break;
+							case "center":
+								ly1 = labelY - lh/2;
+								ly2 = labelY + lh/2;
+								break;
 
-						case "center":
-							ly1 = y - lh/2;
-							ly2 = y + lh/2;
-							break;
-
-						case "bottom":
-							ly1 = ey2;
-							ly2 = ey2 + lh;
-							break;
-					}
-
-					if( ele.isEdge() ){ // force center case
-						ly1 = y - lh/2;
-						ly2 = y + lh/2;
+							case "bottom":
+								ly1 = labelY;
+								ly2 = labelY + lh;
+								break;
+						}
 					}
 
 					x1 = lx1 < x1 ? lx1 : x1;
@@ -7809,6 +7794,8 @@ var cytoscape;
 		trigger: $$.define.trigger(), // .trigger( events [, extraParams] )
 
 		rtrigger: function(event, extraParams){ // for internal use only
+			if( this.length === 0 ){ return; } // empty collections don't need to notify anything
+
 			// notify renderer unless removed
 			this.cy().notify({
 				type: event,
@@ -7893,6 +7880,10 @@ var cytoscape;
 			if( end == null ){
 				end = thisSize;
 			}
+
+			if( start == null ){
+				start = 0;
+			}
 			
 			if( start < 0 ){
 				start = thisSize + start;
@@ -7919,8 +7910,301 @@ var cytoscape;
 
 		nonempty: function(){
 			return !this.empty();
+		},
+
+		sort: function( sortFn ){
+			if( !$$.is.fn( sortFn ) ){
+				return this;
+			}
+
+			var cy = this.cy();
+			var coln = new $$.Collection( cy );
+			
+			var sorted = this.toArray().sort( sortFn );
+
+			return new $$.Collection(cy, sorted);
+		},
+
+		sortByZIndex: function(){
+			return this.sort( $$.Collection.zIndexSort );
 		}
 	});
+
+
+	$$.Collection.zIndexSort = function(a, b) {
+		var elementDepth = function(ele) {
+			if (ele._private.group == "nodes")
+			{
+				return ele.parents().size();
+			}
+			else if (ele._private.group == "edges")
+			{
+				return Math.max(ele.source()[0].parents().size(),
+				                ele.target()[0].parents().size());
+			}
+			else
+			{
+				return 0;
+			}
+		};
+
+		var result = a._private.style["z-index"].value - b._private.style["z-index"].value;
+
+		var depthA = 0;
+		var depthB = 0;
+
+		// no need to calculate element depth if there is no compound node
+		if ( a.cy().hasCompoundNodes() )
+		{
+			depthA = elementDepth(a);
+			depthB = elementDepth(b);
+		}
+
+		// if both elements has same depth,
+		// then edges should be drawn first
+		if (depthA - depthB === 0)
+		{
+			// "a" is a node, it should be drawn later
+			if (a._private.group === "nodes"
+				&& b._private.group === "edges")
+			{
+				return 1;
+			}
+			
+			// "a" is an edge, it should be drawn first
+			else if (a._private.group === "edges"
+				&& b._private.group === "nodes")
+			{
+				return -1;
+			}
+
+			// both nodes or both edges
+			else
+			{
+				if( result === 0 ){ // same z-index => compare indices in the core (order added to graph w/ last on top)
+					return a._private.index - b._private.index;
+				} else {
+					return result;
+				}
+			}
+		}
+
+		// elements on different level
+		else
+		{
+			// deeper element should be drawn later
+			return depthA - depthB;
+		}
+
+		// return zero if z-index values are not the same
+		return 0;
+	};
+	
+})( cytoscape );
+
+;(function($$){
+	
+	var borderWidthMultiplier = 2 * 0.5;
+	var borderWidthAdjustment = 0;
+
+	$$.fn.eles({
+
+		// fully updates (recalculates) the style for the elements
+		updateStyle: function( notifyRenderer ){
+			var cy = this._private.cy;
+			var style = cy.style();
+			notifyRenderer = notifyRenderer || notifyRenderer === undefined ? true : false;
+
+			style.apply( this );
+
+			var updatedCompounds = this.updateCompoundBounds();
+
+			if( notifyRenderer ){
+				this.add( updatedCompounds ).rtrigger("style"); // let renderer know we changed style
+			} else {
+				this.add( updatedCompounds ).trigger("style"); // just fire the event
+			}
+			return this; // chaining
+		},
+
+		// just update the mappers in the elements' styles; cheaper than eles.updateStyle()
+		updateMappers: function( notifyRenderer ){
+			var cy = this._private.cy;
+			var style = cy.style();
+			notifyRenderer = notifyRenderer || notifyRenderer === undefined ? true : false;
+
+			style.updateMappers( this );
+
+			var updatedCompounds = this.updateCompoundBounds();
+
+			if( notifyRenderer ){
+				this.add( updatedCompounds ).rtrigger("style"); // let renderer know we changed style
+			} else {
+				this.add( updatedCompounds ).trigger("style"); // just fire the event
+			}
+			return this; // chaining
+		},
+
+		// get the specified css property as a rendered value (i.e. on-screen value)
+		// or get the whole rendered style if no property specified (NB doesn't allow setting)
+		renderedCss: function( property ){
+			var ele = this[0];
+
+			if( ele ){
+				var renstyle = ele.cy().style().getRenderedStyle( ele );
+
+				if( property === undefined ){
+					return renstyle;
+				} else {
+					return renstyle[ property ];
+				}
+			}
+		},
+
+		// read the calculated css style of the element or override the style (via a bypass)
+		css: function( name, value ){
+			var style = this.cy().style();
+
+			if( $$.is.plainObject(name) ){ // then extend the bypass
+				var props = name;
+				style.applyBypass( this, props );
+				this.rtrigger("style"); // let the renderer know we've updated style
+
+			} else if( $$.is.string(name) ){
+	
+				if( value === undefined ){ // then get the property from the style
+					var ele = this[0];
+
+					if( ele ){
+						return ele._private.style[ name ].strValue;
+					} else { // empty collection => can't get any value
+						return;
+					}
+
+				} else { // then set the bypass with the property value
+					style.applyBypass( this, name, value );
+					this.rtrigger("style"); // let the renderer know we've updated style
+				}
+
+			} else if( name === undefined ){
+				var ele = this[0];
+
+				if( ele ){
+					return style.getRawStyle( ele );
+				} else { // empty collection => can't get any value
+					return;
+				}
+			}
+
+			return this; // chaining
+		},
+
+		removeCss: function(){
+			var style = this.cy().style();
+			var eles = this;
+
+			for( var i = 0; i < eles.length; i++ ){
+				var ele = eles[i];
+
+				style.removeAllBypasses( ele );
+			}
+
+			this.rtrigger('style');
+		},
+
+		show: function(){
+			this.css("display", "element");
+			return this; // chaining
+		},
+
+		hide: function(){
+			this.css("display", "none");
+			return this; // chaining
+		},
+
+		visible: function(){
+			var ele = this[0];
+
+			if( ele ){
+				if(
+					ele.css("visibility") !== "visible"
+				||  ele.css("display") !== "element"
+				// ||  parseFloat( ele.css("opacity") ) === 0
+				){
+					return false;
+				}
+				
+				if( ele.isNode() ){
+					var parents = ele.parents();
+					for( var i = 0; i < parents.length; i++ ){
+						var parent = parents[i];
+						var pVis = parent.css("visibility");
+						var pDis = parent.css("display");
+						var pOpac = parseFloat( parent.css("opacity") );
+
+						if( pVis !== "visible" || pDis !== "element" ){
+							return false;
+						}
+					}
+
+					return true;
+				} else if( ele.isEdge() ){
+					var src = ele.source();
+					var tgt = ele.target();
+
+					return src.visible() && tgt.visible();
+				}
+
+			}
+		},
+
+		hidden: function(){
+			var ele = this[0];
+
+			if( ele ){
+				return !ele.visible();
+			}
+		},
+
+		effectiveOpacity: function(){
+			var ele = this[0];
+
+			if( ele ){
+				var parentOpacity = ele._private.style.opacity.value;
+				var parents = ele.parents();
+				
+				for( var i = 0; i < parents.length; i++ ){
+					var parent = parents[i];
+					var opacity = parent._private.style.opacity.value;
+
+					parentOpacity = opacity * parentOpacity;
+				}
+
+				return parentOpacity;
+			}
+		},
+
+		transparent: function(){
+			var ele = this[0];
+
+			if( ele ){
+				return ele.effectiveOpacity() === 0;
+			}
+		},
+
+		isFullAutoParent: function(){
+			var ele = this[0];
+
+			if( ele ){
+				var autoW = ele._private.style["width"].value === "auto";
+				var autoH = ele._private.style["height"].value === "auto";
+
+				return ele.isParent() && autoW && autoH;
+			}
+		}
+
+	});
+
 	
 })( cytoscape );
 
@@ -8619,97 +8903,46 @@ var cytoscape;
 	
 	$$.fn.eles({
 		connectedEdges: function( selector ){
-			var elements = [];
+			var retEles = [];
 			var cy = this._private.cy;
 			
-			var nodes = this.nodes();
-			for( var i = 0; i < nodes.length; i++ ){
-				var node = nodes[i];
+			var eles = this;
+			for( var i = 0; i < eles.length; i++ ){
+				var node = eles[i];
+				if( !node.isNode() ){ continue; }
+
 				var edges = node._private.edges;
 
 				for( var j = 0; j < edges.length; j++ ){
 					var edge = edges[j];					
-					elements.push( edge );
+					retEles.push( edge );
 				}
 			}
 			
-			return new $$.Collection( cy, elements ).filter( selector );
+			return new $$.Collection( cy, retEles ).filter( selector );
 		},
 
 		connectedNodes: function( selector ){
-			var elements = [];
+			var retEles = [];
 			var cy = this._private.cy;
 
-			var edges = this.edges();
-			for( var i = 0; i < edges.length; i++ ){
-				var edge = edges[i];
+			var eles = this;
+			for( var i = 0; i < eles.length; i++ ){
+				var edge = eles[i];
+				if( !edge.isEdge() ){ continue; }
 
-				elements.push( edge.source()[0] );
-				elements.push( edge.target()[0] );
+				retEles.push( edge.source()[0] );
+				retEles.push( edge.target()[0] );
 			}
 
-			return new $$.Collection( cy, elements ).filter( selector );
+			return new $$.Collection( cy, retEles ).filter( selector );
 		},
 
 		parallelEdges: defineParallelEdgesFunction(),
 
 		codirectedEdges: defineParallelEdgesFunction({
 			codirected: true
-		}),
-
-		parallelIndex: function(){
-			var edge = this[0];
-
-			if( edge.isEdge() ){
-				var src = edge.source()[0];
-				var srcEdges = src._private.edges;
-				var index = 0;
-
-				for( var i = 0; i < srcEdges.length; i++ ){
-					var srcEdge = srcEdges[i];
-					var thisIsTheIndex = srcEdge === edge;
-
-					if( thisIsTheIndex ){
-						return index;
-					}
-
-					var codirected = edge._private.data.source === srcEdge._private.data.source
-						&& edge._private.data.target === srcEdge._private.data.target;
-					var opdirected = edge._private.data.source === srcEdge._private.data.target
-						&& edge._private.data.target === srcEdge._private.data.source;
-					var parallel = codirected || opdirected;
-
-					if( parallel ){ // then increase the count
-						index++;
-					}
-				}
-			}
-		},
-
-		parallelSize: function(){
-			var edge = this[0];
-
-			if( edge.isEdge() ){
-				var src = edge.source()[0];
-				var srcEdges = src._private.edges;
-				var numEdges = 0;
-
-				for( var i = 0; i < srcEdges.length; i++ ){
-					var srcEdge = srcEdges[i];
-					var codirected = edge._private.data.source === srcEdge._private.data.source
-						&& edge._private.data.target === srcEdge._private.data.target;
-					var opdirected = edge._private.data.source === srcEdge._private.data.target
-						&& edge._private.data.target === srcEdge._private.data.source;
-					var parallel = codirected || opdirected;
-
-					if( parallel ){ // then increase the count
-						numEdges++;
-					}
-				}
-
-				return numEdges;
-			}
-		}
+		})
 	});
 	
 	function defineParallelEdgesFunction(params){
@@ -8843,6 +9076,9 @@ var cytoscape;
 			return new $$.Collection( this.cy(), elements ).filter( selector );
 		}
 	});
+
+	// aliases
+	$$.fn.eles.ancestors = $$.fn.eles.parents;
 
 	
 })( cytoscape );
@@ -9763,22 +9999,28 @@ var cytoscape;
 	CanvasRenderer.isTouch = ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch;
 
 	CanvasRenderer.prototype.notify = function(params) {
-		if ( params.type == "destroy" ){
+		switch( params.type ){
+
+		case "destroy":
 			this.destroy();
 			return;
 
-		} else if (params.type == "add"
-			|| params.type == "remove"
-			|| params.type == "load"
-		) {
-			
+		case "add":
+		case "remove":
+		case "load":
 			this.updateNodesCache();
 			this.updateEdgesCache();
+			break;
+
+		case "viewport":
+			this.data.canvasNeedsRedraw[CanvasRenderer.SELECT_BOX] = true;
+			break;
+
+		case "style":
+			this.updateCachedZSortedEles();
+			break;
 		}
 
-		if (params.type == "viewport") {
-			this.data.canvasNeedsRedraw[CanvasRenderer.SELECT_BOX] = true;
-		}
 		
 		this.data.canvasNeedsRedraw[CanvasRenderer.DRAG] = true; 
 		this.data.canvasNeedsRedraw[CanvasRenderer.NODE] = true;
@@ -9866,7 +10108,7 @@ var cytoscape;
 			return 0;
 		},
 		gap: function(edge) {
-			return edge._private.style["width"].value * 2;
+			return edge._private.style["width"].pxValue * 2;
 		}
 	}
 	
@@ -9928,11 +10170,11 @@ var cytoscape;
 			context.arc(0, 0, arrowShapes["circle"]._baseRadius, 0, Math.PI * 2, false);
 		},
 		spacing: function(edge) {
-			return rendFunc.getArrowWidth(edge._private.style["width"].value)
+			return rendFunc.getArrowWidth(edge._private.style["width"].pxValue)
 				* arrowShapes["circle"]._baseRadius;
 		},
 		gap: function(edge) {
-			return edge._private.style["width"].value * 2;
+			return edge._private.style["width"].pxValue * 2;
 		}
 	}
 	
@@ -10008,7 +10250,7 @@ var cytoscape;
 			return 0;
 		},
 		gap: function(edge) {
-			return edge._private.style["width"].value * 2;
+			return edge._private.style["width"].pxValue * 2;
 		}
 	}
 	
@@ -10046,7 +10288,7 @@ var cytoscape;
 			return 0;
 		},
 		gap: function(edge) {
-			return edge._private.style["width"].value * 2;
+			return edge._private.style["width"].pxValue * 2;
 		}
 	}
 	
@@ -10185,14 +10427,12 @@ var cytoscape;
 		// Check nodes
 		for (var i = 0; i < nodes.length; i++) {
 			if (CanvasRenderer.nodeShapes[this.getNodeShape(nodes[i])].checkPointRough(x, y,
-					nodes[i]._private.style["border-width"].value / 2,
-					//nodes[i]._private.style["width"].value, nodes[i]._private.style["height"].value,
+					nodes[i]._private.style["border-width"].pxValue / 2,
 					this.getNodeWidth(nodes[i]) + nodeThreshold, this.getNodeHeight(nodes[i]) + nodeThreshold,
 					nodes[i]._private.position.x, nodes[i]._private.position.y)
 				&&
 				CanvasRenderer.nodeShapes[this.getNodeShape(nodes[i])].checkPoint(x, y,
-					nodes[i]._private.style["border-width"].value / 2,
-					//nodes[i]._private.style["width"].value / 2, nodes[i]._private.style["height"].value / 2,
+					nodes[i]._private.style["border-width"].pxValue / 2,
 					(this.getNodeWidth(nodes[i]) + nodeThreshold), (this.getNodeHeight(nodes[i]) + nodeThreshold),
 					nodes[i]._private.position.x, nodes[i]._private.position.y)) {
 				
@@ -10225,9 +10465,9 @@ var cytoscape;
 						rs.cp2ay,
 						rs.selfEdgeMidX,
 						rs.selfEdgeMidY,
-						Math.pow(edge._private.style["width"].value/2, 2))
+						Math.pow(edge._private.style["width"].pxValue/2, 2))
 							&&
-					(Math.pow(edges[i]._private.style["width"].value/2, 2) + edgeThreshold > 
+					(Math.pow(edges[i]._private.style["width"].pxValue/2, 2) + edgeThreshold > 
 						$$.math.sqDistanceToQuadraticBezier(x, y,
 							rs.startX,
 							rs.startY,
@@ -10243,9 +10483,9 @@ var cytoscape;
 						rs.cp2cy,
 						rs.endX,
 						rs.endY,
-						Math.pow(edges[i]._private.style["width"].value/2, 2))
+						Math.pow(edges[i]._private.style["width"].pxValue/2, 2))
 							&&
-					(Math.pow(edges[i]._private.style["width"].value/2, 2) + edgeThreshold > 
+					(Math.pow(edges[i]._private.style["width"].pxValue/2, 2) + edgeThreshold > 
 						$$.math.sqDistanceToQuadraticBezier(x, y,
 							rs.selfEdgeMidX,
 							rs.selfEdgeMidY,
@@ -10256,9 +10496,9 @@ var cytoscape;
 					 { addCurrentEdge = true; }
 			
 			} else if (rs.edgeType == "straight") {
-				if ($$.math.inLineVicinity(x, y, rs.startX, rs.startY, rs.endX, rs.endY, edges[i]._private.style["width"].value * 2)
+				if ($$.math.inLineVicinity(x, y, rs.startX, rs.startY, rs.endX, rs.endY, edges[i]._private.style["width"].pxValue * 2)
 						&&
-					Math.pow(edges[i]._private.style["width"].value / 2, 2) + edgeThreshold >
+					Math.pow(edges[i]._private.style["width"].pxValue / 2, 2) + edgeThreshold >
 					$$.math.sqDistanceToFiniteLine(x, y,
 						rs.startX,
 						rs.startY,
@@ -10274,9 +10514,9 @@ var cytoscape;
 					rs.cp2y,
 					rs.endX,
 					rs.endY,
-					Math.pow(edges[i]._private.style["width"].value / 2, 2))
+					Math.pow(edges[i]._private.style["width"].pxValue / 2, 2))
 						&&
-					(Math.pow(edges[i]._private.style["width"].value / 2 , 2) + edgeThreshold >
+					(Math.pow(edges[i]._private.style["width"].pxValue / 2 , 2) + edgeThreshold >
 						$$.math.sqDistanceToQuadraticBezier(x, y,
 							rs.startX,
 							rs.startY,
@@ -10290,29 +10530,29 @@ var cytoscape;
 			if (!near.length || near[near.length - 1] != edges[i]) {
 				if ((CanvasRenderer.arrowShapes[edges[i]._private.style["source-arrow-shape"].value].roughCollide(x, y,
 						edges[i]._private.rscratch.arrowStartX, edges[i]._private.rscratch.arrowStartY,
-						this.getArrowWidth(edges[i]._private.style["width"].value),
-						this.getArrowHeight(edges[i]._private.style["width"].value),
+						this.getArrowWidth(edges[i]._private.style["width"].pxValue),
+						this.getArrowHeight(edges[i]._private.style["width"].pxValue),
 						[edges[i]._private.rscratch.arrowStartX - edges[i].source()[0]._private.position.x,
 							edges[i]._private.rscratch.arrowStartY - edges[i].source()[0]._private.position.y], 0)
 						&&
 					CanvasRenderer.arrowShapes[edges[i]._private.style["source-arrow-shape"].value].collide(x, y,
 						edges[i]._private.rscratch.arrowStartX, edges[i]._private.rscratch.arrowStartY,
-						this.getArrowWidth(edges[i]._private.style["width"].value),
-						this.getArrowHeight(edges[i]._private.style["width"].value),
+						this.getArrowWidth(edges[i]._private.style["width"].pxValue),
+						this.getArrowHeight(edges[i]._private.style["width"].pxValue),
 						[edges[i]._private.rscratch.arrowStartX - edges[i].source()[0]._private.position.x,
 							edges[i]._private.rscratch.arrowStartY - edges[i].source()[0]._private.position.y], 0))
 					||
 					(CanvasRenderer.arrowShapes[edges[i]._private.style["target-arrow-shape"].value].roughCollide(x, y,
 						edges[i]._private.rscratch.arrowEndX, edges[i]._private.rscratch.arrowEndY,
-						this.getArrowWidth(edges[i]._private.style["width"].value),
-						this.getArrowHeight(edges[i]._private.style["width"].value),
+						this.getArrowWidth(edges[i]._private.style["width"].pxValue),
+						this.getArrowHeight(edges[i]._private.style["width"].pxValue),
 						[edges[i]._private.rscratch.arrowEndX - edges[i].target()[0]._private.position.x,
 							edges[i]._private.rscratch.arrowEndY - edges[i].target()[0]._private.position.y], 0)
 						&&
 					CanvasRenderer.arrowShapes[edges[i]._private.style["target-arrow-shape"].value].collide(x, y,
 						edges[i]._private.rscratch.arrowEndX, edges[i]._private.rscratch.arrowEndY,
-						this.getArrowWidth(edges[i]._private.style["width"].value),
-						this.getArrowHeight(edges[i]._private.style["width"].value),
+						this.getArrowWidth(edges[i]._private.style["width"].pxValue),
+						this.getArrowHeight(edges[i]._private.style["width"].pxValue),
 						[edges[i]._private.rscratch.arrowEndX - edges[i].target()[0]._private.position.x,
 							edges[i]._private.rscratch.arrowEndY - edges[i].target()[0]._private.position.y], 0)))
 					{ addCurrentEdge = true; }
@@ -10357,9 +10597,8 @@ var cytoscape;
 		
 		for (var i=0;i<nodes.length;i++) {
 			if (CanvasRenderer.nodeShapes[this.getNodeShape(nodes[i])].intersectBox(x1, y1, x2, y2,
-				//nodes[i]._private.style["width"].value, nodes[i]._private.style["height"].value,
 				this.getNodeWidth(nodes[i]), this.getNodeHeight(nodes[i]),
-				nodes[i]._private.position.x, nodes[i]._private.position.y, nodes[i]._private.style["border-width"].value / 2))
+				nodes[i]._private.position.x, nodes[i]._private.position.y, nodes[i]._private.style["border-width"].pxValue / 2))
 			{ box.push(nodes[i]); }
 		}
 		
@@ -10368,22 +10607,22 @@ var cytoscape;
 				if ((heur = $$.math.boxInBezierVicinity(x1, y1, x2, y2,
 						edges[i]._private.rscratch.startX, edges[i]._private.rscratch.startY,
 						edges[i]._private.rscratch.cp2ax, edges[i]._private.rscratch.cp2ay,
-						edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].value))
+						edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].pxValue))
 							&&
 						(heur == 2 || (heur == 1 && $$.math.checkBezierInBox(x1, y1, x2, y2,
 							edges[i]._private.rscratch.startX, edges[i]._private.rscratch.startY,
 							edges[i]._private.rscratch.cp2ax, edges[i]._private.rscratch.cp2ay,
-							edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].value)))
+							edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].pxValue)))
 								||
 					(heur = $$.math.boxInBezierVicinity(x1, y1, x2, y2,
 						edges[i]._private.rscratch.startX, edges[i]._private.rscratch.startY,
 						edges[i]._private.rscratch.cp2cx, edges[i]._private.rscratch.cp2cy,
-						edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].value))
+						edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].pxValue))
 							&&
 						(heur == 2 || (heur == 1 && $$.math.checkBezierInBox(x1, y1, x2, y2,
 							edges[i]._private.rscratch.startX, edges[i]._private.rscratch.startY,
 							edges[i]._private.rscratch.cp2cx, edges[i]._private.rscratch.cp2cy,
-							edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].value)))
+							edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].pxValue)))
 					)
 				{ box.push(edges[i]); }
 			}
@@ -10392,12 +10631,12 @@ var cytoscape;
 				(heur = $$.math.boxInBezierVicinity(x1, y1, x2, y2,
 						edges[i]._private.rscratch.startX, edges[i]._private.rscratch.startY,
 						edges[i]._private.rscratch.cp2x, edges[i]._private.rscratch.cp2y,
-						edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].value))
+						edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].pxValue))
 							&&
 						(heur == 2 || (heur == 1 && $$.math.checkBezierInBox(x1, y1, x2, y2,
 							edges[i]._private.rscratch.startX, edges[i]._private.rscratch.startY,
 							edges[i]._private.rscratch.cp2x, edges[i]._private.rscratch.cp2y,
-							edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].value))))
+							edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].pxValue))))
 				{ box.push(edges[i]); }
 		
 			if (edges[i]._private.rscratch.edgeType == "straight" &&
@@ -10405,11 +10644,11 @@ var cytoscape;
 						edges[i]._private.rscratch.startX, edges[i]._private.rscratch.startY,
 						edges[i]._private.rscratch.startX * 0.5 + edges[i]._private.rscratch.endX * 0.5, 
 						edges[i]._private.rscratch.startY * 0.5 + edges[i]._private.rscratch.endY * 0.5, 
-						edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].value))
+						edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].pxValue))
 							&& /* console.log("test", heur) == undefined && */
 						(heur == 2 || (heur == 1 && $$.math.checkStraightEdgeInBox(x1, y1, x2, y2,
 							edges[i]._private.rscratch.startX, edges[i]._private.rscratch.startY,
-							edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].value))))
+							edges[i]._private.rscratch.endX, edges[i]._private.rscratch.endY, edges[i]._private.style["width"].pxValue))))
 				{ box.push(edges[i]); }
 			
 		}
@@ -10417,253 +10656,6 @@ var cytoscape;
 		return box;
 	}
 
-	/**
-	 * Calculates rectangular bounds of a given compound node.
-	 * If the node is hidden, or none of its children is visible,
-	 * then instead of calculating the bounds, returns the last
-	 * calculated value.
-	 *
-	 * @param node  a node with children (compound node)
-	 * @return {{x: number, y: number, width: number, height: number}}
-	 */
-	CanvasRenderer.prototype.calcCompoundBounds = function(node)
-	{
-		// TODO assuming rectangular compounds, we may add support for other shapes in the future
-
-		// this selection doesn't work if parent is invisible
-		//var children = node.children(":visible").not(":removed");
-
-		// consider only not removed children
-		var children = node.descendants().not(":removed");
-
-		// TODO instead of last calculated width & height define a default compound node size?
-		// last calculated bounds
-		var bounds = {x: node._private.position.x,
-			y: node._private.position.y,
-			width: node._private.autoWidth,
-			height: node._private.autoHeight};
-
-		// check node visibility
-		if (node._private.style["visibility"].value != "visible" || node._private.style["display"].value != "element")
-		{
-			// do not calculate bounds for invisible compounds,
-			// just return last calculated values
-			return bounds;
-		}
-
-		var visibleChildren = [];
-
-		// find out visible children
-		for (var i=0; i < children.size(); i++)
-		{
-			if (children[i]._private.style["visibility"].value == "visible" && children[i]._private.style["display"].value == "element")
-			{
-				visibleChildren.push(children[i]);
-			}
-		}
-
-		if (visibleChildren.length == 0)
-		{
-			// no visible children, just return last calculated values
-			return bounds;
-		}
-
-		// process only visible children
-		children = visibleChildren;
-
-		// find the leftmost, rightmost, topmost, and bottommost child node positions
-		var leftBorder = this.borderValue(children, "left");
-		var rightBorder = this.borderValue(children, "right");
-		var topBorder = this.borderValue(children, "top");
-		var bottomBorder = this.borderValue(children, "bottom");
-
-		// take padding values into account in addition to border values
-		var padding = this.getNodePadding(node);
-		var x = (leftBorder - padding.left + rightBorder + padding.right) / 2;
-		var y = (topBorder - padding.top + bottomBorder + padding.bottom) / 2;
-		var width = (rightBorder - leftBorder) + padding.left + padding.right;
-		var height = (bottomBorder - topBorder) + padding.top + padding.bottom;
-
-		// it is not possible to use the function boundingBox() before
-		// actually rendering the graph
-//		var bBox = children.boundingBox();
-//
-//		var x = (bBox.x1 + bBox.x2) / 2;
-//		var y = (bBox.y1 + bBox.y2) / 2;
-//		var width = bBox.width;
-//		var height = bBox.height;
-
-		bounds = {x: x,
-			y: y,
-			width: width,
-			height: height};
-
-		return bounds;
-	};
-
-	/**
-	 * Calculates the leftmost, rightmost, topmost or bottommost point for the given
-	 * set of nodes. If the type parameter is "left" (or "right"), then the min (or
-	 * the max) x-coordinate value will be returned. If the type is "top" (or "bottom")
-	 * then the min (or the max) y-coordinate value will be returned.
-	 *
-	 * This function is designed to help determining the bounds (bounding box) of
-	 * compound nodes.
-	 *
-	 * @param nodes         set of nodes
-	 * @param type          "left", "right", "top", "bottom"
-	 * @return {number}     border value for the specified type
-	 */
-	CanvasRenderer.prototype.borderValue = function(nodes, type)
-	{
-		var nodeVals, labelVals;
-		var minValue = 1/0, maxValue = -1/0;
-		var r = this;
-
-		// helper function to determine node position and dimensions
-		var calcNodePosAndDim = function(node) {
-			var values = {};
-
-			values.x = node._private.position.x;
-			values.y = node._private.position.y;
-			//values.width = r.getNodeWidth(node);
-			//values.height = r.getNodeHeight(node);
-			values.width = node.outerWidth();
-			values.height = node.outerHeight();
-
-			return values;
-		};
-
-		// helper function to determine label width
-		var getLabelWidth = function(node)
-		{
-			var text = String(node._private.style["content"].value);
-			var textTransform = node._private.style["text-transform"].value;
-
-			if (textTransform == "none") {
-			} else if (textTransform == "uppercase") {
-				text = text.toUpperCase();
-			} else if (textTransform == "lowercase") {
-				text = text.toLowerCase();
-			}
-
-			// TODO width doesn't measure correctly without actually rendering
-			var context = r.data.canvases[4].getContext("2d");
-			return context.measureText(text).width;
-		};
-
-		// helper function to determine label position and dimensions
-		var calcLabelPosAndDim = function(node) {
-
-			var values = {};
-			var nodeWidth = r.getNodeWidth(node);
-			var nodeHeight = r.getNodeHeight(node);
-
-
-			values.height = node._private.style["font-size"].value;
-
-			// TODO ignoring label width for now, it may be a good idea to do so,
-			// since longer label texts may increase the node size unnecessarily
-			//values.width = getLabelWidth(node);
-			values.width = values.height;
-
-			var textHalign = node._private.style["text-halign"].strValue;
-
-			if (textHalign == "left") {
-				values.x = node._private.position.x - nodeWidth / 2;
-				values.left = values.x - values.width;
-				values.right = values.x;
-			} else if (textHalign == "right") {
-				values.x = node._private.position.x + nodeWidth / 2;
-				values.left = values.x;
-				values.right = values.x + values.width;
-			} else { //if (textHalign == "center")
-				values.x = node._private.position.x;
-				values.left = values.x - values.width / 2;
-				values.right = values.x + values.width / 2;
-			}
-
-			var textValign = node._private.style["text-valign"].strValue;
-
-			if (textValign == "top") {
-				values.y = node._private.position.y - nodeHeight / 2;
-				values.top = values.y - values.height;
-				values.bottom = values.y;
-			} else if (textValign == "bottom") {
-				values.y = node._private.position.y + nodeHeight / 2;
-				values.top = values.y;
-				values.bottom = values.y + values.height;
-			} else { // if (textValign == "middle" || textValign == "center")
-				values.y = node._private.position.y;
-				values.top = values.y - values.height / 2;
-				values.bottom = values.y + values.height / 2;
-			}
-
-			return values;
-		};
-
-
-
-		// find out border values by iterating given nodes
-
-		for (i = 0; i < nodes.length; i++)
-		{
-			nodeVals = calcNodePosAndDim(nodes[i]);
-			labelVals = calcLabelPosAndDim(nodes[i]);
-
-			if (type == "left")
-			{
-				var leftBorder = Math.min(nodeVals.x - nodeVals.width / 2,
-					labelVals.left);
-
-				if (leftBorder < minValue)
-				{
-					minValue = leftBorder;
-				}
-			}
-			else if (type == "right")
-			{
-				var rightBorder = Math.max(nodeVals.x + nodeVals.width / 2,
-					labelVals.right);
-
-				if (rightBorder > maxValue)
-				{
-					maxValue = rightBorder;
-				}
-			}
-			else if (type == "top")
-			{
-				var topBorder = Math.min(nodeVals.y - nodeVals.height / 2,
-					labelVals.top);
-
-				if (topBorder < minValue)
-				{
-					minValue = topBorder;
-				}
-			}
-			else if (type == "bottom")
-			{
-				var bottomBorder = Math.max(nodeVals.y + nodeVals.height / 2,
-					labelVals.bottom);
-
-				if (bottomBorder > maxValue)
-				{
-					maxValue = bottomBorder;
-				}
-			}
-		}
-
-		// return the border value according to the type
-
-		if ((type == "left") || (type == "top"))
-		{
-			return minValue;
-		}
-		else
-		{
-			return maxValue;
-		}
-	};
 
 	/**
 	 * Returns the width of the given node. If the width is set to auto,
@@ -10674,15 +10666,7 @@ var cytoscape;
 	 */
 	CanvasRenderer.prototype.getNodeWidth = function(node)
 	{
-		if (node._private.style["width"].value == "auto" ||
-		    node._private.style["height"].value == "auto")
-		{
-			return node._private.autoWidth;
-		}
-		else
-		{
-			return node._private.style["width"].pxValue;
-		}
+		return node.width();
 	};
 
 	/**
@@ -10694,15 +10678,7 @@ var cytoscape;
 	 */
 	CanvasRenderer.prototype.getNodeHeight = function(node)
 	{
-		if (node._private.style["width"].value == "auto" ||
-		    node._private.style["height"].value == "auto")
-		{
-			return node._private.autoHeight;
-		}
-		else
-		{
-			return node._private.style["height"].pxValue;
-		}
+		return node.height();
 	};
 
 	/**
@@ -10734,36 +10710,6 @@ var cytoscape;
 		return shape;
 	};
 
-	/**
-	 * Updates bounds of all compounds in the given element list.
-	 * Assuming the nodes are sorted top down, i.e. a parent node
-	 * always has a lower index than its all children.
-	 *
-	 * @param elements  set of elements containing both nodes and edges
-	 */
-	CanvasRenderer.prototype.updateAllCompounds = function(elements)
-	{
-		// traverse in reverse order, since rendering is top-down,
-		// but we need to calculate bounds bottom-up
-		for(var i = elements.length - 1; i >= 0; i--)
-		{
-			if (elements[i].isNode() &&
-			    (elements[i]._private.style["width"].value == "auto" ||
-			     elements[i]._private.style["height"].value == "auto") &&
-			    elements[i].children().length > 0)
-			{
-				var node = elements[i];
-				var bounds = this.calcCompoundBounds(node);
-
-				//console.log("%s : %o", node._private.data.id, bounds);
-				node._private.position.x = bounds.x;
-				node._private.position.y = bounds.y;
-				node._private.autoWidth = bounds.width;
-				node._private.autoHeight = bounds.height;
-			}
-		}
-
-	};
 
 	CanvasRenderer.prototype.getNodePadding = function(node)
 	{
@@ -10798,84 +10744,20 @@ var cytoscape;
 			bottom : bottom};
 	};
 
-	CanvasRenderer.prototype.zOrderSort = function(a, b) {
-		var elementDepth = function(ele) {
-			if (ele._private.group == "nodes")
-			{
-				return ele.parents().size();
-			}
-			else if (ele._private.group == "edges")
-			{
-				return Math.max(ele.source()[0].parents().size(),
-				                ele.target()[0].parents().size());
-			}
-			else
-			{
-				return 0;
-			}
-		};
+	CanvasRenderer.prototype.zOrderSort = $$.Collection.zIndexSort;
 
-		var result = a._private.style["z-index"].value
-			- b._private.style["z-index"].value;
-
-		var depthA = 0;
-		var depthB = 0;
-
-		// no need to calculate element depth if there is no compound node
-		if ( a.cy().hasCompoundNodes() )
-		{
-			depthA = elementDepth(a);
-			depthB = elementDepth(b);
-		}
-
-		// if both elements has same depth,
-		// then edges should be drawn first
-		if (depthA - depthB === 0)
-		{
-			// "a" is a node, it should be drawn later
-			if (a._private.group === "nodes"
-				&& b._private.group === "edges")
-			{
-				return 1;
-			}
-			
-			// "a" is an edge, it should be drawn first
-			else if (a._private.group === "edges"
-				&& b._private.group === "nodes")
-			{
-				return -1;
-			}
-
-			// both nodes or both edges
-			else
-			{
-				if( result === 0 ){ // same z-index => compare indices in the core (order added to graph w/ last on top)
-					return a._private.index - b._private.index;
-				} else {
-					return result;
-				}
-			}
-		}
-
-		// elements on different level
-		else
-		{
-			// deeper element should be drawn later
-			return depthA - depthB;
-		}
-
-		// return zero if z-index values are not the same
-		return 0;
+	CanvasRenderer.prototype.updateCachedZSortedEles = function(){
+		this.getCachedZSortedEles( true );
 	};
 
-	CanvasRenderer.prototype.getCachedZSortedEles = function(){
+	CanvasRenderer.prototype.getCachedZSortedEles = function( forceRecalc ){
 		var lastNodes = this.lastZOrderCachedNodes;
 		var lastEdges = this.lastZOrderCachedEdges;
 		var nodes = this.getCachedNodes();
 		var edges = this.getCachedEdges();
 		var eles = [];
 
-		if( !lastNodes || !lastEdges || lastNodes !== nodes || lastEdges !== edges ){ 
+		if( forceRecalc || !lastNodes || !lastEdges || lastNodes !== nodes || lastEdges !== edges ){ 
 			//console.time('cachezorder')
 			
 			for( var i = 0; i < nodes.length; i++ ){
@@ -10902,33 +10784,254 @@ var cytoscape;
 		return eles;
 	};
 
+	CanvasRenderer.prototype.projectBezier = function(edge){
+		var qbezierAt = $$.math.qbezierAt;
+		var rs = edge._private.rscratch;
+		var bpts = edge._private.rstyle.bezierPts = [];
+
+		function pushBezierPts(pts){
+			bpts.push({
+				x: qbezierAt( pts[0], pts[2], pts[4], 0.05 ),
+				y: qbezierAt( pts[1], pts[3], pts[5], 0.05 )
+			});
+
+			bpts.push({
+				x: qbezierAt( pts[0], pts[2], pts[4], 0.25 ),
+				y: qbezierAt( pts[1], pts[3], pts[5], 0.25 )
+			});
+
+			bpts.push({
+				x: qbezierAt( pts[0], pts[2], pts[4], 0.4 ),
+				y: qbezierAt( pts[1], pts[3], pts[5], 0.4 )
+			});
+
+			bpts.push({
+				x: qbezierAt( pts[0], pts[2], pts[4], 0.5 ),
+				y: qbezierAt( pts[1], pts[3], pts[5], 0.5 )
+			});
+
+			bpts.push({
+				x: qbezierAt( pts[0], pts[2], pts[4], 0.6 ),
+				y: qbezierAt( pts[1], pts[3], pts[5], 0.6 )
+			});
+
+			bpts.push({
+				x: qbezierAt( pts[0], pts[2], pts[4], 0.75 ),
+				y: qbezierAt( pts[1], pts[3], pts[5], 0.75 )
+			});
+
+			bpts.push({
+				x: qbezierAt( pts[0], pts[2], pts[4], 0.95 ),
+				y: qbezierAt( pts[1], pts[3], pts[5], 0.95 )
+			});
+		}
+
+		if( rs.edgeType === "self" ){
+			pushBezierPts( [rs.startX, rs.startY, rs.cp2ax, rs.cp2ay, rs.selfEdgeMidX, rs.selfEdgeMidY] );
+			pushBezierPts( [rs.selfEdgeMidX, rs.selfEdgeMidY, rs.cp2cx, rs.cp2cy, rs.endX, rs.endY] );
+		} else if( rs.edgeType === "bezier" ){
+			pushBezierPts( [rs.startX, rs.startY, rs.cp2x, rs.cp2y, rs.endX, rs.endY] );
+		}
+	};
+
+	CanvasRenderer.prototype.recalculateNodeLabelProjection = function( node ){
+		var textX, textY;
+		var nodeWidth = node.outerWidth();
+		var nodeHeight = node.outerHeight();
+		var nodePos = node._private.position;
+		var textHalign = node._private.style["text-halign"].strValue;
+		var textValign = node._private.style["text-valign"].strValue;
+		var rs = node._private.rscratch;
+		var rstyle = node._private.rstyle;
+
+		switch( textHalign ){
+			case "left":
+				textX = nodePos.x - nodeWidth / 2;
+				break;
+
+			case "right":
+				textX = nodePos.x + nodeWidth / 2;
+				break;
+
+			case "center":
+			default:
+				textX = nodePos.x;
+		}
+
+		switch( textValign ){
+			case "top":
+				textY = nodePos.y - nodeHeight / 2;
+				break;
+
+			case "bottom":
+				textY = nodePos.y + nodeHeight / 2;
+				break;
+
+			case "middle":
+			default:
+				textY = nodePos.y;
+		}
+	
+		rs.labelX = textX;
+		rs.labelY = textY;
+		rstyle.labelX = textX;
+		rstyle.labelY = textY;
+
+		var context = this.data.bufferCanvases[0].getContext("2d");
+		var text = this.setupTextStyle( context, node );
+		//var labelWidth = context.measureText( text ).width;
+
+		var labelDims = this.calculateLabelDimensions( node, text );
+
+		rstyle.labelWidth = labelDims.width;
+		rs.labelWidth = labelDims.width;
+
+		rstyle.labelHeight = labelDims.height;
+		rs.labelHeight = labelDims.height;
+	};
+
+	CanvasRenderer.prototype.recalculateEdgeLabelProjection = function( edge ){
+		var textX, textY;	
+		var edgeCenterX, edgeCenterY;
+		var rs = edge._private.rscratch;
+		var rstyle = edge._private.rstyle;
+		
+		if (rs.edgeType == "self") {
+			edgeCenterX = rs.selfEdgeMidX;
+			edgeCenterY = rs.selfEdgeMidY;
+		} else if (rs.edgeType == "straight") {
+			edgeCenterX = (rs.startX + rs.endX) / 2;
+			edgeCenterY = (rs.startY + rs.endY) / 2;
+		} else if (rs.edgeType == "bezier") {
+			edgeCenterX = $$.math.qbezierAt( rs.startX, rs.cp2x, rs.endX, 0.5 );
+			edgeCenterY = $$.math.qbezierAt( rs.startY, rs.cp2y, rs.endY, 0.5 );
+		}
+		
+		textX = edgeCenterX;
+		textY = edgeCenterY;
+
+		// add center point to style so bounding box calculations can use it
+		rs.labelX = textX;
+		rs.labelY = textY;
+		rstyle.labelX = textX;
+		rstyle.labelY = textY;
+
+		var context = this.data.bufferCanvases[0].getContext("2d");
+		var text = this.setupTextStyle( context, edge );
+		//var labelWidth = context.measureText( text ).width;
+
+		var labelDims = this.calculateLabelDimensions( edge, text );
+
+		rstyle.labelWidth = labelDims.width;
+		rs.labelWidth = labelDims.width;
+
+		rstyle.labelHeight = labelDims.height;
+		rs.labelHeight = labelDims.height;
+	};
+
+	CanvasRenderer.prototype.calculateLabelDimensions = function( ele, text ){
+		var style = ele._private.style;
+		var fStyle = style["font-style"].strValue;
+		var size = style["font-size"].pxValue + "px";
+		var family = style["font-family"].strValue;
+		var variant = style["font-variant"].strValue;
+		var weight = style["font-weight"].strValue;
+
+		var div = this.labelCalcDiv;
+
+		if( !div ){
+			div = this.labelCalcDiv = document.createElement("div");
+			document.body.appendChild( div );
+		}
+
+		var ds = div.style;
+
+		// from ele style
+		ds.fontFamily = family;
+		ds.fontStyle = fStyle;
+		ds.fontSize = size;
+		ds.fontVariant = variant;
+		ds.fontWeight = weight;
+
+		// forced style
+		ds.position = "absolute";
+		ds.left = "-9999px";
+		ds.top = "-9999px";
+		ds.zIndex = "-1";
+		ds.visibility = "hidden";
+		ds.padding = "0";
+		ds.lineHeight = "1";
+
+		// put label content in div
+		div.innerText = text;
+
+		return {
+			width: div.clientWidth,
+			height: div.clientHeight
+		};
+	};	
+
+	CanvasRenderer.prototype.recalculateRenderedStyle = function(){
+		this.recalculateEdgeProjections();
+		this.recalculateLabelProjections();
+	};
+
+	CanvasRenderer.prototype.recalculateLabelProjections = function(){
+		var nodes = this.getCachedNodes();
+		for( var i = 0; i < nodes.length; i++ ){
+			this.recalculateNodeLabelProjection( nodes[i] );
+		}
+
+		var edges = this.getCachedEdges();
+		for( var i = 0; i < edges.length; i++ ){
+			this.recalculateEdgeLabelProjection( edges[i] );
+		}
+	};
+
+	CanvasRenderer.prototype.recalculateEdgeProjections = function(){
+		var edges = this.getCachedEdges();
+
+		this.findEdgeControlPoints( edges );
+	};
+
+
 	// Find edge control points
 	CanvasRenderer.prototype.findEdgeControlPoints = function(edges) {
 		var hashTable = {}; var cy = this.data.cy;
 		var pairIds = [];
 		
+		// create a table of edge (src, tgt) => list of edges between them
 		var pairId;
 		for (var i = 0; i < edges.length; i++){
+			var edge = edges[i];
 
 			// ignore edges who are not to be displayed
 			// they shouldn't take up space
-			if( edges[i]._private.style.display.value === 'none' ){
+			if( edge._private.style.display.value === 'none' ){
 				continue;
 			}
 
-			pairId = edges[i]._private.data.source > edges[i]._private.data.target ?
-				edges[i]._private.data.target + '-' + edges[i]._private.data.source :
-				edges[i]._private.data.source + '-' + edges[i]._private.data.target ;
+			var srcId = edge._private.data.source;
+			var tgtId = edge._private.data.target;
+
+			pairId = srcId > tgtId ?
+				tgtId + '-' + srcId :
+				srcId + '-' + tgtId ;
 
 			if (hashTable[pairId] == undefined) {
 				hashTable[pairId] = [];
 			}
 			
-			hashTable[pairId].push( edges[i] );
+			hashTable[pairId].push( edge );
 			pairIds.push( pairId );
 		}
-		var src, tgt;
+
+		var src, tgt, srcPos, tgtPos, srcW, srcH, tgtW, tgtH, srcShape, tgtShape, srcBorder, tgtBorder;
+		var midpt;
+		var vectorNormInverse;
+		var badBezier;
 		
+		// for each pair (src, tgt), create the ctrl pts
 		// Nested for loop is OK; total number of iterations for both loops = edgeCount	
 		for (var p = 0; p < pairIds.length; p++) {
 			pairId = pairIds[p];
@@ -10936,50 +11039,116 @@ var cytoscape;
 			src = cy.getElementById( hashTable[pairId][0]._private.data.source );
 			tgt = cy.getElementById( hashTable[pairId][0]._private.data.target );
 
-			var midPointX = (src._private.position.x + tgt._private.position.x) / 2;
-			var midPointY = (src._private.position.y + tgt._private.position.y) / 2;
+			srcPos = src._private.position;
+			tgtPos = tgt._private.position;
+
+			srcW = this.getNodeWidth(src);
+			srcH = this.getNodeHeight(src);
+
+			tgtW = this.getNodeWidth(tgt);
+			tgtH = this.getNodeHeight(tgt);
+
+			srcShape = CanvasRenderer.nodeShapes[ this.getNodeShape(src) ];
+			tgtShape = CanvasRenderer.nodeShapes[ this.getNodeShape(tgt) ];
+
+			srcBorder = src._private.style["border-width"].pxValue;
+			tgtBorder = tgt._private.style["border-width"].pxValue;
 			
-			var displacementX, displacementY;
-			
+
 			if (hashTable[pairId].length > 1) {
-				displacementX = tgt._private.position.y - src._private.position.y;
-				displacementY = src._private.position.x - tgt._private.position.x;
+
+				// pt outside src shape to calc distance/displacement from src to tgt
+				var srcOutside = srcShape.intersectLine(
+					srcPos.x,
+					srcPos.y,
+					srcW,
+					srcH,
+					tgtPos.x,
+					tgtPos.y,
+					srcBorder / 2
+				);
+
+				// pt outside tgt shape to calc distance/displacement from src to tgt
+				var tgtOutside = tgtShape.intersectLine(
+					tgtPos.x,
+					tgtPos.y,
+					tgtW,
+					tgtH,
+					srcPos.x,
+					srcPos.y,
+					tgtBorder / 2
+				);
+
+				var midpt = {
+					x: ( srcOutside[0] + tgtOutside[0] )/2,
+					y: ( srcOutside[1] + tgtOutside[1] )/2
+				};
+
+				var dy = ( tgtOutside[1] - srcOutside[1] );
+				var dx = ( tgtOutside[0] - srcOutside[0] );
+				var l = Math.sqrt( dx*dx + dy*dy );
+
+				var vector = {
+					x: dx,
+					y: dy
+				};
 				
-				var displacementLength = Math.sqrt(displacementX * displacementX
-					+ displacementY * displacementY);
+				var vectorNorm = {
+					x: vector.x/l,
+					y: vector.y/l
+				};
+				vectorNormInverse = {
+					x: -vectorNorm.y,
+					y: vectorNorm.x
+				};
+
+				// if src intersection is inside tgt or tgt intersection is inside src, then no ctrl pts to draw
+				if( 
+					tgtShape.checkPoint( srcOutside[0], srcOutside[1], tgtBorder/2, tgtW, tgtH, tgtPos.x, tgtPos.y )  ||
+					srcShape.checkPoint( tgtOutside[0], tgtOutside[1], srcBorder/2, srcW, srcH, srcPos.x, srcPos.y ) 
+				){
+					vectorNormInverse = {};
+					badBezier = true;
+				}
 				
-				displacementX /= displacementLength;
-				displacementY /= displacementLength;
 			}
 			
 			var edge;
+			var rs;
 			
 			for (var i = 0; i < hashTable[pairId].length; i++) {
 				edge = hashTable[pairId][i];
+				rs = edge._private.rscratch;
 				
-				var edgeIndex1 = edge._private.rscratch.lastEdgeIndex;
+				var edgeIndex1 = rs.lastEdgeIndex;
 				var edgeIndex2 = i;
 
-				var numEdges1 = edge._private.rscratch.lastNumEdges;
+				var numEdges1 = rs.lastNumEdges;
 				var numEdges2 = hashTable[pairId].length;
 
-				var srcX1 = edge._private.rscratch.lastSrcCtlPtX;
-				var srcX2 = src._private.position.x;
-				var srcY1 = edge._private.rscratch.lastSrcCtlPtY;
-				var srcY2 = src._private.position.y;
-				var srcW1 = edge._private.rscratch.lastSrcCtlPtW;
+				var srcX1 = rs.lastSrcCtlPtX;
+				var srcX2 = srcPos.x;
+				var srcY1 = rs.lastSrcCtlPtY;
+				var srcY2 = srcPos.y;
+				var srcW1 = rs.lastSrcCtlPtW;
 				var srcW2 = src.outerWidth();
-				var srcH1 = edge._private.rscratch.lastSrcCtlPtH;
+				var srcH1 = rs.lastSrcCtlPtH;
 				var srcH2 = src.outerHeight();
 
-				var tgtX1 = edge._private.rscratch.lastTgtCtlPtX;
-				var tgtX2 = tgt._private.position.x;
-				var tgtY1 = edge._private.rscratch.lastTgtCtlPtY;
-				var tgtY2 = tgt._private.position.y;
-				var tgtW1 = edge._private.rscratch.lastTgtCtlPtW;
+				var tgtX1 = rs.lastTgtCtlPtX;
+				var tgtX2 = tgtPos.x;
+				var tgtY1 = rs.lastTgtCtlPtY;
+				var tgtY2 = tgtPos.y;
+				var tgtW1 = rs.lastTgtCtlPtW;
 				var tgtW2 = tgt.outerWidth();
-				var tgtH1 = edge._private.rscratch.lastTgtCtlPtH;
+				var tgtH1 = rs.lastTgtCtlPtH;
 				var tgtH2 = tgt.outerHeight();
+
+				if( badBezier ){
+					rs.badBezier = true;
+				} else {
+					rs.badBezier = false;
+				}
 
 				if( srcX1 === srcX2 && srcY1 === srcY2 && srcW1 === srcW2 && srcH1 === srcH2
 				&&  tgtX1 === tgtX2 && tgtY1 === tgtY2 && tgtW1 === tgtW2 && tgtH1 === tgtH2
@@ -10987,8 +11156,6 @@ var cytoscape;
 					// console.log('edge ctrl pt cache HIT')
 					continue; // then the control points haven't changed and we can skip calculating them
 				} else {
-					var rs = edge._private.rscratch;
-
 					rs.lastSrcCtlPtX = srcX2;
 					rs.lastSrcCtlPtY = srcY2;
 					rs.lastSrcCtlPtW = srcW2;
@@ -11002,47 +11169,47 @@ var cytoscape;
 					// console.log('edge ctrl pt cache MISS')
 				}
 
+				var stepSize = edge._private.style["control-point-step-size"].value;
+
 				// Self-edge
-				if (src._private.data.id == tgt._private.data.id) {
-					var stepSize = edge._private.style["control-point-step-size"].pxValue;
+				if ( src.id() == tgt.id() ) {
 						
-					edge._private.rscratch.edgeType = "self";
+					rs.edgeType = "self";
 					
 					// New -- fix for large nodes
-					edge._private.rscratch.cp2ax = src._private.position.x;
-					edge._private.rscratch.cp2ay = src._private.position.y
-						- (1 + Math.pow(this.getNodeHeight(src), 1.12) / 100) * stepSize * (i / 3 + 1);
+					rs.cp2ax = srcPos.x;
+					rs.cp2ay = srcPos.y - (1 + Math.pow(srcH, 1.12) / 100) * stepSize * (i / 3 + 1);
 					
-					edge._private.rscratch.cp2cx = src._private.position.x
-						- (1 + Math.pow(this.getNodeWidth(src), 1.12) / 100) * stepSize * (i / 3 + 1);
-					edge._private.rscratch.cp2cy = src._private.position.y;
+					rs.cp2cx = src._private.position.x - (1 + Math.pow(srcW, 1.12) / 100) * stepSize * (i / 3 + 1);
+					rs.cp2cy = srcPos.y;
 					
-					edge._private.rscratch.selfEdgeMidX =
-						(edge._private.rscratch.cp2ax + edge._private.rscratch.cp2cx) / 2.0;
-				
-					edge._private.rscratch.selfEdgeMidY =
-						(edge._private.rscratch.cp2ay + edge._private.rscratch.cp2cy) / 2.0;
+					rs.selfEdgeMidX = (rs.cp2ax + rs.cp2cx) / 2.0;
+					rs.selfEdgeMidY = (rs.cp2ay + rs.cp2cy) / 2.0;
 					
 				// Straight edge
 				} else if (hashTable[pairId].length % 2 == 1
 					&& i == Math.floor(hashTable[pairId].length / 2)) {
 					
-					edge._private.rscratch.edgeType = "straight";
+					rs.edgeType = "straight";
 					
 				// Bezier edge
 				} else {
-					var stepSize = edge._private.style["control-point-step-size"].value;
 					var distanceFromMidpoint = (0.5 - hashTable[pairId].length / 2 + i) * stepSize;
 					
-					edge._private.rscratch.edgeType = "bezier";
+					rs.edgeType = "bezier";
 					
-					edge._private.rscratch.cp2x = midPointX
-						+ displacementX * distanceFromMidpoint;
-					edge._private.rscratch.cp2y = midPointY
-						+ displacementY * distanceFromMidpoint;
+					rs.cp2x = midpt.x + vectorNormInverse.x * distanceFromMidpoint;
+					rs.cp2y = midpt.y + vectorNormInverse.y * distanceFromMidpoint;
 					
 					// console.log(edge, midPointX, displacementX, distanceFromMidpoint);
 				}
+
+				// find endpts for edge
+				this.findEndpoints( edge );
+
+				// project the edge into rstyle
+				this.projectBezier( edge );
+
 			}
 		}
 		
@@ -11055,207 +11222,195 @@ var cytoscape;
 		var source = edge.source()[0];
 		var target = edge.target()[0];
 		
-//		var sourceRadius = Math.max(edge.source()[0]._private.style["width"].value,
-//			edge.source()[0]._private.style["height"].value);
+		var srcPos = source._private.position;
+		var tgtPos = target._private.position;
 
-		var sourceRadius = Math.max(this.getNodeWidth(source),
-			this.getNodeHeight(source));
-		
-//		var targetRadius = Math.max(edge.target()[0]._private.style["width"].value,
-//			edge.target()[0]._private.style["height"].value);
+		var tgtArShape = edge._private.style["target-arrow-shape"].value;
+		var srcArShape = edge._private.style["source-arrow-shape"].value;
 
-		var targetRadius = Math.max(this.getNodeWidth(target),
-			this.getNodeHeight(target));
+		var tgtBorderW = target._private.style["border-width"].pxValue;
+		var srcBorderW = source._private.style["border-width"].pxValue;
 
-		sourceRadius = 0;
-		targetRadius /= 2;
-		
-		var start = [edge.source().position().x, edge.source().position().y];
-		var end = [edge.target().position().x, edge.target().position().y];
+		var rs = edge._private.rscratch;
 		
 		if (edge._private.rscratch.edgeType == "self") {
 			
-			var cp = [edge._private.rscratch.cp2cx, edge._private.rscratch.cp2cy];
+			var cp = [rs.cp2cx, rs.cp2cy];
 			
 			intersect = CanvasRenderer.nodeShapes[this.getNodeShape(target)].intersectLine(
 				target._private.position.x,
 				target._private.position.y,
-				//target._private.style["width"].value,
-				//target._private.style["height"].value,
 				this.getNodeWidth(target),
 				this.getNodeHeight(target),
-				cp[0], //halfPointX,
-				cp[1], //halfPointY
-				target._private.style["border-width"].value / 2
+				cp[0],
+				cp[1], 
+				tgtBorderW / 2
 			);
 			
 			var arrowEnd = $$.math.shortenIntersection(intersect, cp,
-				CanvasRenderer.arrowShapes[edge._private.style["target-arrow-shape"].value].spacing(edge));
+				CanvasRenderer.arrowShapes[tgtArShape].spacing(edge));
 			var edgeEnd = $$.math.shortenIntersection(intersect, cp,
-				CanvasRenderer.arrowShapes[edge._private.style["target-arrow-shape"].value].gap(edge));
+				CanvasRenderer.arrowShapes[tgtArShape].gap(edge));
 			
-			edge._private.rscratch.endX = edgeEnd[0];
-			edge._private.rscratch.endY = edgeEnd[1];
+			rs.endX = edgeEnd[0];
+			rs.endY = edgeEnd[1];
 			
-			edge._private.rscratch.arrowEndX = arrowEnd[0];
-			edge._private.rscratch.arrowEndY = arrowEnd[1];
+			rs.arrowEndX = arrowEnd[0];
+			rs.arrowEndY = arrowEnd[1];
 			
-			var cp = [edge._private.rscratch.cp2ax, edge._private.rscratch.cp2ay];
+			var cp = [rs.cp2ax, rs.cp2ay];
 
 			intersect = CanvasRenderer.nodeShapes[this.getNodeShape(source)].intersectLine(
 				source._private.position.x,
 				source._private.position.y,
-				//source._private.style["width"].value,
-				//source._private.style["height"].value,
 				this.getNodeWidth(source),
 				this.getNodeHeight(source),
 				cp[0], //halfPointX,
 				cp[1], //halfPointY
-				source._private.style["border-width"].value / 2
+				srcBorderW / 2
 			);
 			
 			var arrowStart = $$.math.shortenIntersection(intersect, cp,
-				CanvasRenderer.arrowShapes[edge._private.style["source-arrow-shape"].value].spacing(edge));
+				CanvasRenderer.arrowShapes[srcArShape].spacing(edge));
 			var edgeStart = $$.math.shortenIntersection(intersect, cp,
-				CanvasRenderer.arrowShapes[edge._private.style["source-arrow-shape"].value].gap(edge));
+				CanvasRenderer.arrowShapes[srcArShape].gap(edge));
 			
-			edge._private.rscratch.startX = edgeStart[0];
-			edge._private.rscratch.startY = edgeStart[1];
+			rs.startX = edgeStart[0];
+			rs.startY = edgeStart[1];
+
+
+			rs.arrowStartX = arrowStart[0];
+			rs.arrowStartY = arrowStart[1];
 			
-			edge._private.rscratch.arrowStartX = arrowStart[0];
-			edge._private.rscratch.arrowStartY = arrowStart[1];
-			
-		} else if (edge._private.rscratch.edgeType == "straight") {
+		} else if (rs.edgeType == "straight") {
 		
 			intersect = CanvasRenderer.nodeShapes[this.getNodeShape(target)].intersectLine(
 				target._private.position.x,
 				target._private.position.y,
-				//target._private.style["width"].value,
-				//target._private.style["height"].value,
 				this.getNodeWidth(target),
 				this.getNodeHeight(target),
 				source.position().x,
 				source.position().y,
-				target._private.style["border-width"].value / 2);
+				tgtBorderW / 2);
 				
 			if (intersect.length == 0) {
-				edge._private.rscratch.noArrowPlacement = true;
+				rs.noArrowPlacement = true;
 	//			return;
 			} else {
-				edge._private.rscratch.noArrowPlacement = false;
+				rs.noArrowPlacement = false;
 			}
 			
 			var arrowEnd = $$.math.shortenIntersection(intersect,
 				[source.position().x, source.position().y],
-				CanvasRenderer.arrowShapes[edge._private.style["target-arrow-shape"].value].spacing(edge));
+				CanvasRenderer.arrowShapes[tgtArShape].spacing(edge));
 			var edgeEnd = $$.math.shortenIntersection(intersect,
 				[source.position().x, source.position().y],
-				CanvasRenderer.arrowShapes[edge._private.style["target-arrow-shape"].value].gap(edge));
+				CanvasRenderer.arrowShapes[tgtArShape].gap(edge));
 
-			edge._private.rscratch.endX = edgeEnd[0];
-			edge._private.rscratch.endY = edgeEnd[1];
+			rs.endX = edgeEnd[0];
+			rs.endY = edgeEnd[1];
 			
-			edge._private.rscratch.arrowEndX = arrowEnd[0];
-			edge._private.rscratch.arrowEndY = arrowEnd[1];
+			rs.arrowEndX = arrowEnd[0];
+			rs.arrowEndY = arrowEnd[1];
 		
 			intersect = CanvasRenderer.nodeShapes[this.getNodeShape(source)].intersectLine(
 				source._private.position.x,
 				source._private.position.y,
-				//source._private.style["width"].value,
-				//source._private.style["height"].value,
 				this.getNodeWidth(source),
 				this.getNodeHeight(source),
 				target.position().x,
 				target.position().y,
-				source._private.style["border-width"].value / 2);
+				srcBorderW / 2);
 			
 			if (intersect.length == 0) {
-				edge._private.rscratch.noArrowPlacement = true;
+				rs.noArrowPlacement = true;
 	//			return;
 			} else {
-				edge._private.rscratch.noArrowPlacement = false;
+				rs.noArrowPlacement = false;
 			}
 			
 			/*
 			console.log("1: "
-				+ CanvasRenderer.arrowShapes[edge._private.style["source-arrow-shape"].value],
-					edge._private.style["source-arrow-shape"].value);
+				+ CanvasRenderer.arrowShapes[srcArShape],
+					srcArShape);
 			*/
 			var arrowStart = $$.math.shortenIntersection(intersect,
 				[target.position().x, target.position().y],
-				CanvasRenderer.arrowShapes[edge._private.style["source-arrow-shape"].value].spacing(edge));
+				CanvasRenderer.arrowShapes[srcArShape].spacing(edge));
 			var edgeStart = $$.math.shortenIntersection(intersect,
 				[target.position().x, target.position().y],
-				CanvasRenderer.arrowShapes[edge._private.style["source-arrow-shape"].value].gap(edge));
+				CanvasRenderer.arrowShapes[srcArShape].gap(edge));
 
-			edge._private.rscratch.startX = edgeStart[0];
-			edge._private.rscratch.startY = edgeStart[1];
+			rs.startX = edgeStart[0];
+			rs.startY = edgeStart[1];
 			
-			edge._private.rscratch.arrowStartX = arrowStart[0];
-			edge._private.rscratch.arrowStartY = arrowStart[1];
+			rs.arrowStartX = arrowStart[0];
+			rs.arrowStartY = arrowStart[1];
 						
-		} else if (edge._private.rscratch.edgeType == "bezier") {
-			
-			var cp = [edge._private.rscratch.cp2x, edge._private.rscratch.cp2y];
-			
-			// Point at middle of Bezier
-			var halfPointX = start[0] * 0.25 + end[0] * 0.25 + cp[0] * 0.5;
-			var halfPointY = start[1] * 0.25 + end[1] * 0.25 + cp[1] * 0.5;
+		} else if (rs.edgeType == "bezier") {
+			// if( window.badArrow) debugger;
+			var cp = [rs.cp2x, rs.cp2y];
 			
 			intersect = CanvasRenderer.nodeShapes[
 				this.getNodeShape(target)].intersectLine(
 				target._private.position.x,
 				target._private.position.y,
-				//target._private.style["width"].value,
-				//target._private.style["height"].value,
 				this.getNodeWidth(target),
 				this.getNodeHeight(target),
 				cp[0], //halfPointX,
 				cp[1], //halfPointY
-				target._private.style["border-width"].value / 2
+				tgtBorderW / 2
 			);
 			
 			/*
 			console.log("2: "
-				+ CanvasRenderer.arrowShapes[edge._private.style["source-arrow-shape"].value],
-					edge._private.style["source-arrow-shape"].value);
+				+ CanvasRenderer.arrowShapes[srcArShape],
+					srcArShape);
 			*/
 			var arrowEnd = $$.math.shortenIntersection(intersect, cp,
-				CanvasRenderer.arrowShapes[edge._private.style["target-arrow-shape"].value].spacing(edge));
+				CanvasRenderer.arrowShapes[tgtArShape].spacing(edge));
 			var edgeEnd = $$.math.shortenIntersection(intersect, cp,
-				CanvasRenderer.arrowShapes[edge._private.style["target-arrow-shape"].value].gap(edge));
+				CanvasRenderer.arrowShapes[tgtArShape].gap(edge));
 			
-			edge._private.rscratch.endX = edgeEnd[0];
-			edge._private.rscratch.endY = edgeEnd[1];
+			rs.endX = edgeEnd[0];
+			rs.endY = edgeEnd[1];
 			
-			edge._private.rscratch.arrowEndX = arrowEnd[0];
-			edge._private.rscratch.arrowEndY = arrowEnd[1];
+			rs.arrowEndX = arrowEnd[0];
+			rs.arrowEndY = arrowEnd[1];
 			
 			intersect = CanvasRenderer.nodeShapes[
 				this.getNodeShape(source)].intersectLine(
 				source._private.position.x,
 				source._private.position.y,
-				//source._private.style["width"].value,
-				//source._private.style["height"].value,
 				this.getNodeWidth(source),
 				this.getNodeHeight(source),
 				cp[0], //halfPointX,
 				cp[1], //halfPointY
-				source._private.style["border-width"].value / 2
+				srcBorderW / 2
 			);
 			
-			var arrowStart = $$.math.shortenIntersection(intersect, cp,
-				CanvasRenderer.arrowShapes[edge._private.style["source-arrow-shape"].value].spacing(edge));
-			var edgeStart = $$.math.shortenIntersection(intersect, cp,
-				CanvasRenderer.arrowShapes[edge._private.style["source-arrow-shape"].value].gap(edge));
+			var arrowStart = $$.math.shortenIntersection(
+				intersect, 
+				cp,
+				CanvasRenderer.arrowShapes[srcArShape].spacing(edge)
+			);
+			var edgeStart = $$.math.shortenIntersection(
+				intersect, 
+				cp,
+				CanvasRenderer.arrowShapes[srcArShape].gap(edge)
+			);
+		
+			rs.startX = edgeStart[0];
+			rs.startY = edgeStart[1];
 			
-			edge._private.rscratch.startX = edgeStart[0];
-			edge._private.rscratch.startY = edgeStart[1];
+			rs.arrowStartX = arrowStart[0];
+			rs.arrowStartY = arrowStart[1];
 			
-			edge._private.rscratch.arrowStartX = arrowStart[0];
-			edge._private.rscratch.arrowStartY = arrowStart[1];
-			
-		} else if (edge._private.rscratch.isArcEdge) {
+			// if( isNaN(rs.startX) || isNaN(rs.startY) ){
+			// 	debugger;
+			// }
+
+		} else if (rs.isArcEdge) {
 			return;
 		}
 	}
@@ -11306,6 +11461,13 @@ var cytoscape;
 		}
 
 		if( this.hideEdgesOnViewport && (this.dragData.didDrag || this.pinching || this.hoverData.dragging || this.data.wheel || this.swipePanning) ){ return; } // save cycles on pinching
+
+		var rs = edge._private.rscratch;
+
+		// if bezier ctrl pts can not be calculated, then die
+		if( rs.badBezier ){
+			return;
+		}
 
 		var startNode, endNode;
 
@@ -11367,6 +11529,15 @@ var cytoscape;
 				details.cp2cx, details.cp2cy, details.endX, details.endY],
 				lineStyle,
 				edgeWidth);
+
+			// DEBUG: draw projected bezier pts
+			// context.fillStyle = 'red';
+			// var bpts = edge._private.rstyle.bezierPts;
+			// for( var i = 0; i < bpts.length; i++ ){
+			// 	var pt = bpts[i];
+
+			// 	context.fillRect(pt.x, pt.y, 2, 2);
+			// }
 			
 		} else if (edge._private.rscratch.edgeType == "straight") {
 			
@@ -11393,10 +11564,28 @@ var cytoscape;
 		} else {
 			
 			var details = edge._private.rscratch;
+
+			// context.fillStyle = 'rgba(255, 0, 0, 1)';
+			// context.fillRect(details.startX, details.startY, 2, 2);
+			// context.fillRect(details.endX, details.endY, 2, 2);
+
+			// context.fillStyle = edge._private.style['line-color'].strValue;
+			// context.fillRect(details.cp2x, details.cp2y, 2, 2);
+
+			
 			this.drawStyledEdge(edge, context, [details.startX, details.startY,
 				details.cp2x, details.cp2y, details.endX, details.endY],
 				lineStyle,
 				edgeWidth);
+
+			// DEBUG: draw projected bezier pts
+			// context.fillStyle = 'red';
+			// var bpts = edge._private.rstyle.bezierPts;
+			// for( var i = 0; i < bpts.length; i++ ){
+			// 	var pt = bpts[i];
+
+			// 	context.fillRect(pt.x, pt.y, 2, 2);
+			// }
 			
 		}
 		
@@ -11473,60 +11662,6 @@ var cytoscape;
 //		width = Math.max(width * 1.6, 3.4) * zoom;
 
 		//		console.log("w", width);
-		
-		// from http://en.wikipedia.org/wiki/Bézier_curve#Quadratic_curves
-		function qbezierAt(p0, p1, p2, t){
-			return (1 - t)*(1 - t)*p0 + 2*(1 - t)*t*p1 + t*t*p2;
-		}
-
-		if( edge._private.rstyle.bezierPts === undefined ){
-			edge._private.rstyle.bezierPts = [];
-		}
-
-		var nBpts = edge._private.rstyle.bezierPts.length;
-		if( edge.isLoop() ){
-			if( nBpts >= 12 ){
-				edge._private.rstyle.bezierPts = [];
-			} else {
-				// append to current array
-			}
-		} else {
-			edge._private.rstyle.bezierPts = [];
-		}
-
-		var bpts = edge._private.rstyle.bezierPts;
-
-		if( pts.length === 6 ){
-			bpts.push({
-				x: qbezierAt( pts[0], pts[2], pts[4], 0.05 ),
-				y: qbezierAt( pts[1], pts[3], pts[5], 0.05 )
-			});
-
-			bpts.push({
-				x: qbezierAt( pts[0], pts[2], pts[4], 0.25 ),
-				y: qbezierAt( pts[1], pts[3], pts[5], 0.25 )
-			});
-
-			bpts.push({
-				x: qbezierAt( pts[0], pts[2], pts[4], 0.35 ),
-				y: qbezierAt( pts[1], pts[3], pts[5], 0.35 )
-			});
-
-			bpts.push({
-				x: qbezierAt( pts[0], pts[2], pts[4], 0.65 ),
-				y: qbezierAt( pts[1], pts[3], pts[5], 0.65 )
-			});
-
-			bpts.push({
-				x: qbezierAt( pts[0], pts[2], pts[4], 0.75 ),
-				y: qbezierAt( pts[1], pts[3], pts[5], 0.75 )
-			});
-
-			bpts.push({
-				x: qbezierAt( pts[0], pts[2], pts[4], 0.95 ),
-				y: qbezierAt( pts[1], pts[3], pts[5], 0.95 )
-			});
-		}
 
 		if (type == "solid") {
 			
@@ -11710,41 +11845,68 @@ var cytoscape;
 		var startX = edge._private.rscratch.arrowStartX;
 		var startY = edge._private.rscratch.arrowStartY;
 		
-		dispX = startX - edge.source().position().x;
-		dispY = startY - edge.source().position().y;
+		var srcPos = edge.source().position();
+		dispX = startX - srcPos.x;
+		dispY = startY - srcPos.y;
 		
 		if( !isNaN(startX) && !isNaN(startY) && !isNaN(dispX) && !isNaN(dispY) ){
 
-			//this.context.strokeStyle = "rgba("
+			var gco = context.globalCompositeOperation;
+
+			context.globalCompositeOperation = "destination-out";
+		
+			context.lineWidth = edge._private.style["width"].pxValue;
+			
+			context.fillStyle = 'white';
+
+			this.drawArrowShape(context, edge._private.style["source-arrow-shape"].value, 
+				startX, startY, dispX, dispY);
+
+			context.globalCompositeOperation = gco;
+
 			context.fillStyle = "rgba("
 				+ edge._private.style["source-arrow-color"].value[0] + ","
 				+ edge._private.style["source-arrow-color"].value[1] + ","
 				+ edge._private.style["source-arrow-color"].value[2] + ","
 				+ edge._private.style.opacity.value + ")";
-			
-			context.lineWidth = edge._private.style["width"].pxValue;
-			
+
 			this.drawArrowShape(context, edge._private.style["source-arrow-shape"].value, 
 				startX, startY, dispX, dispY);
+
+		} else {
+			// window.badArrow = true;
+			// debugger;
 		}
 		
 		var endX = edge._private.rscratch.arrowEndX;
 		var endY = edge._private.rscratch.arrowEndY;
 		
-		dispX = endX - edge.target().position().x;
-		dispY = endY - edge.target().position().y;
+		var tgtPos = edge.target().position();
+		dispX = endX - tgtPos.x;
+		dispY = endY - tgtPos.y;
 		
 		if( !isNaN(endX) && !isNaN(endY) && !isNaN(dispX) && !isNaN(dispY) ){
+
+			var gco = context.globalCompositeOperation;
+
+			context.globalCompositeOperation = "destination-out";
+
+			context.lineWidth = edge._private.style["width"].pxValue;
+
+			context.fillStyle = 'white';
+
+			this.drawArrowShape(context, edge._private.style["target-arrow-shape"].value,
+				endX, endY, dispX, dispY);
+
+			context.globalCompositeOperation = gco;
 
 			//this.context.strokeStyle = "rgba("
 			context.fillStyle = "rgba("
 				+ edge._private.style["target-arrow-color"].value[0] + ","
 				+ edge._private.style["target-arrow-color"].value[1] + ","
 				+ edge._private.style["target-arrow-color"].value[2] + ","
-				+ edge._private.style.opacity.value + ")";
-			
-			context.lineWidth = edge._private.style["width"].pxValue;
-
+				+ edge._private.style.opacity.value + ")";	
+		
 			this.drawArrowShape(context, edge._private.style["target-arrow-shape"].value,
 				endX, endY, dispX, dispY);
 		}
@@ -11953,35 +12115,10 @@ var cytoscape;
 		context.textAlign = "center";
 		context.textBaseline = "middle";
 		
-		var textX, textY;	
-		var edgeCenterX, edgeCenterY;
+		this.recalculateEdgeLabelProjection( edge );
 		
-		if (edge._private.rscratch.edgeType == "self") {
-			edgeCenterX = edge._private.rscratch.selfEdgeMidX;
-			edgeCenterY = edge._private.rscratch.selfEdgeMidY;
-		} else if (edge._private.rscratch.edgeType == "straight") {
-			edgeCenterX = (edge._private.rscratch.startX
-				+ edge._private.rscratch.endX) / 2;
-			edgeCenterY = (edge._private.rscratch.startY
-				+ edge._private.rscratch.endY) / 2;
-		} else if (edge._private.rscratch.edgeType == "bezier") {
-			edgeCenterX = 0.25 * edge._private.rscratch.startX
-				+ 2 * 0.5 * 0.5 * edge._private.rscratch.cp2x
-				+ (0.5 * 0.5) * edge._private.rscratch.endX;
-			edgeCenterY = Math.pow(1 - 0.5, 2) * edge._private.rscratch.startY
-				+ 2 * (1 - 0.5) * 0.5 * edge._private.rscratch.cp2y
-				+ (0.5 * 0.5) * edge._private.rscratch.endY;
-		}
-		
-		textX = edgeCenterX;
-		textY = edgeCenterY;
-
-		// add center point to style so bounding box calculations can use it
-		var rstyle = edge._private.rstyle;
-		rstyle.labelX = textX;
-		rstyle.labelY = textY;
-		
-		this.drawText(context, edge, textX, textY);
+		var rs = edge._private.rscratch;
+		this.drawText(context, edge, rs.labelX, rs.labelY);
 	};
 
 	// Draw node text
@@ -11997,80 +12134,61 @@ var cytoscape;
 		if( computedSize < minSize ){
 			return;
 		}
-	
-		var textX, textY;
+			
+		this.recalculateNodeLabelProjection( node );
 
-		//var nodeWidth = node._private.style["width"].value;
-		//var nodeHeight = node._private.style["height"].value;
-		var nodeWidth = this.getNodeWidth(node);
-		var nodeHeight = this.getNodeHeight(node);
-	
-		// Find text position
 		var textHalign = node._private.style["text-halign"].strValue;
-		if (textHalign == "left") {
-			// Align right boundary of text with left boundary of node
-			context.textAlign = "right";
-			textX = node._private.position.x - nodeWidth / 2;
-		} else if (textHalign == "right") {
-			// Align left boundary of text with right boundary of node
-			context.textAlign = "left";
-			textX = node._private.position.x + nodeWidth / 2;
-		} else if (textHalign == "center") {
-			context.textAlign = "center";
-			textX = node._private.position.x;
-		} else {
-			// Same as center
-			context.textAlign = "center";
-			textX = node._private.position.x;
-		}
-		
 		var textValign = node._private.style["text-valign"].strValue;
-		if (textValign == "top") {
-			context.textBaseline = "bottom";
-			textY = node._private.position.y - nodeHeight / 2;
-		} else if (textValign == "bottom") {
-			context.textBaseline = "top";
-			textY = node._private.position.y + nodeHeight / 2;
-		} else if (textValign == "middle" || textValign == "center") {
-			context.textBaseline = "middle";
-			textY = node._private.position.y;
-		} else {
-			// same as center
-			context.textBaseline = "middle";
-			textY = node._private.position.y;
+		var rs = node._private.rscratch;
+
+		switch( textHalign ){
+			case "left":
+				context.textAlign = "right";
+				break;
+
+			case "right":
+				context.textAlign = "left";
+				break;
+
+			case "center":
+			default:
+				context.textAlign = "center";
 		}
-		
-		this.drawText(context, node, textX, textY);
+
+		switch( textValign ){
+			case "top":
+				context.textBaseline = "bottom";
+				break;
+
+			case "bottom":
+				context.textBaseline = "top";
+				break;
+
+			case "center":
+			default:
+				context.textBaseline = "middle";
+		}
+
+		this.drawText(context, node, rs.labelX, rs.labelY);
 	};
 	
-	// Draw text
-	CanvasRenderer.prototype.drawText = function(context, element, textX, textY) {
-	
-		var parentOpacity = 1;
-		var parents = element.parents();
-		for( var i = 0; i < parents.length; i++ ){
-			var parent = parents[i];
-			var opacity = parent._private.style.opacity.value;
-
-			parentOpacity = opacity * parentOpacity;
-
-			if( opacity === 0 ){
-				return;
-			}
-		}
-
+	// set up canvas context with font
+	// returns transformed text string
+	CanvasRenderer.prototype.setupTextStyle = function( context, element ){
 		// Font style
-		var labelStyle = element._private.style["font-style"].strValue;
-		var labelSize = element._private.style["font-size"].pxValue + "px";
-		var labelFamily = element._private.style["font-family"].strValue;
-		var labelVariant = element._private.style["font-variant"].strValue;
-		var labelWeight = element._private.style["font-weight"].strValue;
+		var parentOpacity = element.effectiveOpacity();
+		var style = element._private.style;
+		var labelStyle = style["font-style"].strValue;
+		var labelSize = style["font-size"].pxValue + "px";
+		var labelFamily = style["font-family"].strValue;
+		var labelVariant = style["font-variant"].strValue;
+		var labelWeight = style["font-weight"].strValue;
 		
 		context.font = labelStyle + " " + labelWeight + " "
 			+ labelSize + " " + labelFamily;
 		
-		var text = String(element._private.style["content"].value);
-		var textTransform = element._private.style["text-transform"].value;
+		var text = String(style["content"].value);
+		var textTransform = style["text-transform"].value;
 		
 		if (textTransform == "none") {
 		} else if (textTransform == "uppercase") {
@@ -12085,34 +12203,38 @@ var cytoscape;
 		context.lineJoin = 'round';
 
 		context.fillStyle = "rgba(" 
-			+ element._private.style["color"].value[0] + ","
-			+ element._private.style["color"].value[1] + ","
-			+ element._private.style["color"].value[2] + ","
-			+ (element._private.style["text-opacity"].value
-			* element._private.style["opacity"].value * parentOpacity) + ")";
+			+ style["color"].value[0] + ","
+			+ style["color"].value[1] + ","
+			+ style["color"].value[2] + ","
+			+ (style["text-opacity"].value
+			* style["opacity"].value * parentOpacity) + ")";
 		
 		context.strokeStyle = "rgba(" 
-			+ element._private.style["text-outline-color"].value[0] + ","
-			+ element._private.style["text-outline-color"].value[1] + ","
-			+ element._private.style["text-outline-color"].value[2] + ","
-			+ (element._private.style["text-opacity"].value
-			* element._private.style["opacity"].value * parentOpacity) + ")";
-		
-		if (text != undefined) {
-			var lineWidth = 2  * element._private.style["text-outline-width"].value; // *2 b/c the stroke is drawn centred on the middle
+			+ style["text-outline-color"].value[0] + ","
+			+ style["text-outline-color"].value[1] + ","
+			+ style["text-outline-color"].value[2] + ","
+			+ (style["text-opacity"].value
+			* style["opacity"].value * parentOpacity) + ")";
+
+		return text;
+	}
+
+	// Draw text
+	CanvasRenderer.prototype.drawText = function(context, element, textX, textY) {
+		var style = element._private.style;
+		var parentOpacity = element.effectiveOpacity();
+		if( parentOpacity === 0 ){ return; }
+
+		var text = this.setupTextStyle( context, element );
+
+		if ( text != undefined && !isNaN(textX) && !isNaN(textY) ) {
+			var lineWidth = 2  * style["text-outline-width"].value; // *2 b/c the stroke is drawn centred on the middle
 			if (lineWidth > 0) {
 				context.lineWidth = lineWidth;
 				context.strokeText(text, textX, textY);
 			}
 
-			// Thanks sysord@github for the isNaN checks!
-			if (isNaN(textX)) { textX = 0; }
-			if (isNaN(textY)) { textY = 0; }
-
 			context.fillText("" + text, textX, textY);
-
-			// record the text's width for use in bounding box calc
-			element._private.rstyle.labelWidth = context.measureText( text ).width;
 		}
 	};
 
@@ -12132,18 +12254,11 @@ var cytoscape;
 			return;
 		}
 
-		var parentOpacity = 1;
-		var parents = node.parents();
-		for( var i = 0; i < parents.length; i++ ){
-			var parent = parents[i];
-			var opacity = parent._private.style.opacity.value;
+		var parentOpacity = node.effectiveOpacity();
+		if( parentOpacity === 0 ){ return; }
 
-			parentOpacity = opacity * parentOpacity;
-
-			if( opacity === 0 ){
-				return;
-			}
-		}
+		// context.fillStyle = "orange";
+		// context.fillRect(node.position().x, node.position().y, 2, 2);
 		
 		nodeWidth = this.getNodeWidth(node);
 		nodeHeight = this.getNodeHeight(node);
@@ -12491,13 +12606,10 @@ var cytoscape;
 			effectivePan.x *= pixelRatio;
 			effectivePan.y *= pixelRatio;
 			
-			var elements = [];
-			for( var i = 0; i < nodes.length; i++ ){
-				elements.push( nodes[i] );
-			}
-			for( var i = 0; i < edges.length; i++ ){
-				elements.push( edges[i] );
-			}
+			var elements;
+			var elesInDragLayer;
+			var elesNotInDragLayer;
+			var element;
 
 			function setContextTransform(context){
 				context.setTransform(1, 0, 0, 1, 0, 0);
@@ -12529,73 +12641,73 @@ var cytoscape;
 			
 
 				// console.time('sort'); for( var looper = 0; looper <= looperMax; looper++ ){
-				var elements = r.getCachedZSortedEles();
+				elements = r.getCachedZSortedEles();
 				// } console.timeEnd('sort')
+
+				elesInDragLayer = [];
+				elesNotInDragLayer = [];
+
+				for (var index = 0; index < elements.length; index++) {
+					element = elements[index];
+
+					if ( element._private.rscratch.inDragLayer ) {
+						elesInDragLayer.push( element );
+					} else {
+						elesNotInDragLayer.push( element );
+					}
+				}
 
 				// console.time('updatecompounds'); for( var looper = 0; looper <= looperMax; looper++ ){
 				// no need to update graph if there is no compound node
-				if ( cy.hasCompoundNodes() )
-				{
-					r.updateAllCompounds(elements);
-				}
+				// if ( cy.hasCompoundNodes() )
+				// {
+				// 	r.updateAllCompounds(elements);
+				// }
 				// } console.timeEnd('updatecompounds')
 			}
 			
-			var elesInDragLayer;
-			var elesNotInDragLayer;
-			var element;
+			
+			function drawElements( eleList, context ){
+				var edges = [];
+				var nodes = [];
+
+				for (var i = 0; i < eleList.length; i++) {
+					ele = eleList[i];
+					
+					if ( ele.isNode() ) {
+						nodes.push( ele );
+						
+					} else if ( ele.isEdge() ) {
+						r.drawEdge(context, ele);
+						edges.push( ele );
+					}
+				}
+
+				for (var i = 0; i < edges.length; i++) {
+					ele = edges[i];
+					
+					r.drawEdgeText(context, ele);
+					r.drawEdge(context, ele, true);
+				}
+
+				for( var i = 0; i < nodes.length; i++ ){
+					var ele = nodes[i];
+
+					r.drawNode(context, ele);
+					r.drawNodeText(context, ele);
+					r.drawNode(context, ele, true);
+				}
+			}
 
 
 			// console.time('drawing'); for( var looper = 0; looper <= looperMax; looper++ ){
 			if (data.canvasNeedsRedraw[CanvasRenderer.NODE] || drawAllLayers) {
 				// console.log("redrawing node layer");
 			  
-			  	if( !elesInDragLayer || !elesNotInDragLayer ){
-					elesInDragLayer = [];
-					elesNotInDragLayer = [];
-
-					for (var index = 0; index < elements.length; index++) {
-						element = elements[index];
-
-						if ( element._private.rscratch.inDragLayer ) {
-							elesInDragLayer.push( element );
-						} else {
-							elesNotInDragLayer.push( element );
-						}
-					}
-				}	
-
 				var context = forcedContext || data.canvases[CanvasRenderer.NODE].getContext("2d");
 
 				setContextTransform( context );
-				
-				for (var index = 0; index < elesNotInDragLayer.length; index++) {
-					element = elesNotInDragLayer[index];
-					
-					if (element._private.group == "nodes") {
-						r.drawNode(context, element);
-						
-					} else if (element._private.group == "edges") {
-						r.drawEdge(context, element);
-					}
-				}
-				
-				for (var index = 0; index < elesNotInDragLayer.length; index++) {
-					element = elesNotInDragLayer[index];
-					
-					if (element._private.group == "nodes") {
-						r.drawNodeText(context, element);
-					} else if (element._private.group == "edges") {
-						r.drawEdgeText(context, element);
-					}
-
-					// draw the overlay
-					if (element._private.group == "nodes") {
-						r.drawNode(context, element, true);
-					} else if (element._private.group == "edges") {
-						r.drawEdge(context, element, true);
-					}
-				}
+				drawElements(elesNotInDragLayer, context);
 				
 				if( !drawAllLayers ){
 					data.canvasNeedsRedraw[CanvasRenderer.NODE] = false; 
@@ -12604,53 +12716,10 @@ var cytoscape;
 			
 			if (data.canvasNeedsRedraw[CanvasRenderer.DRAG] || drawAllLayers) {
 			  
-				if( !elesInDragLayer || !elesNotInDragLayer ){
-					elesInDragLayer = [];
-					elesNotInDragLayer = [];
-
-					for (var index = 0; index < elements.length; index++) {
-						element = elements[index];
-
-						if ( element._private.rscratch.inDragLayer ) {
-							elesInDragLayer.push( element );
-						} else {
-							elesNotInDragLayer.push( element );
-						}
-					}
-				}
-
 				var context = forcedContext || data.canvases[CanvasRenderer.DRAG].getContext("2d");
 				
 				setContextTransform( context );
-				
-				var element;
-
-				for (var index = 0; index < elesInDragLayer.length; index++) {
-					element = elesInDragLayer[index];
-					
-					if (element._private.group == "nodes") {
-						r.drawNode(context, element);
-					} else if (element._private.group == "edges") {
-						r.drawEdge(context, element);
-					}
-				}
-				
-				for (var index = 0; index < elesInDragLayer.length; index++) {
-					element = elesInDragLayer[index];
-					
-					if (element._private.group == "nodes") {
-						r.drawNodeText(context, element);
-					} else if (element._private.group == "edges") {
-						r.drawEdgeText(context, element);
-					}
-
-					// draw the overlay
-					if (element._private.group == "nodes") {
-						r.drawNode(context, element, true);
-					} else if (element._private.group == "edges") {
-						r.drawEdge(context, element, true);
-					}
-				}
+				drawElements(elesInDragLayer, context);
 				
 				if( !drawAllLayers ){
 					data.canvasNeedsRedraw[CanvasRenderer.DRAG] = false;
@@ -13068,9 +13137,7 @@ var cytoscape;
 			var near = r.findNearestElement(pos[0], pos[1], true);
 			var down = r.hoverData.down;
 			var draggedElements = r.dragData.possibleDragElements;
-			var grabEvent = new $$.Event(e, {
-				type: "grab"
-			});
+			var grabEvent = new $$.Event("grab");
 
 			// Right click button
 			if( e.which == 3 ){
@@ -13374,23 +13441,26 @@ var cytoscape;
 				if ( down && down.isNode() && r.nodeIsDraggable(down) ) {
 					r.dragData.didDrag = true; // indicate that we actually did drag the node
 
+					r.hoverData.draggingEles = true;
+
 					var toTrigger = [];
-					for (var i=0; i<draggedElements.length; i++) {
-
+					new $$.Collection(cy, draggedElements).positions(function(i, ele){
 						// Locked nodes not draggable, as well as non-visible nodes
-						if (draggedElements[i]._private.group == "nodes"
-							&& r.nodeIsDraggable(draggedElements[i])) {
+						if (ele.isNode() && r.nodeIsDraggable(ele)) {
+							var pos = ele.position();
 							
-							draggedElements[i]._private.position.x += disp[0];
-							draggedElements[i]._private.position.y += disp[1];
+							return {
+								x: pos.x + disp[0],
+								y: pos.y + disp[1]
+							};
 
-							toTrigger.push( draggedElements[i] );
+							toTrigger.push( ele );
 						}
-					}
+					});
+					
 					
 					(new $$.Collection(cy, toTrigger))
 						.trigger("drag")
-						.trigger("position")
 					;
 
 					if (select[2] == select[0] && select[3] == select[1]) {
@@ -13434,6 +13504,7 @@ var cytoscape;
 			clearTimeout( r.bgActiveTimeout );
 
 			r.hoverData.cxtStarted = false;
+			r.hoverData.draggingEles = false;
 
 			if( down ){
 				down.unactivate();
@@ -13700,7 +13771,7 @@ var cytoscape;
 			var rpos = [pos[0] * cy.zoom() + cy.pan().x,
 			              pos[1] * cy.zoom() + cy.pan().y];
 			
-			if( r.hoverData.dragging || r.hoverData.cxtStarted || inBoxSelection() ){ // if pan dragging or cxt dragging, wheel movements make no zoom
+			if( r.hoverData.draggingEles || r.hoverData.dragging || r.hoverData.cxtStarted || inBoxSelection() ){ // if pan dragging or cxt dragging, wheel movements make no zoom
 				e.preventDefault();
 				return;
 			}
@@ -14191,21 +14262,20 @@ var cytoscape;
 				if ( start != null && start._private.group == "nodes" && r.nodeIsDraggable(start)) {
 					var draggedEles = r.dragData.touchDragEles;
 
-					for( var k = 0; k < draggedEles.length; k++ ){
-						var draggedEle = draggedEles[k];
-
+					var dEleCol = new $$.Collection(cy, draggedEles).positions(function(i, draggedEle){
 						if( r.nodeIsDraggable(draggedEle) ){
 							r.dragData.didDrag = true;
+							var pos = draggedEle.position();
 
-							draggedEle._private.position.x += disp[0];
-							draggedEle._private.position.y += disp[1];
-			
+							return {
+								x: pos.x + disp[0],
+								y: pos.y + disp[1]
+							};
 						}
-					}
+					});
 
-					( new $$.Collection(cy, draggedEles) )
+					dEleCol
 						.trigger("drag")
-						.trigger("position")
 					;
 					
 					r.data.canvasNeedsRedraw[CanvasRenderer.DRAG] = true;
@@ -15550,7 +15620,7 @@ var cytoscape;
 			nodes.positions(function(i, element){
 				var x, y;
 
-				if( element.locked() ){
+				if( element.locked() || element.isFullAutoParent() ){
 					return false;
 				}
 
@@ -15750,7 +15820,7 @@ var cytoscape;
 		simBB.x2 = simBB[2];
 		simBB.y2 = simBB[3];
 
-		// arbor doesn't work with just 1 node
+		// arbor doesn't work with just 1 node 
 		if( cy.nodes().size() <= 1 ){
 			if( options.fit ){
 				cy.reset();
@@ -15761,8 +15831,8 @@ var cytoscape;
 				y: Math.round( (simBB.y1 + simBB.y2)/2 )
 			});
 
-			cy.one("layoutstop", options.stop);
-			cy.trigger("layoutstop");
+			cy.one("layoutready", options.ready);
+			cy.trigger("layoutready");
 
 			cy.one("layoutstop", options.stop);
 			cy.trigger("layoutstop");
@@ -15808,12 +15878,13 @@ var cytoscape;
 					if( node == null ){
 						return;
 					}
-					var pos = node._private.position;
 					
 					if( !node.locked() && !node.grabbed() ){
-						pos.x = simBB.x1 + point.x;
-						pos.y = simBB.y1 + point.y;
-						
+						node.silentPosition({
+							x: simBB.x1 + point.x,
+							y: simBB.y1 + point.y
+						});
+
 						movedNodes.push( node );
 					}
 				});
@@ -15892,9 +15963,15 @@ var cytoscape;
 		nodes.bind("grab drag dragstop", grabHandler);
 			  	
 		nodes.each(function(i, node){
+			if( this.isFullAutoParent() ){ return; } // they don't exist in the sim
+
 			var id = this._private.data.id;
 			var mass = calculateValueForElement(this, options.nodeMass);
 			var locked = this._private.locked;
+
+			if( node.isFullAutoParent() ){
+				return;
+			}
 			
 			var pos = fromScreen({
 				x: node.position().x,
@@ -16010,7 +16087,9 @@ var cytoscape;
         var options = params;
         
         var cy = params.cy;
-        var nodes = cy.nodes();
+        var nodes = cy.nodes().filter(function(){
+            return !this.isFullAutoParent();
+        });
         var edges = cy.edges();
         var container = cy.container();
         
@@ -16432,37 +16511,55 @@ var cytoscape;
 	 * @brief :  default layout options
 	 */
 	var defaults = {
+		// Called on `layoutready`
 		ready               : function() {},
+
+		// Called on `layoutstop`
 		stop                : function() {},
 
 		// Number of iterations between consecutive screen positions update (0 -> only updated on the end)
 		refresh             : 0,
+		
 		// Whether to fit the network view after when done
 		fit                 : true, 
+
+		// Padding on fit
+		padding             : 30, 
+
+
 		// Whether to randomize node positions on the beginning
 		randomize           : true,
+		
 		// Whether to use the JS console to print debug messages
 		debug               : false,
 
 		// Node repulsion (non overlapping) multiplier
 		nodeRepulsion       : 10000,
+		
 		// Node repulsion (overlapping) multiplier
 		nodeOverlap         : 10,
+		
 		// Ideal edge (non nested) length
 		idealEdgeLength     : 10,
+		
 		// Divisor to compute edge forces
 		edgeElasticity      : 100,
+		
 		// Nesting factor (multiplier) to compute ideal edge length for nested edges
 		nestingFactor       : 5, 
+		
 		// Gravity force (constant)
 		gravity             : 250, 
 		
 		// Maximum number of iterations to perform
 		numIter             : 100,
+		
 		// Initial temperature (maximum node displacement)
 		initialTemp         : 200,
+		
 		// Cooling factor (how the temperature is reduced between consecutive iterations
 		coolingFactor       : 0.95, 
+		
 		// Lower temperature threshold (below this point the layout will end)
 		minTemp             : 1
 	};
@@ -16505,10 +16602,13 @@ var cytoscape;
 		// If required, randomize node positions
 		if (true == options.randomize) {
 			randomizePositions(layoutInfo, cy);
+
 			if (0 < options.refresh) {
 				refreshPositions(layoutInfo, cy, options);
 			}
 		}
+
+		updatePositions(layoutInfo, cy, options);
 
 		// Main loop
 		for (var i = 0; i < options.numIter; i++) {
@@ -16534,7 +16634,7 @@ var cytoscape;
 
 		// Fit the graph if necessary
 		if (true == options.fit) {
-			cy.fit();
+			cy.fit( options.padding );
 		}
 		
 		// Get end time
@@ -16872,9 +16972,9 @@ var cytoscape;
 		for (var i = 0; i < layoutInfo.nodeSize; i++) {
 			var n = layoutInfo.layoutNodes[i];
 			// No need to randomize compound nodes
-			if (0 == n.children.length) {
-			n.positionX = Math.random() * width;
-			n.positionY = Math.random() * height;
+			if (true || 0 == n.children.length) {
+				n.positionX = Math.random() * width;
+				n.positionY = Math.random() * height;
 			}
 		}
 	}
