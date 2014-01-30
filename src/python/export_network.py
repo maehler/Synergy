@@ -3,6 +3,8 @@ import argparse
 import networkx as nx
 import json
 import urllib2
+from matplotlib import pyplot as plt
+from matplotlib.colors import ColorConverter
 
 def as_network(d):
 	G = nx.Graph()
@@ -18,23 +20,44 @@ def as_network(d):
 				}
 			}
 		)
-	for e in d['edges']:
-		G.add_edge(e['data']['source'], e['data']['target'],
-			{
-				'graphics': {
-					'width': int(e['data']['weight'])
+	if 'edges' in d:
+		for e in d['edges']:
+			G.add_edge(e['data']['source'], e['data']['target'],
+				{
+					'graphics': {
+						'width': int(e['data']['weight'])
+					}
 				}
-			}
-		)
+			)
 
 	return G
+
+def get_positions(G):
+	ids = []
+	x = []
+	y = []
+	for n in G.nodes(data=True):
+		ids.append(n[0])
+		x.append(n[1]['graphics']['x'])
+		y.append(n[1]['graphics']['y'])
+	ymax = max(y)
+	ry = [abs(yi - ymax) for yi in y]
+	return {nid: (xi, yi) for nid, xi, yi in zip(ids, x, ry)}
+
+def get_edge_widths(G):
+	w = []
+	for e in G.edges(data=True):
+		w.append(e[2]['graphics']['width'])
+	wmax = max(w)
+	wmin = min(w)
+	return [x * (2 - 0.1) / (wmax - wmin) for x in w]
 
 def parse_args():
 	parser = argparse.ArgumentParser()
 
 	parser.add_argument('json', help='JSON string of the network')
 	parser.add_argument('--type', help='filetype of output',
-		choices=('gml'), default='gml')
+		choices=('gml', 'png', 'pdf'), default='gml')
 
 	args = parser.parse_args()
 	return args
@@ -46,7 +69,29 @@ def main():
 
 	G = as_network(network)
 
-	nx.write_gml(G, sys.stdout)
+	if args.type == 'gml':
+		nx.write_gml(G, sys.stdout)
+	elif args.type == 'png' or args.type == 'pdf':
+		ax = plt.axes(frameon=False)
+		ax.get_yaxis().set_visible(False)
+		ax.get_xaxis().set_visible(False)
+		nodepos = get_positions(G)
+		if 'edges' in network:
+			nx.draw_networkx_edges(G,
+				pos=nodepos,
+				edge_color='0.6',
+				width=get_edge_widths(G))
+		nx.draw_networkx_nodes(G, 
+			pos=nodepos, 
+			node_color='#219D1A',
+			ax=ax,
+			linewidths=0.5,
+			node_size=100)
+		nx.draw_networkx_labels(G,
+			pos={n: (x, y + 17) for n, (x, y) in nodepos.iteritems()},
+			labels=nx.get_node_attributes(G, 'label'),
+			font_size=6)
+		plt.savefig(sys.stdout, dpi=300, bbox_inches='tight', format=args.type)
 
 if __name__ == '__main__':
 	main()

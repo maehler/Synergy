@@ -122,6 +122,36 @@ class Api extends MY_Controller {
 		force_download('network.gml', $data);
 	}
 
+	function export_png_network() {
+		$jsonNetwork = $this->input->post('json');
+		$this->load->helper('python_helper');
+		$this->load->helper('download');
+
+		$data = run_python('export_network.py',
+			array(
+				$jsonNetwork,
+				'--type', 'png'
+			)
+		);
+
+		force_download('network.png', $data);
+	}
+
+	function export_pdf_network() {
+		$jsonNetwork = $this->input->post('json');
+		$this->load->helper('python_helper');
+		$this->load->helper('download');
+
+		$data = run_python('export_network.py',
+			array(
+				$jsonNetwork,
+				'--type', 'pdf'
+			)
+		);
+
+		force_download('network.pdf', $data);
+	}
+
 	// Enrichment functions
 	function goenrichment() {
 		$this->load->helper('python_helper');

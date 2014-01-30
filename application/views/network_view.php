@@ -40,6 +40,8 @@
 	<hr>
 	<div>
 		<button id="export-gml">Export GML</button>
+		<button id="export-png">Export PNG</button>
+		<button id="export-pdf">Export PDF</button>
 	</div>
 </aside>
 

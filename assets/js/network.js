@@ -72,6 +72,16 @@ function exportGML() {
 	$.download('api/export_gml_network', {'json': encodeURI(jsonNetwork)}, 'POST');
 }
 
+function exportPNG() {
+	var jsonNetwork = JSON.stringify(cy.json().elements);
+	$.download('api/export_png_network', {'json': encodeURI(jsonNetwork)}, 'POST');
+}
+
+function exportPDF() {
+	var jsonNetwork = JSON.stringify(cy.json().elements);
+	$.download('api/export_pdf_network', {'json': encodeURI(jsonNetwork)}, 'POST');
+}
+
 function searchNetwork() {
 	cy.nodes().unselect();
 	var sstring = $('#network-search-input').val();
@@ -273,4 +283,6 @@ $(function () {
 	$('#basket-remove').click(removeFromBasket);
 
 	$('#export-gml').click(exportGML);
+	$('#export-png').click(exportPNG);
+	$('#export-pdf').click(exportPDF);
 });
