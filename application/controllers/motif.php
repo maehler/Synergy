@@ -9,10 +9,21 @@ class Motif extends MY_Controller {
 
 	function details($motif) {
 		$motif_data = $this->motif_model->get($motif);
+		if (!isset($motif_data['motif_name'])) {
+			$motif_data['motif_name'] = NULL;
+		}
 
-		$this->load->view('base/header', $this->get_head_data('', $motif_data['motif_name']));
+		$motif_data['genes'] = $this->motif_model->get_motif_genes($motif);
+
+		$this->load->view('base/header', $this->get_head_data('', 
+			$motif_data['motif_name'], array(
+				base_url(array('assets', 'css', 'datatables', 'jquery.dataTables.css'))
+			)
+		));
 		$this->load->view('motif_details', $motif_data);
 		$this->load->view('base/footer', $this->get_foot_data(array(
+			base_url(array('assets', 'js', 'jquery.dataTables.min.js')),
+			base_url(array('assets', 'js', 'jquery.dataTables.sorting.js')),
 			base_url(array('assets', 'js', 'isblogo.js')),
 			base_url(array('assets', 'js', 'motif.js'))
 		)));
