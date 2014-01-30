@@ -5,6 +5,7 @@ import json
 import urllib2
 from matplotlib import pyplot as plt
 from matplotlib.colors import ColorConverter
+from collections import defaultdict
 
 def as_network(d):
 	G = nx.Graph()
@@ -52,6 +53,15 @@ def get_edge_widths(G):
 	wmin = min(w)
 	return [x * (2 - 0.1) / (wmax - wmin) for x in w]
 
+def get_node_types(G):
+	types = defaultdict(list)
+	for n in G.nodes(data=True):
+		if n[1]['graphics']['type'] == 'rectangle':
+			types['s'].append(n[0])
+		else:
+			types['o'].append(n[0])
+	return types
+
 def parse_args():
 	parser = argparse.ArgumentParser()
 
@@ -81,17 +91,21 @@ def main():
 				pos=nodepos,
 				edge_color='0.6',
 				width=get_edge_widths(G))
-		nx.draw_networkx_nodes(G, 
-			pos=nodepos, 
-			node_color='#219D1A',
-			ax=ax,
-			linewidths=0.5,
-			node_size=100)
+		for shape, nodes in get_node_types(G).iteritems():
+			nx.draw_networkx_nodes(G,
+				pos=nodepos,
+				nodelist=nodes,
+				node_color='#219D1A',
+				ax=ax,
+				linewidths=0.5,
+				node_size=100,
+				node_shape=shape)
 		nx.draw_networkx_labels(G,
 			pos={n: (x, y + 17) for n, (x, y) in nodepos.iteritems()},
 			labels=nx.get_node_attributes(G, 'label'),
 			font_size=6)
-		plt.savefig(sys.stdout, dpi=300, bbox_inches='tight', format=args.type)
+		bbox = None if G.number_of_nodes() == 1 else 'tight'
+		plt.savefig(sys.stdout, dpi=300, bbox_inches=bbox, format=args.type)
 
 if __name__ == '__main__':
 	main()
