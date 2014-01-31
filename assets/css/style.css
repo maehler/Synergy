@@ -65,23 +65,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Navigation */
-nav {
+header nav {
 	position: absolute;
 	bottom: -1px;
 	left: -10px;
 }
-	nav ul {
+	header nav ul {
 		list-style-type: none;
 		margin: 0 !important;
 		padding-left: 20px;
 	}
-	nav li {
+	header nav li {
 		display: inline-block;
 		margin: 0;
 		padding: 0;
 		margin-right: 4px;
 	}
-	nav a {
+	header nav a {
 		display: block;
 		border: 1px solid #000;
 		border-radius: 5px 5px 0 0;
@@ -91,11 +91,15 @@ nav {
 		font-size: 12pt;
 		color: #000;
 	}
-	nav a:hover { background-color: #FFF; }
-	nav a.active {
+	header nav a:hover { background-color: #FFF; }
+	header nav a.active {
 		background-color: #FFF;
 		border-bottom: 1px solid #FFF;
 	}
+
+nav ul {
+	list-style-type: circle;
+}
 /* End navigation */
 
 /* Alignment */
