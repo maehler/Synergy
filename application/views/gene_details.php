@@ -28,7 +28,8 @@
 		<tr>
 			<th>External resources</th>
 			<td><a class="external" href="http://genome.microbedb.jp/cyanobase/Synechocystis/genes/<?php echo $orf_id ?>">CyanoBase</a>,
-				<a class="external" href="http://www.genome.jp/dbget-bin/www_bget?syn:<?php echo $orf_id ?>">KEGG</a>
+				<a class="external" href="http://www.genome.jp/dbget-bin/www_bget?syn:<?php echo $orf_id ?>">KEGG</a>,
+				<a class="external" href="http://www.ncbi.nlm.nih.gov/gene?Db=gene&amp;Cmd=DetailsSearch&amp;Term=<?php echo $orf_id ?>">NCBI</a>
 			</td>
 		</tr>
 	</table>
