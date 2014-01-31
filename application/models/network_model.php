@@ -3,6 +3,8 @@
 /*
 Model for getting JSON networks that match the cytoscape.js specification.
 Will not include co-regulation.
+
+NOTE: In the `corr` table, gene1_id is ALWAYS larger than gene2_id!
 */
 class Network_model extends CI_Model {
 
