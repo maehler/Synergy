@@ -25,6 +25,12 @@
 			<th class="align-right">Regulatory function</th>
 			<td><?php echo $tf == 1 ? 'Yes' : 'No' ?></td>
 		</tr>
+		<tr>
+			<th>External resources</th>
+			<td><a class="external" href="http://genome.microbedb.jp/cyanobase/Synechocystis/genes/<?php echo $orf_id ?>">CyanoBase</a>,
+				<a class="external" href="http://www.genome.jp/dbget-bin/www_bget?syn:<?php echo $orf_id ?>">KEGG</a>
+			</td>
+		</tr>
 	</table>
 </section>
 
