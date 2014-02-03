@@ -188,4 +188,32 @@ class Api extends MY_Controller {
 			->set_content_type('application/json')
 			->set_output($output);
 	}
+
+	// Gene lists
+	function genelist($type) {
+		$this->load->model('genelist_model');
+
+		switch ($type) {
+			case 'go':
+				$data = $this->genelist_model->get_datatable('golist_view');
+				break;
+			case 'motif':
+				$data = $this->genelist_model->get_datatable('motiflist_view');
+				break;
+			case 'coexp':
+				$data = $this->genelist_model->get_datatable('coexplist_view');
+				break;
+			case 'regulatory':
+				$data = $this->genelist_model->get_datatable('tflist_view');
+				break;
+			
+			default:
+				# code...
+				break;
+		}
+
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($data));
+	}
 }
