@@ -55,18 +55,120 @@
 
 		<div id="go-tab">
 			<p>GO lists</p>
+			<table id="go-list-table">
+				<thead>
+					<tr>
+						<th>GO</th>
+						<th>Description</th>
+						<th>Genes</th>
+						<th>GO enr. FDR &lt; 0.05</th>
+						<th>Min GO enr. FDR</th>
+						<th>Motif enr. FDR &lt; 0.05</th>
+						<th>Min motif enr. FDR</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+				<tfoot>
+					<tr>
+						<th>GO</th>
+						<th>Description</th>
+						<th>Genes</th>
+						<th>GO enr. FDR &lt; 0.05</th>
+						<th>Min GO enr. FDR</th>
+						<th>Motif enr. FDR &lt; 0.05</th>
+						<th>Min motif enr. FDR</th>
+						<th></th>
+					</tr>
+				</tfoot>
+			</table>
 		</div>
 
 		<div id="motif-tab">
 			<p>Motif lists</p>
+			<table id="motif-list-table">
+				<thead>
+					<tr>
+						<th>Motif</th>
+						<th>Genes</th>
+						<th>GO enr. FDR &lt; 0.05</th>
+						<th>Min GO enr. FDR</th>
+						<th>Motif enr. FDR &lt; 0.05</th>
+						<th>Min motif enr. FDR</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+				<tfoot>
+					<tr>
+						<th>Motif</th>
+						<th>Genes</th>
+						<th>GO enr. FDR &lt; 0.05</th>
+						<th>Min GO enr. FDR</th>
+						<th>Motif enr. FDR &lt; 0.05</th>
+						<th>Min motif enr. FDR</th>
+						<th></th>
+					</tr>
+				</tfoot>
+			</table>
 		</div>
 
 		<div id="coexp-tab">
 			<p>Co-expression cluster lists</p>
+			<table id="coexp-list-table">
+				<thead>
+					<tr>
+						<th>Cluster</th>
+						<th>Genes</th>
+						<th>GO enr. FDR &lt; 0.05</th>
+						<th>Min GO enr. FDR</th>
+						<th>Motif enr. FDR &lt; 0.05</th>
+						<th>Min motif enr. FDR</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+				<tfoot>
+					<tr>
+						<th>Cluster</th>
+						<th>Genes</th>
+						<th>GO enr. FDR &lt; 0.05</th>
+						<th>Min GO enr. FDR</th>
+						<th>Motif enr. FDR &lt; 0.05</th>
+						<th>Min motif enr. FDR</th>
+						<th></th>
+					</tr>
+				</tfoot>
+			</table>
 		</div>
 
 		<div id="tf-tab">
 			<p>Regulatory gene neighborhood lists</p>
+			<table id="tf-list-table">
+				<thead>
+					<tr>
+						<th>Gene</th>
+						<th>Genes</th>
+						<th>GO enr. FDR &lt; 0.05</th>
+						<th>Min GO enr. FDR</th>
+						<th>Motif enr. FDR &lt; 0.05</th>
+						<th>Min motif enr. FDR</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+				<tfoot>
+					<tr>
+						<th>Gene</th>
+						<th>Genes</th>
+						<th>GO enr. FDR &lt; 0.05</th>
+						<th>Min GO enr. FDR</th>
+						<th>Motif enr. FDR &lt; 0.05</th>
+						<th>Min motif enr. FDR</th>
+						<th></th>
+					</tr>
+				</tfoot>
+			</table>
 		</div>
 	</div>
 </section>
