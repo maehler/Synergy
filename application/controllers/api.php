@@ -67,8 +67,10 @@ class Api extends MY_Controller {
 		$this->session->set_userdata(array('basket' => array()));
 	}
 
-	function replace_basket() {
-		$genes = $this->input->post('genes');
+	function replace_basket($genes=NULL) {
+		if ($genes === NULL) {
+			$genes = $this->input->post('genes');
+		}
 		$this->session->set_userdata(array('basket' => $genes));
 	}
 
