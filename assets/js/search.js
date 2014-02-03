@@ -158,55 +158,40 @@ $(function () {
 	// Gene lists
 	$('#list-wrapper').tabs();
 
-	$('#go-list-table').dataTable({
+	var listTableDefaults = {
 		aoColumnDefs: [
 			{bSortable: false, bSearchable: false, aTargets: [-1]}
 		],
 		bProcessing: true,
 		bServerSide: true,
+		sServerMethod: 'POST'
+	};
+
+	$('#go-list-table').dataTable($.extend({}, listTableDefaults, {
 		sAjaxSource: 'api/genelist/go',
-		sServerMethod: 'POST',
 		fnDrawCallback: function() {
 			$('#go-list-table .load-list').click(loadList);
 		}
-	});
+	}));
 
-	$('#motif-list-table').dataTable({
-		aoColumnDefs: [
-			{bSortable: false, bSearchable: false, aTargets: [-1]}
-		],
-		bProcessing: true,
-		bServerSide: true,
+	$('#motif-list-table').dataTable($.extend({}, listTableDefaults, {
 		sAjaxSource: 'api/genelist/motif',
-		sServerMethod: 'POST',
 		fnDrawCallback: function() {
 			$('#motif-list-table .load-list').click(loadList);
 		}
-	});
+	}));
 
-	$('#coexp-list-table').dataTable({
-		aoColumnDefs: [
-			{bSortable: false, bSearchable: false, aTargets: [-1]}
-		],
-		bProcessing: true,
-		bServerSide: true,
+	$('#coexp-list-table').dataTable($.extend({}, listTableDefaults, {
 		sAjaxSource: 'api/genelist/coexp',
-		sServerMethod: 'POST',
 		fnDrawCallback: function() {
 			$('#coexp-list-table .load-list').click(loadList);
 		}
-	});
+	}));
 
-	$('#tf-list-table').dataTable({
-		aoColumnDefs: [
-			{bSortable: false, bSearchable: false, aTargets: [-1]}
-		],
-		bProcessing: true,
-		bServerSide: true,
+	$('#tf-list-table').dataTable($.extend({}, listTableDefaults, {
 		sAjaxSource: 'api/genelist/regulatory',
-		sServerMethod: 'POST',
 		fnDrawCallback: function() {
 			$('#tf-list-table .load-list').click(loadList);
 		}
-	});
+	}));
 });
