@@ -68,4 +68,19 @@ class Genelist_model extends CI_Model {
 		}
 		return $output;
 	}
+
+	function get_list_genes($id) {
+		$this->db->select('gene_id')
+			->from('genelist_gene')
+			->where('list_name', $id);
+		$query = $this->db->get();
+		$res = $query->result_array();
+
+		$gene_ids = array();
+		foreach ($res as $row) {
+			$gene_ids[] = $row['gene_id'];
+		}
+
+		return $gene_ids;
+	}
 }

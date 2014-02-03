@@ -82,6 +82,13 @@ function updateBasket() {
 
 function loadList() {
 	console.log('Loading ' + this.id);
+	$.ajax({
+		url: 'api/load_list/' + this.id,
+		type: 'GET',
+		success: function () {
+			window.location = 'basket';
+		}
+	});
 }
 
 $(function () {

@@ -218,4 +218,12 @@ class Api extends MY_Controller {
 			->set_content_type('application/json')
 			->set_output(json_encode($data));
 	}
+
+	function load_list($id) {
+		$this->load->model('genelist_model');
+
+		$gene_ids = $this->genelist_model->get_list_genes($id);
+
+		$this->replace_basket($gene_ids);
+	}
 }
