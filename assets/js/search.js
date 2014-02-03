@@ -155,6 +155,9 @@ $(function () {
 	$('#list-wrapper').tabs();
 
 	$('#go-list-table').dataTable({
+		aoColumnDefs: [
+			{bSortable: false, bSearchable: false, aTargets: [-1]}
+		],
 		bProcessing: true,
 		bServerSide: true,
 		sAjaxSource: 'api/genelist/go',
@@ -162,6 +165,9 @@ $(function () {
 	});
 
 	$('#motif-list-table').dataTable({
+		aoColumnDefs: [
+			{bSortable: false, bSearchable: false, aTargets: [-1]}
+		],
 		bProcessing: true,
 		bServerSide: true,
 		sAjaxSource: 'api/genelist/motif',
@@ -169,6 +175,9 @@ $(function () {
 	});
 
 	$('#coexp-list-table').dataTable({
+		aoColumnDefs: [
+			{bSortable: false, bSearchable: false, aTargets: [-1]}
+		],
 		bProcessing: true,
 		bServerSide: true,
 		sAjaxSource: 'api/genelist/coexp',
@@ -176,6 +185,9 @@ $(function () {
 	});
 
 	$('#tf-list-table').dataTable({
+		aoColumnDefs: [
+			{bSortable: false, bSearchable: false, aTargets: [-1]}
+		],
 		bProcessing: true,
 		bServerSide: true,
 		sAjaxSource: 'api/genelist/regulatory',
