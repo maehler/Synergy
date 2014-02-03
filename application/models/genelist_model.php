@@ -18,6 +18,22 @@ class Genelist_model extends CI_Model {
 				", CONCAT('<button class=\"load-list\" id=\"', name, '\">Load</button>')", FALSE)
 			->from($view);
 
+		// FDR filtering
+		$gofilter = $this->input->post('gofilter');
+		$motiffilter = $this->input->post('motiffilter');
+
+		if ($gofilter == 1 && $motiffilter == 1) {
+			$this->db->where('(mingop < 0.05');
+		} else if ($gofilter == 1) {
+			$this->db->where('mingop < 0.05');
+		}
+
+		if ($motiffilter == 1 && $gofilter == 1) {
+			$this->db->where('minmotifp < 0.05)');
+		} else if ($motiffilter == 1) {
+			$this->db->where('minmotifp < 0.05');
+		}
+
 		// Filtering
 		$sSearch = $this->input->post('sSearch');
 		if ($sSearch && $sSearch != '') {
