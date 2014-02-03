@@ -49,6 +49,8 @@ table.dataTable td.highlight { background-color: #7FA34D !important; }
 .dataTables_wrapper {
 	position: relative;
 	clear: both;
+	margin-top: 10px;
+	margin-bottom: 10px;
 	*zoom: 1;
 }
 
