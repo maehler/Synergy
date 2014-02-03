@@ -153,4 +153,32 @@ $(function () {
 
 	// Gene lists
 	$('#list-wrapper').tabs();
+
+	$('#go-list-table').dataTable({
+		bProcessing: true,
+		bServerSide: true,
+		sAjaxSource: 'api/genelist/go',
+		sServerMethod: 'POST'
+	});
+
+	$('#motif-list-table').dataTable({
+		bProcessing: true,
+		bServerSide: true,
+		sAjaxSource: 'api/genelist/motif',
+		sServerMethod: 'POST'
+	});
+
+	$('#coexp-list-table').dataTable({
+		bProcessing: true,
+		bServerSide: true,
+		sAjaxSource: 'api/genelist/coexp',
+		sServerMethod: 'POST'
+	});
+
+	$('#tf-list-table').dataTable({
+		bProcessing: true,
+		bServerSide: true,
+		sAjaxSource: 'api/genelist/regulatory',
+		sServerMethod: 'POST'
+	});
 });
