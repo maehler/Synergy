@@ -15,7 +15,7 @@ class Genelist_model extends CI_Model {
 
 		// Continue with the standard datatable
 		$this->db->select("SQL_CALC_FOUND_ROWS " . implode(", ", $aoColumns) . 
-				", CONCAT('<button id=\"', name, '\">Load</button>')", FALSE)
+				", CONCAT('<button class=\"load-list\" id=\"', name, '\">Load</button>')", FALSE)
 			->from($view);
 
 		// Filtering
