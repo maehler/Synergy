@@ -150,4 +150,7 @@ $(function () {
 	$('#load-example').click(loadPhotosynthesisGenes);
 	$('#clear-selection').click(clearSelection);
 	$('#select-all').click(selectAll);
+
+	// Gene lists
+	$('#list-wrapper').tabs();
 });

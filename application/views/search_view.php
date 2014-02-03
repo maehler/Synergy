@@ -43,6 +43,34 @@
 	</div>
 </section>
 
+<section>
+	<h3>Gene lists</h3>
+	<div id="list-wrapper" class="small tabs">
+		<ul>
+			<li><a href="#go-tab">GO</a></li>
+			<li><a href="#motif-tab">Motifs</a></li>
+			<li><a href="#coexp-tab">Co-expression</a></li>
+			<li><a href="#tf-tab">Regulatory genes</a></li>
+		</ul>
+
+		<div id="go-tab">
+			<p>GO lists</p>
+		</div>
+
+		<div id="motif-tab">
+			<p>Motif lists</p>
+		</div>
+
+		<div id="coexp-tab">
+			<p>Co-expression cluster lists</p>
+		</div>
+
+		<div id="tf-tab">
+			<p>Regulatory gene neighborhood lists</p>
+		</div>
+	</div>
+</section>
+
 <script type="text/javascript">
 	var selected = <?php echo json_encode($basket); ?>
 </script>

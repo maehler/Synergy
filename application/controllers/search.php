@@ -16,12 +16,15 @@ class Search extends MY_Controller {
 		$this->load->helper('form');
 
 		$this->load->view('base/header', $this->get_head_data(
-			"search", "Gene search",
-			array(base_url(array('assets', 'css', 'datatables', 'jquery.dataTables.css')))
+			"search", "Gene search", array(
+				base_url(array('assets', 'css', 'datatables', 'jquery.dataTables.css')),
+				base_url(array('assets', 'css', 'jquery-ui-1.10.4.custom.css'))
+			)
 		));
 		$this->load->view('search_view', array('basket' => $basket));
 		$this->load->view('base/footer', $this->get_foot_data(
 			array(
+				base_url(array('assets', 'js', 'jquery-ui-1.10.4.custom.min.js')),
 				base_url(array('assets', 'js', 'search.js')),
 				base_url(array('assets', 'js', 'jquery.dataTables.min.js'))
 			)
