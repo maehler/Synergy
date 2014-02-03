@@ -80,6 +80,10 @@ function updateBasket() {
 	})
 }
 
+function loadList() {
+	console.log('Loading ' + this.id);
+}
+
 $(function () {
 	updateCount(selected.length);
 
@@ -161,7 +165,10 @@ $(function () {
 		bProcessing: true,
 		bServerSide: true,
 		sAjaxSource: 'api/genelist/go',
-		sServerMethod: 'POST'
+		sServerMethod: 'POST',
+		fnDrawCallback: function() {
+			$('#go-list-table .load-list').click(loadList);
+		}
 	});
 
 	$('#motif-list-table').dataTable({
@@ -171,7 +178,10 @@ $(function () {
 		bProcessing: true,
 		bServerSide: true,
 		sAjaxSource: 'api/genelist/motif',
-		sServerMethod: 'POST'
+		sServerMethod: 'POST',
+		fnDrawCallback: function() {
+			$('#motif-list-table .load-list').click(loadList);
+		}
 	});
 
 	$('#coexp-list-table').dataTable({
@@ -181,7 +191,10 @@ $(function () {
 		bProcessing: true,
 		bServerSide: true,
 		sAjaxSource: 'api/genelist/coexp',
-		sServerMethod: 'POST'
+		sServerMethod: 'POST',
+		fnDrawCallback: function() {
+			$('#coexp-list-table .load-list').click(loadList);
+		}
 	});
 
 	$('#tf-list-table').dataTable({
@@ -191,6 +204,9 @@ $(function () {
 		bProcessing: true,
 		bServerSide: true,
 		sAjaxSource: 'api/genelist/regulatory',
-		sServerMethod: 'POST'
+		sServerMethod: 'POST',
+		fnDrawCallback: function() {
+			$('#tf-list-table .load-list').click(loadList);
+		}
 	});
 });
