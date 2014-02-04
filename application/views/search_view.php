@@ -55,7 +55,18 @@
 
 		<div id="go-tab">
 			<p>GO lists</p>
-			<table id="go-list-table">
+			<p class="bold">Filter on FDR &lt; 0.05</p>
+			<input class="list-filter" id="golist-gofilter"
+            	type="checkbox" title="GO enrichment FDR &lt; 0.05"
+            	checked />
+            <label for="golist-gofilter" title="GO enrichment FDR &lt; 0.05">GO</label>
+            
+            <input class="list-filter" id="golist-motiffilter"
+            	type="checkbox" title="Motif enrichment FDR &lt; 0.05"
+            	checked />
+            <label for="golist-motiffilter" title="Motif enrichment FDR &lt; 0.05">Motif</label>
+
+			<table class="list-table" id="go-list-table">
 				<thead>
 					<tr>
 						<th>GO</th>
@@ -86,7 +97,19 @@
 
 		<div id="motif-tab">
 			<p>Motif lists</p>
-			<table id="motif-list-table">
+
+			<p class="bold">Filter on FDR &lt; 0.05</p>
+			<input class="list-filter" id="motiflist-gofilter"
+            	type="checkbox" title="GO enrichment FDR &lt; 0.05"
+            	checked />
+            <label for="motiflist-gofilter" title="GO enrichment FDR &lt; 0.05">GO</label>
+            
+            <input class="list-filter" id="motiflist-motiffilter"
+            	type="checkbox" title="Motif enrichment FDR &lt; 0.05"
+            	checked />
+            <label for="motiflist-motiffilter" title="Motif enrichment FDR &lt; 0.05">Motif</label>
+
+			<table class="list-table" id="motif-list-table">
 				<thead>
 					<tr>
 						<th>Motif</th>
@@ -115,7 +138,19 @@
 
 		<div id="coexp-tab">
 			<p>Co-expression cluster lists</p>
-			<table id="coexp-list-table">
+
+			<p class="bold">Filter on FDR &lt; 0.05</p>
+			<input class="list-filter" id="coexplist-gofilter"
+            	type="checkbox" title="GO enrichment FDR &lt; 0.05"
+            	checked />
+            <label for="coexplist-gofilter" title="GO enrichment FDR &lt; 0.05">GO</label>
+            
+            <input class="list-filter" id="coexplist-motiffilter"
+            	type="checkbox" title="Motif enrichment FDR &lt; 0.05"
+            	checked />
+            <label for="coexplist-motiffilter" title="Motif enrichment FDR &lt; 0.05">Motif</label>
+
+			<table class="list-table" id="coexp-list-table">
 				<thead>
 					<tr>
 						<th>Cluster</th>
@@ -144,7 +179,19 @@
 
 		<div id="tf-tab">
 			<p>Regulatory gene neighborhood lists</p>
-			<table id="tf-list-table">
+
+			<p class="bold">Filter on FDR &lt; 0.05</p>
+			<input class="list-filter" id="tflist-gofilter"
+            	type="checkbox" title="GO enrichment FDR &lt; 0.05"
+            	checked />
+            <label for="tflist-gofilter" title="GO enrichment FDR &lt; 0.05">GO</label>
+            
+            <input class="list-filter" id="tflist-motiffilter"
+            	type="checkbox" title="Motif enrichment FDR &lt; 0.05"
+            	checked />
+            <label for="tflist-motiffilter" title="Motif enrichment FDR &lt; 0.05">Motif</label>
+
+			<table class="list-table" id="tf-list-table">
 				<thead>
 					<tr>
 						<th>Gene</th>

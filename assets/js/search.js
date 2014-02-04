@@ -178,6 +178,16 @@ $(function () {
 		sAjaxSource: 'api/genelist/go',
 		fnDrawCallback: function() {
 			$('#go-list-table .load-list').click(loadList);
+		},
+		fnServerParams: function(aoData) {
+			aoData.push({
+                'name': 'gofilter',
+                'value': $('#golist-gofilter').prop('checked') ? 1 : 0
+            });
+            aoData.push({
+                'name': 'motiffilter',
+                'value': $('#golist-motiffilter').prop('checked') ? 1 : 0
+            });
 		}
 	}));
 
@@ -185,6 +195,16 @@ $(function () {
 		sAjaxSource: 'api/genelist/motif',
 		fnDrawCallback: function() {
 			$('#motif-list-table .load-list').click(loadList);
+		},
+		fnServerParams: function(aoData) {
+			aoData.push({
+                'name': 'gofilter',
+                'value': $('#motiflist-gofilter').prop('checked') ? 1 : 0
+            });
+            aoData.push({
+                'name': 'motiffilter',
+                'value': $('#motiflist-motiffilter').prop('checked') ? 1 : 0
+            });
 		}
 	}));
 
@@ -192,6 +212,16 @@ $(function () {
 		sAjaxSource: 'api/genelist/coexp',
 		fnDrawCallback: function() {
 			$('#coexp-list-table .load-list').click(loadList);
+		},
+		fnServerParams: function(aoData) {
+			aoData.push({
+                'name': 'gofilter',
+                'value': $('#coexplist-gofilter').prop('checked') ? 1 : 0
+            });
+            aoData.push({
+                'name': 'motiffilter',
+                'value': $('#coexplist-motiffilter').prop('checked') ? 1 : 0
+            });
 		}
 	}));
 
@@ -199,6 +229,21 @@ $(function () {
 		sAjaxSource: 'api/genelist/regulatory',
 		fnDrawCallback: function() {
 			$('#tf-list-table .load-list').click(loadList);
+		},
+		fnServerParams: function(aoData) {
+			aoData.push({
+                'name': 'gofilter',
+                'value': $('#tflist-gofilter').prop('checked') ? 1 : 0
+            });
+            aoData.push({
+                'name': 'motiffilter',
+                'value': $('#tflist-motiffilter').prop('checked') ? 1 : 0
+            });
 		}
 	}));
+
+	// List filters
+	$('.list-filter').change(function() {
+		$(this).parent('div').find('.list-table').dataTable().fnDraw();
+	});
 });
