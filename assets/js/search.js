@@ -324,4 +324,13 @@ $(function () {
 	$('.list-filter').change(function() {
 		$(this).parent('div').find('.list-table').dataTable().fnDraw();
 	});
+
+	// Gene list upload
+	$('#file-upload').submit(function(e) {
+		if ($('#gene-file').val().length == 0) {
+			alert('No file specified');
+			return false;
+		}
+		return true;
+	})
 });

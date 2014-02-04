@@ -35,7 +35,7 @@
 <section>
 	<h3>Upload gene list</h3>
 	<div class="small">
-	<?php echo form_open_multipart('search/upload'); ?>
+	<?php echo form_open_multipart('search/upload', array('id' => 'file-upload')); ?>
 		<label for="gene-file">Upload gene list:</label>
 		<input type="file" name="gene-file", id="gene-file">
 		<input type="submit" value="Upload">
