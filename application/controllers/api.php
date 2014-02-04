@@ -226,4 +226,17 @@ class Api extends MY_Controller {
 
 		$this->replace_basket($gene_ids);
 	}
+
+	// Gene expression
+	function get_multi_flot() {
+		$this->load->model('expression_model');
+
+		$genes = $this->input->post('genes');
+
+		$expression = $this->expression_model->get_multi_flot_expression($genes);
+
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($expression));
+	}
 }
