@@ -67,6 +67,18 @@
 	</table>
 </section>
 
+<section>
+	<h3>PSPM</h3>
+<pre>
+<?php foreach ($pspm as $row): ?>
+<?php foreach ($row as $val): ?>
+<?php echo sprintf('%.3f  ', $val); ?>
+<?php endforeach ?>
+<?php echo '<br>'; ?>
+<?php endforeach ?>
+</pre>
+</section>
+
 <script type="text/javascript">
 	var baseURL = '<?php echo base_url(); ?>';
 	var pspm = <?php echo json_encode($pspm); ?>;
