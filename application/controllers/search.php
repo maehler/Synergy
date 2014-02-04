@@ -34,6 +34,11 @@ class Search extends MY_Controller {
 	public function upload() {
 		$this->load->helper('python_helper');
 
+		if (empty($_FILES['gene-file']['tmp_name'])) {
+			$this->session->set_flashdata('errormessage', 'No file specified');
+			redirect(base_url('search'), 'refresh');
+		}
+
 		$parse_string = run_python('parse_genelist.py', array($_FILES['gene-file']['tmp_name']));
 
 		$ids = json_decode($parse_string);
