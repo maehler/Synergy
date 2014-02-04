@@ -116,7 +116,7 @@ function getSelection() {
 }
 
 function plotExpression(data, annot) {
-	$('#flot-expression, .plot-overview').css('display', 'block');
+	$('#flot-expression, .flot-overview').css('display', 'block');
 	var plotOptions = {
 		series: {
 			lines: { show: true, lineWidth: 1 },
@@ -126,12 +126,17 @@ function plotExpression(data, annot) {
 		grid: { hoverable: true },
 		selection: { mode: 'x' },
 		xaxis: { tickDecimals: 0 },
-		yaxis: { axisLabel: 'log<sub>2</sub> expression' }
+		yaxis: { axisLabel: 'log<sub>2</sub> expression' },
+		legend: {
+			show: true,
+			container: '.flot-legend',
+			noColumns: 2
+		}
 	}
 
 	var plot = $.plot('#flot-expression', data, plotOptions);
 
-	var overview = $.plot('.plot-overview', data, {
+	var overview = $.plot('.flot-overview', data, {
 		series: { 
 			lines: { show: true, lineWidth: 1 },
 			shadowSize: 0
@@ -175,7 +180,7 @@ function plotExpression(data, annot) {
 	});
 
 	// Range selection in overview
-	$('.plot-overview').bind('plotselected', function (event, ranges) {
+	$('.flot-overview').bind('plotselected', function (event, ranges) {
 		plot.setSelection(ranges);
 	});
 
@@ -286,6 +291,6 @@ $(function () {
 	$('#start-motif-enrichment').click(motifEnrichment);
 
 	// Expression profile draw button
-	$('#flot-expression, .plot-overview').css('display', 'none');
+	$('#flot-expression, .flot-overview').css('display', 'none');
 	$('#draw-expression').click(drawExpressionProfile);
 });

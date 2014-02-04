@@ -37,7 +37,7 @@ $(function () {
 	// Plot expression profile and overview
 	if (expression.length !== 0) {
 		var plot = $.plot('#flot-expression', [expression], plotOptions);
-		var overview = $.plot('.plot-overview', [expression], {
+		var overview = $.plot('.flot-overview', [expression], {
 			series: { 
 				lines: { show: true, lineWidth: 1 },
 				shadowSize: 0
@@ -74,7 +74,7 @@ $(function () {
 	});
 
 	// Range selection in overview
-	$('.plot-overview').bind('plotselected', function (event, ranges) {
+	$('.flot-overview').bind('plotselected', function (event, ranges) {
 		plot.setSelection(ranges);
 	});
 

@@ -169,10 +169,19 @@ td, th { padding-right: 10px; }
 /* Flot */
 .flot {
 	height: 300px;
-	width: 100%;
 }
 
-.plot-overview {
+.flot.with-legend {
+	margin-right: 220px;
+}
+
+.flot-overview {
 	height: 150px;
 	width: 300px;
+}
+
+.flot-legend {
+	float: right;
+	width: 200px;
+	margin-top: 1em;
 }
