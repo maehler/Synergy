@@ -188,6 +188,23 @@ $(function () {
                 'name': 'motiffilter',
                 'value': $('#golist-motiffilter').prop('checked') ? 1 : 0
             });
+		},
+		fnRowCallback: function(nRow, aData, iDisplayIndex) {
+			if (Number(aData[4]) > 0.001) {
+				var goRoundP = Number(aData[4]).toPrecision(2);
+			} else {
+				var goRoundP = Number(Number(aData[4]).toPrecision(3)).toExponential();
+			}
+			$('td:eq(4)', nRow).html(goRoundP);
+
+			if (Number(aData[6]) > 0.001) {
+				var motifRoundP = Number(aData[6]).toPrecision(2);
+			} else {
+				var motifRoundP = Number(Number(aData[6]).toPrecision(3)).toExponential();
+			}
+			$('td:eq(6)', nRow).html(motifRoundP);
+
+			return nRow;
 		}
 	}));
 
@@ -205,6 +222,27 @@ $(function () {
                 'name': 'motiffilter',
                 'value': $('#motiflist-motiffilter').prop('checked') ? 1 : 0
             });
+		},
+		fnRowCallback: function(nRow, aData, iDisplayIndex) {
+			if (Number(aData[3]) > 0.001) {
+				var goRoundP = Number(aData[3]).toPrecision(2);
+			} else {
+				var goRoundP = Number(Number(aData[3]).toPrecision(3)).toExponential();
+			}
+			$('td:eq(3)', nRow).html(goRoundP);
+
+			if (Number(aData[5]) > 0.001) {
+				var motifRoundP = Number(aData[5]).toPrecision(2);
+			} else {
+				var motifRoundP = Number(Number(aData[5]).toPrecision(3)).toExponential();
+			}
+			$('td:eq(5)', nRow).html(motifRoundP);
+
+			$('td:eq(0)', nRow).empty().append($('<a/>')
+				.attr('href', 'motif/details/' + aData[0])
+				.html(aData[0]));
+
+			return nRow;
 		}
 	}));
 
@@ -222,6 +260,25 @@ $(function () {
                 'name': 'motiffilter',
                 'value': $('#coexplist-motiffilter').prop('checked') ? 1 : 0
             });
+		},
+		fnRowCallback: function(nRow, aData, iDisplayIndex) {
+			if (Number(aData[3]) > 0.001) {
+				var goRoundP = Number(aData[3]).toPrecision(2);
+			} else {
+				var goRoundP = Number(Number(aData[3]).toPrecision(3)).toExponential();
+			}
+			$('td:eq(3)', nRow).html(goRoundP);
+
+			if (Number(aData[5]) > 0.001) {
+				var motifRoundP = Number(aData[5]).toPrecision(2);
+			} else {
+				var motifRoundP = Number(Number(aData[5]).toPrecision(3)).toExponential();
+			}
+			$('td:eq(5)', nRow).html(motifRoundP);
+
+			$('td:eq(0)', nRow).empty().html('Cluster ' + aData[0].match(/\d+/));
+
+			return nRow;
 		}
 	}));
 
@@ -239,6 +296,27 @@ $(function () {
                 'name': 'motiffilter',
                 'value': $('#tflist-motiffilter').prop('checked') ? 1 : 0
             });
+		},
+		fnRowCallback: function(nRow, aData, iDisplayIndex) {
+			if (Number(aData[3]) > 0.001) {
+				var goRoundP = Number(aData[3]).toPrecision(2);
+			} else {
+				var goRoundP = Number(Number(aData[3]).toPrecision(3)).toExponential();
+			}
+			$('td:eq(3)', nRow).html(goRoundP);
+
+			if (Number(aData[5]) > 0.001) {
+				var motifRoundP = Number(aData[5]).toPrecision(2);
+			} else {
+				var motifRoundP = Number(Number(aData[5]).toPrecision(3)).toExponential();
+			}
+			$('td:eq(5)', nRow).html(motifRoundP);
+
+			$('td:eq(0)', nRow).empty().append($('<a/>')
+				.attr('href', 'gene/details/' + aData[0])
+				.html(aData[0]));
+
+			return nRow;
 		}
 	}));
 
