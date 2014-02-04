@@ -103,8 +103,8 @@
 	padding: 0;
 	white-space: nowrap;
 	border: 1px solid #000;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
 	border-bottom-width: 0;
 	background-color: #139327;
 }
@@ -113,9 +113,12 @@
 }
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
 	float: left;
-	padding: .5em 1em;
+	/*padding: .5em 1em;*/
+	padding: 5px;
 	text-decoration: none;
 	color: #000;
+	font-family: 'Raleway', sans-serif;
+	font-size: 12pt;
 	outline: 0;
 }
 .ui-tabs .ui-tabs-nav li.ui-tabs-active {
