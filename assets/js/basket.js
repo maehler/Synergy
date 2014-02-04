@@ -223,15 +223,19 @@ function plotExpression(data, annot) {
 }
 
 function drawExpressionProfile() {
-	if (getSelection().length === 0) {
+	var sel = getSelection();
+	if (sel.length === 0) {
 		alert('No genes selected');
+		return;
+	} else if (sel.length > 30) {
+		alert("Don't select more than 30 genes. You won't see anything anyway.")
 		return;
 	}
 	$.ajax({
 		url: 'api/get_multi_flot',
 		type: 'POST',
 		dataType: 'json',
-		data: { genes: getSelection() },
+		data: { genes: sel },
 		success: function(json) {
 			plotExpression(json.data, json.annot);
 		}
