@@ -9,7 +9,7 @@
         <section id="noscript-warn"><em>Syn</em>ergy works best with
         JavaScript enabled</section>
     </noscript>
-    <script type="text/javascript" src="<?php echo base_url(array('assets', 'js', 'jquery-1.10.2.min.js')); ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url(array('assets', 'js', 'jquery-1.11.0.min.js')); ?>"></script>
     <?php if (isset($scripts) && $scripts !== NULL): ?>
     <?php foreach ($scripts as $js): ?>
     <script type="text/javascript" src="<?php echo $js ?>"></script> 
