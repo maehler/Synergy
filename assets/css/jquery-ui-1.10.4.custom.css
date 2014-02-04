@@ -116,6 +116,7 @@
 	padding: .5em 1em;
 	text-decoration: none;
 	color: #000;
+	outline: 0;
 }
 .ui-tabs .ui-tabs-nav li.ui-tabs-active {
 	margin-bottom: -1px;
