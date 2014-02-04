@@ -52,7 +52,8 @@ def query_database(gene_set, cursor, central=False, getall=False, fimoq=0.125):
     query = ''' SELECT
                     p.gene_id,
                     pm.motif_id,
-                    m.name
+                    m.name,
+                    m.central
                 FROM promoter_motif AS pm
                 LEFT OUTER JOIN motif AS m
                     ON pm.motif_id = m.id
@@ -73,10 +74,10 @@ def query_database(gene_set, cursor, central=False, getall=False, fimoq=0.125):
     # also, create a dictionary that maps motif ids to motif names
     mgdict = {}
     mnamedict = {}
-    for gid, mid, mname in allrows:
+    for gid, mid, mname, is_central in allrows:
         if mid not in mgdict:
             mgdict[mid] = []
-            mnamedict[mid] = mname
+            mnamedict[mid] = [mname, is_central]
         mgdict[mid].append(gid)
 
     # return the motif-genes dictionary, motif-name dictionary, and the gene ids
@@ -166,7 +167,7 @@ def main():
     for mid, p, odds, stats in enrich:
         if p > args.pth:
             break
-        result.append([mnamedict[mid], 10, 'lala', p])
+        result.append([mnamedict[mid][0], 10, '&#x2713;' if mnamedict[mid][1] else '', p])
 
     print json.dumps(result)
 

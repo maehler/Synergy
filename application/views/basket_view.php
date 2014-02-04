@@ -109,7 +109,7 @@
 				<tr>
 					<th>Motif</th>
 					<th>Length</th>
-					<th>Description</th>
+					<th>Central</th>
 					<th>FDR</th>
 				</tr>
 			</thead>
@@ -119,7 +119,7 @@
 				<tr>
 					<th>Motif</th>
 					<th>Length</th>
-					<th>Description</th>
+					<th>Central</th>
 					<th>FDR</th>
 				</tr>
 			</tfoot>
