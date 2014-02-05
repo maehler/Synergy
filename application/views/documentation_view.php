@@ -12,6 +12,23 @@
 
 <section id="general">
 	<h3>General</h3>
+	<section>
+		<h4>Requirements</h4>
+		<p><span class="italic">Syn</span>ergy is highly dependent on JavaScript.
+		Without it, you basically can't use the tool. Sorry about that. If you
+		would like to use this tool, <a href="http://enable-javascript.com">
+		please enable JavaScript</a>.
+		</p>
+		<p>Furthermore, some of the tools on this site uses features from 
+		the HTML5 specification. This means that some older browsers won't
+		display things as intended. <span class="italic">Syn</span>ergy uses
+		the JavaScript library <a href="http://modernizr.com/">Modernizr</a> 
+		to detect what features your browser supports. If support for an 
+		essential feature cannot be detected, the site will inform you to 
+		update your browser:
+		</p>
+		<img src="<?php echo base_url(array('assets', 'img', 'old_browser_warn.png')) ?>" alt="Incompatible browser warning">
+	</section>
 </section>
 
 <section id="search">
