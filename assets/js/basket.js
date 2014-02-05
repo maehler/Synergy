@@ -257,7 +257,9 @@ function drawExpressionProfile() {
 }
 
 $(function () {
-	$('#basket-table').dataTable();
+	$('#basket-table').dataTable({
+		aoColumnDefs: [{sSortDataType: 'dom-checkbox', aTargets: [0]}]
+	});
 
 	// Table button listeners
 	$('#empty-basket').click(emptyBasket);
