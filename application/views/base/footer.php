@@ -5,8 +5,6 @@
 		<p>&copy; <a href="mailto:niklas.mahler@nmbu.no?subject=Synergy">Niklas Mähler</a> 2012-2014</p>
 	</footer>
 
-    <section id="noscript-warn"><em>Syn</em>ergy works best with JavaScript enabled. <a href="<?php echo base_url('documentation#general-requirements') ?>">More information</a>.</section>
-    <section id="old-browser-warn">Your browser is old and dusty. Try <a href="http://chrome.google.com">Google Chrome</a>!</section>
     <script type="text/javascript" src="<?php echo base_url(array('assets', 'js', 'jquery-1.11.0.min.js')); ?>"></script>
     <script type="text/javascript" src="<?php echo base_url(array('assets', 'js', 'modernizr.custom.js')); ?>"></script>
     <?php if (isset($scripts) && $scripts !== NULL): ?>

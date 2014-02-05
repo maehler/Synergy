@@ -17,6 +17,8 @@
 		<?php $this->output->enable_profiler(TRUE); ?>
 	<?php endif ?>
 	<div id="noscript-padding"></div>
+	<div id="noscript-warn"><em>Syn</em>ergy works best with JavaScript enabled. <a href="<?php echo base_url('documentation#general-requirements') ?>">More information</a>.</div>
+    <div id="old-browser-warn">Your browser is old and dusty. Try <a href="http://chrome.google.com">Google Chrome</a>!</div>
 	<div class="wrapper">
 		<header class="page-header">
 			<h1><span class="italic">Syn</span>ergy</h1>
