@@ -50,6 +50,7 @@ class Network extends MY_Controller {
 			array(
 				base_url(array('assets', 'css', 'font-awesome-4.0.3', 'css', 'font-awesome.min.css')),
 				base_url(array('assets', 'js', 'cytoscape-panzoom', 'jquery.cytoscape.js-panzoom.css')),
+				base_url(array('assets', 'css', 'datatables', 'jquery.dataTables.css')),
 				base_url(array('assets', 'css', 'network.css'))
 			)
 		));
@@ -61,7 +62,8 @@ class Network extends MY_Controller {
 				'network_threshold' => $th,
 				'expand-threshold' => $eth,
 				'expand' => $expand
-			)
+			),
+			'enrichment_view' => $this->load->view('enrichment_view', NULL, TRUE)
 		));
 		$this->load->view('base/footer', $this->get_foot_data(
 			array(
@@ -70,6 +72,8 @@ class Network extends MY_Controller {
 				base_url(array('assets', 'js', 'cytoscape-panzoom', 'jquery.cytoscape.js-panzoom.js')),
 				base_url(array('assets', 'js', 'cytoscape-cxtmenu', 'jquery.cytoscape.js-cxtmenu.js')),
 				base_url(array('assets', 'js', 'cytoscape', 'cytoscape.min.js')),
+				base_url(array('assets', 'js', 'jquery.dataTables.min.js')),
+				base_url(array('assets', 'js', 'jquery.dataTables.sorting.js')),
 				base_url(array('assets', 'js', 'network.js'))
 			)
 		));

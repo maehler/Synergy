@@ -58,7 +58,11 @@
 	</div>
 	<div id="network-loading"></div>
 </div>
+
+<?php echo $enrichment_view; ?>
+
 <?php endif ?>
 <script type="text/javascript">
+	var baseURL = "<?php echo base_url(); ?>";
 	var network_data = <?php echo $network; ?>;
 </script>
