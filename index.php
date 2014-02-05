@@ -46,6 +46,7 @@
 switch ($_SERVER['HTTP_HOST']) {
 	case 'localhost':
 	case '127.0.0.1':
+	case '10.0.2.2':
 		define('ENVIRONMENT', 'development');
 		break;
 	case 'synergy.plantgenie.org':
