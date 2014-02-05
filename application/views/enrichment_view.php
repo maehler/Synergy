@@ -14,7 +14,7 @@
 		</select><br>
 		<button id="start-go-enrichment">Calculate</button>
 
-		<table id="go-table">
+		<table id="go-table" class="dataTable">
 			<thead>
 				<tr>
 					<th>GO term</th>
@@ -57,7 +57,7 @@
 		<input id="central-motifs" type="checkbox" checked><br>
 		<button id="start-motif-enrichment">Calculate</button>
 
-		<table id="motif-table">
+		<table id="motif-table" class="dataTable">
 			<thead>
 				<tr>
 					<th>Motif</th>

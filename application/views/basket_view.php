@@ -4,7 +4,7 @@
 <p>You have no genes in your basket. This is a good time to <a href="<?php echo base_url('search'); ?>">go fetch some</a>!</p>
 <?php else: ?>
 <section>
-	<table id="basket-table" class="datatable small">
+	<table id="basket-table" class="dataTable small">
 		<thead>
 			<th></th>
 			<th>ORF</th>

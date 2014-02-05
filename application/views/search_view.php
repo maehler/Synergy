@@ -1,7 +1,7 @@
 <h2>Gene search</h2>
 
 <div class="box narrow"><span id="select-count">0</span> genes selected</div>
-<table id="gene-table" class="datatable small">
+<table id="gene-table" class="dataTable small">
 	<thead>
 		<th>Selected</th>
 		<th>ORF</th>
@@ -66,7 +66,7 @@
             	checked />
             <label for="golist-motiffilter" title="Motif enrichment FDR &lt; 0.05">Motif</label>
 
-			<table class="list-table" id="go-list-table">
+			<table class="list-table dataTable" id="go-list-table">
 				<thead>
 					<tr>
 						<th>GO</th>
@@ -109,7 +109,7 @@
             	checked />
             <label for="motiflist-motiffilter" title="Motif enrichment FDR &lt; 0.05">Motif</label>
 
-			<table class="list-table" id="motif-list-table">
+			<table class="list-table dataTable" id="motif-list-table">
 				<thead>
 					<tr>
 						<th>Motif</th>
@@ -150,7 +150,7 @@
             	checked />
             <label for="coexplist-motiffilter" title="Motif enrichment FDR &lt; 0.05">Motif</label>
 
-			<table class="list-table" id="coexp-list-table">
+			<table class="list-table dataTable" id="coexp-list-table">
 				<thead>
 					<tr>
 						<th>Cluster</th>
@@ -191,7 +191,7 @@
             	checked />
             <label for="tflist-motiffilter" title="Motif enrichment FDR &lt; 0.05">Motif</label>
 
-			<table class="list-table" id="tf-list-table">
+			<table class="list-table dataTable" id="tf-list-table">
 				<thead>
 					<tr>
 						<th>Gene</th>
