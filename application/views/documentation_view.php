@@ -39,6 +39,7 @@
 			<li><a href="http://firefox.com">Firefox</a></li>
 			<li><a href="http://www.apple.com/safari">Safari</a></li>
 			<li><a href="http://www.opera.com/">Opera</a></li>
+			<li><a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer 11+</a></li>
 		</ul>
 	</section>
 </section>
