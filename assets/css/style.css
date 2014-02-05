@@ -59,6 +59,21 @@ main {
 }
 /* End header and footer */
 
+/* Anchors */
+a {
+	color: #005B0C;
+	text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+/* Images */
+img {
+	display: block;
+	max-width: 100%;
+	width: 700px;
+	margin: 0 auto;
+}
+
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Raleway', sans-serif;
@@ -194,16 +209,21 @@ td, th { padding-right: 10px; }
 .no-js #noscript-warn,
 		.no-canvas #old-browser-warn {
 	display: block;
+	color: #FFF;
     position: fixed;
     top: 0;
     width: 100%;
-    background-color: #DD4827;
+    background-color: #BA0008;
     font-size: 14pt;
     font-weight: bold;
     text-align: center;
     padding: 4px 0;
     margin: 0;
     z-index: 10000;
+}
+
+#noscript-warn a, #old-browser-warn a {
+	color: #23AEB6;
 }
 
 .no-js #noscript-padding,
