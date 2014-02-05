@@ -116,7 +116,10 @@ header nav {
 		color: #000;
 		transition: font 0.3s ease;
 	}
-	header nav a:hover { background-color: #FFF; }
+	header nav a:hover {
+		background-color: #FFF;
+		text-decoration: none;
+	}
 	header nav a.active {
 		background-color: #FFF;
 		border-bottom: 1px solid #FFF;
