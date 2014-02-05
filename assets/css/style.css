@@ -74,6 +74,14 @@ img {
 	margin: 0 auto;
 }
 
+/* lists */
+nav ul { list-style-type: disc; }
+ul ul {
+	margin-top: 0;
+	margin-bottom: 0;
+	list-style-type: circle;
+}
+
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Raleway', sans-serif;
@@ -113,10 +121,6 @@ header nav {
 		background-color: #FFF;
 		border-bottom: 1px solid #FFF;
 	}
-
-nav ul {
-	list-style-type: circle;
-}
 
 @media screen and (max-width: 650px) {
 	header nav a {
