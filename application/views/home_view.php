@@ -9,15 +9,6 @@
     This is a set of tools for exploring the gene regulation in the
     cyanobacterium <em>Synechocystis</em>.
 </p>
-<p>
-    Right now, the site is password-protected and under development.
-    Therefore, full functionality cannot be guaranteed. The
-    development will continue during this summer.
-</p>
-
-<button id="quickstart" class="big-fancy center-div">
-    Start exploring <em>Syn</em>ergy
-</button>
 
 <p>
     Many of the tools on this site rely on HTML5 and JavaScript.
@@ -25,25 +16,17 @@
     browsers:
 </p>
 <ul>
-    <li><a class="external" href="https://www.google.com/intl/en/chrome/browser/">
-            Google Chrome</a>
-    </li>
-    <li><a class="external" href="http://www.mozilla.org/en-US/firefox/new/">
-            Firefox</a></li>
+    <li><a class="external" href="https://www.google.com/intl/en/chrome/browser/">Google Chrome</a></li>
+    <li><a class="external" href="http://www.mozilla.org/en-US/firefox/new/">Firefox</a></li>
     <li><a class="external" href="http://www.apple.com/safari/">Safari</a></li>
 </ul>
 <p>
     Functionality has been tested in all of the above browsers, but
     most of the development has been done in Google Chrome and
     Firefox, so any of those would be a good option. Also, make sure
-    that JavaScript is enabled. Make sure pop-ups are allowed, as
-    well as some links trigger this. I won't spam you, I promise.
+    that JavaScript is enabled.
 </p>
-<p>
-    Internet Explorer 9 has been tested, and the basic functionality
-    is ok, but some things are rendered very weird, so I wouldn't
-    recommend it.
-</p>
+
 <section>
     <h3>Something not working?</h3>
     <p>
@@ -58,9 +41,9 @@
         Currently there is a <a
         href="http://en.wikipedia.org/wiki/Git_%28software%29"
         class="external" target="_blank">git</a> repository available at <a
-        href="https://bitbucket.org/mcfjodor/synergy/overview"
+        href="https://bitbucket.org/maehler/synergyci/overview"
         target="_blank" class="external">Bitbucket</a>. At the moment it is private,
-        but an issue tracker and/or a wiki will become public soon
+        but a public issue tracker and/or wiki will become public soon
         enough.
     </p>
 </section>
