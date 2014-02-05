@@ -53,6 +53,10 @@
 </div>
 <div id="network-container" class="clear-right">
 	<div id="network-stats" class="small"><span id="node-count">0</span> nodes, <span id="edge-count">0</span> edges</div>
+	<div id="load-message">
+		<span id="load-gif"></span>Loading network...
+	</div>
+	<div id="network-loading"></div>
 </div>
 <?php endif ?>
 <script type="text/javascript">

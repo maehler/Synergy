@@ -37,3 +37,34 @@
 	float: right;
 	margin-bottom: 5px;
 }
+
+#network-loading {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-color: #000;
+	opacity: 0.6;
+	z-index: 10000;
+}
+
+#load-message {
+	position: absolute;
+	display: inline-block;
+	font-family: 'Raleway', sans-serif;
+	font-size: 2em;
+	top: 200px;
+	text-align: center;
+	width: 100%;
+	color: #FFF;
+	z-index: 10001;
+}
+
+#load-gif {
+	display: inline-block;
+    background-image: url('img/loading_dark_big.gif');
+    background-size: 33px;
+    margin-bottom: -5px;
+    margin-right: 5px;
+    height: 33px;
+    width: 33px;
+}

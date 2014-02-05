@@ -205,6 +205,9 @@ $(function () {
 		},
 		done: function () {
 			console.log('layout done');
+			$('#load-message, #network-loading').fadeOut(300, function () {
+				$(this).remove();
+			});
 		}
 	});
 
