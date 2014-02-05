@@ -2,7 +2,12 @@
 
 <nav>
 	<ul>
-		<li><a href="#general">General</a></li>
+		<li>
+			<a href="#general">General</a>
+			<ul>
+				<li><a href="#general-requirements">Requirements</a></li>
+			</ul>
+		</li>
 		<li><a href="#search">Search</a></li>
 		<li><a href="#basket">Basket</a></li>
 		<li><a href="#network">Network</a></li>
@@ -12,7 +17,7 @@
 
 <section id="general">
 	<h3>General</h3>
-	<section>
+	<section id="general-requirements">
 		<h4>Requirements</h4>
 		<p><span class="italic">Syn</span>ergy is highly dependent on JavaScript.
 		Without it, you basically can't use the tool. Sorry about that. If you
