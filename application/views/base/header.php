@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 	<meta charset="utf8">
 	<title><?php echo !empty($title_prefix) ? "$title_prefix | " : ""; ?>Synergy</title>
@@ -16,9 +16,7 @@
 	<?php if (ENVIRONMENT == 'development'): ?>
 		<?php $this->output->enable_profiler(TRUE); ?>
 	<?php endif ?>
-	<noscript>
-		<div id="noscript-padding"></div>
-	</noscript>
+	<div id="noscript-padding"></div>
 	<div class="wrapper">
 		<header class="page-header">
 			<h1><span class="italic">Syn</span>ergy</h1>

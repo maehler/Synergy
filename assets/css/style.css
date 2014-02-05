@@ -185,3 +185,23 @@ td, th { padding-right: 10px; }
 	width: 200px;
 	margin-top: 1em;
 }
+
+/* No JS warning and feature detection */
+.no-js #noscript-warn,
+		.no-canvas #old-browser-warn {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #DD4827;
+    font-size: 14pt;
+    font-weight: bold;
+    text-align: center;
+    padding: 4px 0;
+    margin: 0;
+    z-index: 10000;
+}
+
+.no-js #noscript-padding,
+		.no-canvas #noscript-padding {
+    padding-top: 20px;
+}
