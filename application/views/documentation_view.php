@@ -33,6 +33,13 @@
 		update your browser:
 		</p>
 		<img src="<?php echo base_url(array('assets', 'img', 'old_browser_warn.png')) ?>" alt="Incompatible browser warning">
+		<p>Recommended browsers are:</p>
+		<ul>
+			<li><a href="http://chrome.google.com">Google Chrome</a></li>
+			<li><a href="http://firefox.com">Firefox</a></li>
+			<li><a href="http://www.apple.com/safari">Safari</a></li>
+			<li><a href="http://www.opera.com/">Opera</a></li>
+		</ul>
 	</section>
 </section>
 
