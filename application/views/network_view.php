@@ -54,7 +54,7 @@
 <div id="network-container" class="clear-right">
 	<div id="network-stats" class="small"><span id="node-count">0</span> nodes, <span id="edge-count">0</span> edges</div>
 	<div id="load-message">
-		<span id="load-gif"></span>Loading network...
+		<span id="load-gif"></span><span class="message">Loading network...</span>
 	</div>
 	<div id="network-loading"></div>
 </div>

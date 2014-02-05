@@ -202,6 +202,7 @@ $(function () {
 			console.log('network is ready');
 			cy = this;
 			updateCount();
+			$('#load-message .message').html('Layouting...');
 		},
 		done: function () {
 			console.log('layout done');
