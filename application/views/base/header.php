@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" class="no-js">
 <head>
-	<meta charset="utf8">
+	<meta charset="utf-8">
 	<title><?php echo !empty($title_prefix) ? "$title_prefix | " : ""; ?>Synergy</title>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(array("assets", "css", "normalize.css")) ?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(array("assets", "css", "style.css")) ?>">
