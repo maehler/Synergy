@@ -63,7 +63,8 @@ class Network extends MY_Controller {
 				'expand-threshold' => $eth,
 				'expand' => $expand
 			),
-			'enrichment_view' => $this->load->view('enrichment_view', NULL, TRUE)
+			'enrichment_view' => $this->load->view('enrichment_view', NULL, TRUE),
+			'plot_view' => $this->load->view('expressionplot_view', NULL, TRUE)
 		));
 		$this->load->view('base/footer', $this->get_foot_data(
 			array(
@@ -74,6 +75,9 @@ class Network extends MY_Controller {
 				base_url(array('assets', 'js', 'cytoscape', 'cytoscape.min.js')),
 				base_url(array('assets', 'js', 'jquery.dataTables.min.js')),
 				base_url(array('assets', 'js', 'jquery.dataTables.sorting.js')),
+				base_url(array('assets', 'js', 'jquery.flot.js')),
+				base_url(array('assets', 'js', 'jquery.flot.resize.js')),
+				base_url(array('assets', 'js', 'jquery.flot.selection.js')),
 				base_url(array('assets', 'js', 'network.js'))
 			)
 		));
