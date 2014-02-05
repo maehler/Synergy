@@ -262,7 +262,8 @@ function drawExpressionProfile() {
 
 $(function () {
 	$('#basket-table').dataTable({
-		aoColumnDefs: [{sSortDataType: 'dom-checkbox', aTargets: [0]}]
+		aoColumnDefs: [{sSortDataType: 'dom-checkbox', aTargets: [0]}],
+		aaSorting: [[1, 'asc']]
 	});
 
 	// Table button listeners
