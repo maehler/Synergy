@@ -30,12 +30,12 @@
 		<button id="select-none">Select none</button>
 		<button id="select-invert">Invert selection</button>
 		<button id="select-neighbors">Grow selection</button>
-		<button id="remove-selection">Remove selection</button>
+		<button id="remove-selection">Delete selection</button>
 	</div>
 	<hr>
 	<div>
 		<button id="basket-add">Add to basket</button>
-		<button id="basket-remove">Remove from basket</button>
+		<button id="basket-remove">Delete from basket</button>
 	</div>
 	<hr>
 	<div>
