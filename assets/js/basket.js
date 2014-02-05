@@ -251,6 +251,10 @@ function drawExpressionProfile() {
 		dataType: 'json',
 		data: { genes: sel },
 		success: function(json) {
+			if ($.isArray(json)) {
+				alert(json[0]);
+				return;
+			}
 			plotExpression(json.data, json.annot);
 		}
 	})

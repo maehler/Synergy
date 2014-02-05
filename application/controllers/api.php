@@ -233,6 +233,13 @@ class Api extends MY_Controller {
 
 		$genes = $this->input->post('genes');
 
+		if (count($genes) > 30) {
+			$this->output
+				->set_content_type('application/json')
+				->set_output(json_encode(array('A maximum of 30 genes can be used')));
+			return;
+		}
+
 		$expression = $this->expression_model->get_multi_flot_expression($genes);
 
 		$this->output
