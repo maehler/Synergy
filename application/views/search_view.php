@@ -3,26 +3,30 @@
 <div class="box narrow"><span id="select-count">0</span> genes selected</div>
 <table id="gene-table" class="dataTable small">
 	<thead>
-		<th>Selected</th>
-		<th>ORF</th>
-		<th>Accession</th>
-		<th>Symbol</th>
-		<th>Category</th>
-		<th>Definition</th>
-		<th>Regulatory function</th>
-		<th>Operon member</th>
+		<tr>
+			<th>Selected</th>
+			<th>ORF</th>
+			<th>Accession</th>
+			<th>Symbol</th>
+			<th>Category</th>
+			<th>Definition</th>
+			<th>Regulatory function</th>
+			<th>Operon member</th>
+		</tr>
 	</thead>
 	<tbody>
 	</tbody>
 	<tfoot>
-		<th>Selected</th>
-		<th>ORF</th>
-		<th>Accession</th>
-		<th>Symbol</th>
-		<th>Category</th>
-		<th>Definition</th>
-		<th>Regulatory function</th>
-		<th>Operon member</th>
+		<tr>
+			<th>Selected</th>
+			<th>ORF</th>
+			<th>Accession</th>
+			<th>Symbol</th>
+			<th>Category</th>
+			<th>Definition</th>
+			<th>Regulatory function</th>
+			<th>Operon member</th>
+		</tr>
 	</tfoot>
 </table>
 
@@ -37,7 +41,7 @@
 	<div class="small">
 	<?php echo form_open_multipart('search/upload', array('id' => 'file-upload')); ?>
 		<label for="gene-file">Upload gene list:</label>
-		<input type="file" name="gene-file", id="gene-file">
+		<input type="file" name="gene-file" id="gene-file">
 		<input type="submit" value="Upload">
 	<?php echo form_close(); ?>
 	</div>
