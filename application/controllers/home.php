@@ -2,11 +2,15 @@
 
 class Home extends MY_Controller {
 
-	public function index()
-	{
+	public function index()	{
 		$this->load->view('base/header', $this->get_head_data("home"));
 		$this->load->view('home_view');
 		$this->load->view('base/footer');
+	}
+
+	public function accept_cookies($redir='') {
+		$this->session->set_userdata('cookies_accepted', TRUE);
+		redirect($redir, 'refresh');
 	}
 }
 

@@ -6,6 +6,7 @@
 			<a href="#general">General</a>
 			<ul>
 				<li><a href="#general-requirements">Requirements</a></li>
+				<li><a href="#general-cookies">Cookies</a></li>
 			</ul>
 		</li>
 		<li><a href="#search">Search</a></li>
@@ -41,6 +42,14 @@
 			<li><a href="http://www.opera.com/">Opera</a></li>
 			<li><a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer 11+</a></li>
 		</ul>
+	</section>
+
+	<section id="general-cookies">
+		<h4>Cookies</h4>
+		<span class="italic">Syn</span>ergy uses cookies to keep track of your
+		selected genes and settings on the site. No personal information is 
+		stored. The site will not work properly if cookies are not allowed.
+		By using the site, you agree to allow cookies.
 	</section>
 </section>
 

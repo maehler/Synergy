@@ -16,6 +16,14 @@ class MY_Controller extends CI_Controller {
         if ($error_message) {
             $data['error_message'] = $error_message;
         }
+
+        // Check if the user has accepted cookies
+        if (!$this->session->userdata('cookies_accepted')) {
+            $data['cookie_disclaimer'] = TRUE;
+        } else {
+            $data['cookie_disclaimer'] = FALSE;
+        }
+
     	return $data;
     }
 
