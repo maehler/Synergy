@@ -94,20 +94,14 @@ var expressionPlot = (function() {
 				if (previousPoint == null ||
 						previousPoint.dataIndex != x.dataIndex ||
 						previousPoint.series.label != x.series.label) {
-					$('.legendLabel').css({'border': 'none'});
-					$('.legendColorBox').css({'border': 'none'});
+					$('.legendLabel').css('background-color', 'none');
+					$('.legendColorBox').css('background-color', 'none');
 					$('#tooltip').fadeOut(200).remove();
 					var y = item.datapoint[1].toFixed(3);
 
-					$('.legendLabel:contains("' + item.series.label + '")').css({
-						'border-right': '1px solid #F00',
-						'border-top': '1px solid #F00',
-						'border-bottom': '1px solid #F00'
-					}).prevAll('.legendColorBox:first').css({
-						'border-left': '1px solid #F00',
-						'border-top': '1px solid #F00',
-						'border-bottom': '1px solid #F00'
-					});
+					$('.legendLabel:contains("' + item.series.label + '")')
+						.css('background-color', '#DDD')
+						.prevAll('.legendColorBox:first').css('background-color', '#DDD');
 
 					previousPoint = x;
 
@@ -132,8 +126,8 @@ var expressionPlot = (function() {
 			} else {
 				$('#tooltip').fadeOut(200).remove();
 				previousPoint = null;
-				$('.legendLabel').css({'border': 'none'});
-				$('.legendColorBox').css({'border': 'none'});
+				$('.legendLabel').css('background-color', 'none');
+				$('.legendColorBox').css('background-color', 'none');
 			}
 		});
 	}
