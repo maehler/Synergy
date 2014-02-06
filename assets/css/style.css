@@ -94,6 +94,7 @@ header nav {
 	left: -10px;
 }
 	header nav ul {
+		min-width: 800px;
 		list-style-type: none;
 		margin: 0 !important;
 		padding-left: 20px;
