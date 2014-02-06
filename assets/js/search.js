@@ -96,26 +96,34 @@ $(function () {
 
 	// Initialize gene table
 	var geneTable = $('#gene-table').dataTable({
-		'aoColumnDefs': [
-			{ 'sSortDataType': 'dom-checkbox', 'aTargets': [0] }
+		aoColumnDefs: [
+			{ 
+				sSortDataType: 'dom-checkbox',
+				bSortable: false,
+				bSearchable: false,
+				aTargets: [0]
+			},
 		],
-		'bProcessing': true,
-		'bServerSide': true,
-		'sAjaxSource': 'api/genetable',
-		'fnServerSideParams': function (aoData) {
+		aaSorting: [[1, 'asc']],
+		bProcessing: true,
+		bServerSide: true,
+		sAjaxSource: 'api/genetable',
+		fnServerSideParams: function (aoData) {
 			aoData.push({
 				'name': 'selgenes',
 				'value': selected
 			})
 		},
-		'sServerMethod': 'POST',
-		'fnRowCallback': function (nRow, aData, iDisplayIndex) {
+		sServerMethod: 'POST',
+		fnRowCallback: function (nRow, aData, iDisplayIndex) {
 			var id = aData[0].match(/id="(\d+)"/)[1];
+			var $checkbox = $(nRow).find('input[type="checkbox"]');
 			if (jQuery.inArray(id, selected) !== -1) {
-				$(nRow).find('input[type="checkbox"]').attr('checked', true);
+				$checkbox.attr('checked', true);
 			}
+			$checkbox.parent('td').addClass('align-center');
 		},
-		'fnServerData': function (sSource, aoData, fnCallback) {
+		fnServerData: function (sSource, aoData, fnCallback) {
 			$.ajax({
 				url: sSource,
 				dataType: 'json',

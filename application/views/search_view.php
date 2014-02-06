@@ -4,7 +4,7 @@
 <table id="gene-table" class="dataTable small">
 	<thead>
 		<tr>
-			<th>Selected</th>
+			<th></th>
 			<th>ORF</th>
 			<th>Accession</th>
 			<th>Symbol</th>
@@ -18,7 +18,7 @@
 	</tbody>
 	<tfoot>
 		<tr>
-			<th>Selected</th>
+			<th></th>
 			<th>ORF</th>
 			<th>Accession</th>
 			<th>Symbol</th>
