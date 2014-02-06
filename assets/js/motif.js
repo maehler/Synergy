@@ -1,5 +1,25 @@
 "use strict";
 
+function runTOMTOM() {
+	this.disabled = true;
+	var $tomtomRunning = $('#tomtom-running').toggleClass('hidden');
+	$.ajax({
+		url: baseURL + 'api/run_tomtom',
+		type: 'POST',
+		dataType: 'json',
+		data: { matrix: JSON.stringify(pspm) },
+		success: function(json) {
+			console.log(json);
+			$('#tomtom-results').empty()
+				.append($('<a/>', {
+					href: baseURL + json.file,
+					html: json.name
+				}));
+			$tomtomRunning.toggleClass('hidden');
+		}
+	});
+}
+
 $(function () {
 	var motifLen = pspm.length;
 	var canvasWidth = 50 * motifLen;
@@ -31,4 +51,7 @@ $(function () {
 			return nRow;
 		}
 	});
+
+	// TOMTOM
+	$('#run-tomtom').click(runTOMTOM);
 });

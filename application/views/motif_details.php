@@ -68,6 +68,25 @@
 </section>
 
 <section>
+	<h3>TOMTOM</h3>
+	
+	<p><a href="http://meme.sdsc.edu/meme/cgi-bin/tomtom.cgi" class="external">TOMTOM</a>
+    is an application for comparing motifs to known motifs in existing databases. 
+    Here's the possibility of running TOMTOM on this motif against the 
+    <a href="http://prodoric.de" class="external">Prodoric</a> and 
+    <a href="http://regtransbase.lbl.gov/cgi-bin/regtransbase?page=main" class="external">
+    RegTransBase</a> databases with standard settings. It can take up to 1 minute 
+    before the results show up, depending on server load. If you want to run TOMTOM
+    against other databases, or with custom settings, please visit
+    <a href="http://meme.sdsc.edu/meme/cgi-bin/tomtom.cgi" class="external">the 
+    TOMTOM website</a>.</p>
+
+	<button class="small" id="run-tomtom">Run TOMTOM</button>
+	<p id="tomtom-running" class="hidden"><span class="loading"></span>Loading...</p>
+	<p id="tomtom-results"></p>
+</section>
+
+<section>
 	<h3>PSPM</h3>
 <pre>
 <?php foreach ($pspm as $row): ?>

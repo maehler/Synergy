@@ -9,7 +9,8 @@ _meme_bin = os.path.join('/usr/local/Cellar/meme/4.9.0-p4/bin/')
 _db_dir = os.path.join(_base_dir, 'data/motif_db/')
 _blast_db_dir = os.path.join(_base_dir, 'data/blastdb/')
 _fasta_dir = os.path.join(_base_dir, 'data/fasta/')
-tmp_dir = os.path.join(_base_dir, 'data/tmp/')
+site_tmp = 'data/tmp'
+tmp_dir = os.path.join(_base_dir, site_tmp)
 
 # Database definition. Should be set in a local.py.
 DATABASE = {

@@ -246,4 +246,20 @@ class Api extends MY_Controller {
 			->set_content_type('application/json')
 			->set_output(json_encode($expression));
 	}
+
+	// MEME
+	function run_tomtom() {
+		$pspm = $this->input->post('matrix');
+		$sid = $this->session->userdata('session_id');
+
+		$this->output->set_content_type('application/json');
+
+		if ($pspm === FALSE) {
+			$this->output->set_output(json_encode(array()));
+		} else {
+			$this->load->helper('python_helper');
+			$data = run_python('tomtom.py', array($pspm, $sid));
+			$this->output->set_output($data);
+		}
+	}
 }
