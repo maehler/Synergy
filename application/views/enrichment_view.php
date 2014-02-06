@@ -79,3 +79,5 @@
 		</table>
 	</section>
 </section>
+
+<script type="text/javascript" src="<?php echo base_url(array('assets', 'js', 'enrichment.js')); ?>"></script>
