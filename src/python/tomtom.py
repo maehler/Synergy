@@ -82,7 +82,7 @@ def main():
 	if exit_status == 0:
 		print json.dumps({'name': 'TOMTOM results', 'file': os.path.join(config.site_tmp, '%s.tomtom' % (f_prefix), 'tomtom.html')})
 	else:
-		print json.dumps({'name': 'An error occured (status: %d)' % exit_status, 'file': None})
+		print json.dumps({'name': 'An error occured (ERROR %d)' % exit_status, 'file': None})
 
 if __name__ == '__main__':
 	main()

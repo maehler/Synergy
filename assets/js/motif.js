@@ -3,19 +3,26 @@
 function runTOMTOM() {
 	this.disabled = true;
 	var $tomtomRunning = $('#tomtom-running').toggleClass('hidden');
+	var $tomtomResults = $('#tomtom-results').empty();
 	$.ajax({
 		url: baseURL + 'api/run_tomtom',
 		type: 'POST',
 		dataType: 'json',
 		data: { matrix: JSON.stringify(pspm) },
+		context: this,
 		success: function(json) {
 			console.log(json);
-			$('#tomtom-results').empty()
-				.append($('<a/>', {
-					href: baseURL + json.file,
-					html: json.name
-				}));
+			if (!json.file) {
+				$tomtomResults.html(json.name);
+			} else {
+				$tomtomResults
+					.append($('<a/>', {
+						href: baseURL + json.file,
+						html: json.name
+					}));
+			}
 			$tomtomRunning.toggleClass('hidden');
+			this.disabled = false;
 		}
 	});
 }
