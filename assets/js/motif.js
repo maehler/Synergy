@@ -11,7 +11,6 @@ function runTOMTOM() {
 		data: { matrix: JSON.stringify(pspm) },
 		context: this,
 		success: function(json) {
-			console.log(json);
 			if (!json.file) {
 				$tomtomResults.html(json.name);
 			} else {
