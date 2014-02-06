@@ -16,10 +16,8 @@ class Gene extends MY_Controller {
 		}
 
 		$motif_data = $this->motif_model->get_gene_motifs($gene_data['id']);
-		$expression_data = $this->expression_model->get_flot_expression($gene_data['id']);
 
 		$gene_data['motifs'] = $motif_data;
-		$gene_data['expression'] = $expression_data;
 
 		$gene_data['expression_plot'] = $this->load->view('expressionplot_view', NULL, TRUE);
 
