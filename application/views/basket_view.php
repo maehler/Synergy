@@ -3,6 +3,7 @@
 <?php if (!$genes): ?>
 <p>You have no genes in your basket. This is a good time to <a href="<?php echo base_url('search'); ?>">go fetch some</a>!</p>
 <?php else: ?>
+<div class="box narrow"><span id="select-count">0</span> genes selected</div>
 <section>
 	<table id="basket-table" class="dataTable small">
 		<thead>

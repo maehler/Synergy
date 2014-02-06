@@ -1,5 +1,9 @@
 "use strict";
 
+function updateCount() {
+	$('#select-count').html(getSelection().length);
+}
+
 function emptyBasket() {
 	$.ajax({
 		url: 'api/empty_basket',
@@ -86,6 +90,7 @@ function selectAll() {
 	$.each(rows, function () {
 		$(this).find('input[type="checkbox"]').prop('checked', true);
 	});
+	updateCount();
 }
 
 function selectNone() {
@@ -93,6 +98,7 @@ function selectNone() {
 	$.each(rows, function () {
 		$(this).find('input[type="checkbox"]').prop('checked', false);
 	});
+	updateCount();
 }
 
 function exportSelection() {
@@ -265,6 +271,8 @@ $(function () {
 		aoColumnDefs: [{sSortDataType: 'dom-checkbox', aTargets: [0]}],
 		aaSorting: [[1, 'asc']]
 	});
+	$('#basket-table input').click(updateCount);
+	updateCount();
 
 	// Table button listeners
 	$('#empty-basket').click(emptyBasket);
