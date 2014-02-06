@@ -122,6 +122,7 @@ $(function () {
 				$checkbox.attr('checked', true);
 			}
 			$checkbox.parent('td').addClass('align-center');
+			$('td:last', nRow).addClass('align-center');
 		},
 		fnServerData: function (sSource, aoData, fnCallback) {
 			$.ajax({

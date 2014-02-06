@@ -10,7 +10,7 @@
 			<th>Symbol</th>
 			<th>Category</th>
 			<th>Definition</th>
-			<th>Regulatory function</th>
+			<th>Regulatory</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -23,7 +23,7 @@
 			<th>Symbol</th>
 			<th>Category</th>
 			<th>Definition</th>
-			<th>Regulatory function</th>
+			<th>Regulatory</th>
 		</tr>
 	</tfoot>
 </table>
