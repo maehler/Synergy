@@ -21,6 +21,8 @@ class Gene extends MY_Controller {
 		$gene_data['motifs'] = $motif_data;
 		$gene_data['expression'] = $expression_data;
 
+		$gene_data['expression_plot'] = $this->load->view('expressionplot_view', NULL, TRUE);
+
 		$this->load->view('base/header', $this->get_head_data('', $orf_id, 
 			array(
 				base_url(array('assets', 'css', 'datatables', 'jquery.dataTables.css'))

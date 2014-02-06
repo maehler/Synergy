@@ -74,19 +74,10 @@
 	<div class="clear-fix"></div>
 </section>
 
-<section>
-	<h3>Expression profile</h3>
-	<?php if (count($expression['data']) !== 0): ?>		
-	<div class="flot-overview"></div>
-	<button id="reset-zoom" class="small">Reset zoom</button>
-	<div id="flot-expression" class="flot"></div>
-	<?php else: ?>
-	<p>No expression data available</p>
-	<?php endif ?>
-</section>
+<?php echo $expression_plot; ?>
 
 <script type="text/javascript">
-	var expression = <?php echo json_encode($expression['data']); ?>;
-	var expAnnot = <?php echo json_encode($expression['annotation']); ?>;
+	var baseURL = "<?php echo base_url(); ?>";
+	var geneID = <?php echo $id; ?>;
 </script>
 <?php endif ?>
