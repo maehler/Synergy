@@ -302,5 +302,5 @@ $(function () {
 	enrichmentTools(getSelection);
 
 	// Initiate expression plot
-	expressionPlot(getSelection);
+	expressionPlot(getSelection, baseURL);
 });

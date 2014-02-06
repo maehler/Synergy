@@ -1,13 +1,20 @@
 var expressionPlot = (function() {
 
 	var selFun;
+	var url;
 
-	var init = function (fun) {
+	var init = function (fun, siteURL, singleDraw) {
 		selFun = fun;
+		url = siteURL;
 
-		// Expression profile draw button
-		$('#flot-expression, .flot-overview').css('display', 'none');
-		$('#draw-expression').click(drawExpressionProfile);
+		if (singleDraw !== undefined && singleDraw) {
+			drawExpressionProfile();
+			$('#draw-expression').remove();
+		} else {
+			// Expression profile draw button
+			$('#flot-expression, .flot-overview').css('display', 'none');
+			$('#draw-expression').click(drawExpressionProfile);
+		}
 	}
 
 	function plotExpression(data, annot) {
@@ -132,7 +139,7 @@ var expressionPlot = (function() {
 	}
 
 	function drawExpressionProfile() {
-		var sel = getSelection();
+		var sel = selFun();
 		if (sel.length === 0) {
 			alert('No genes selected');
 			return;
@@ -141,7 +148,7 @@ var expressionPlot = (function() {
 			return;
 		}
 		$.ajax({
-			url: 'api/get_multi_flot',
+			url: url + 'api/get_multi_flot',
 			type: 'POST',
 			dataType: 'json',
 			data: { genes: sel },

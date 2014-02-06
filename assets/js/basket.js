@@ -66,5 +66,5 @@ $(function () {
 
 	// Initiate enrichment tools
 	enrichmentTools(getSelection);
-	expressionPlot(getSelection);
+	expressionPlot(getSelection, baseURL);
 });
