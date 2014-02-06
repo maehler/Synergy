@@ -1,4 +1,4 @@
-<h2>Welcome to Synergy</h2>
+<h2>Welcome to <span class="italic">Syn</span>ergy</h2>
 <aside class="box small float-right narrow">
     <span class="bold">syn&bull;er&bull;gy</span> [ˈsinərjē]<br />
     the interaction or cooperation of two or more organizations,
@@ -7,7 +7,7 @@
 </aside>
 <p>
     This is a set of tools for exploring the gene regulation in the
-    cyanobacterium <em>Synechocystis</em>.
+    cyanobacterium <i>Synechocystis</i>.
 </p>
 
 <section>
