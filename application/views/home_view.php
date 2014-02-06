@@ -10,23 +10,6 @@
     cyanobacterium <em>Synechocystis</em>.
 </p>
 
-<p>
-    Many of the tools on this site rely on HTML5 and JavaScript.
-    Therefore I recommend that you use one of the following
-    browsers:
-</p>
-<ul>
-    <li><a class="external" href="https://www.google.com/intl/en/chrome/browser/">Google Chrome</a></li>
-    <li><a class="external" href="http://www.mozilla.org/en-US/firefox/new/">Firefox</a></li>
-    <li><a class="external" href="http://www.apple.com/safari/">Safari</a></li>
-</ul>
-<p>
-    Functionality has been tested in all of the above browsers, but
-    most of the development has been done in Google Chrome and
-    Firefox, so any of those would be a good option. Also, make sure
-    that JavaScript is enabled.
-</p>
-
 <section>
     <h3>Something not working?</h3>
     <p>
