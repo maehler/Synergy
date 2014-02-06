@@ -12,7 +12,7 @@
 			<th>Symbol</th>
 			<th>Category</th>
 			<th>Definition</th>
-			<th>Regulatory function</th>
+			<th>Regulatory</th>
 		</thead>
 		<tbody>
 		<?php foreach ($genes as $gene): ?>
@@ -23,7 +23,7 @@
 				<td><em><?php echo $gene['symbol'] ?></em></td>
 				<td><?php echo $gene['category'] ?></td>
 				<td><?php echo $gene['definition'] ?></td>
-				<td><?php echo $gene['tf'] == 1 ? "Yes" : "No" ?></td>
+				<td><?php echo $gene['tf'] == 1 ? "&#x2713;" : "" ?></td>
 			</tr>
 		<?php endforeach ?>
 		</tbody>
@@ -34,7 +34,7 @@
 			<th>Symbol</th>
 			<th>Category</th>
 			<th>Definition</th>
-			<th>Regulatory function</th>
+			<th>Regulatory</th>
 		</tfoot>
 	</table>
 	<div class="clear-fix small">
