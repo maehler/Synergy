@@ -4,11 +4,9 @@ class Gene_model extends CI_Model {
 
 	function get_datatable() {
 		$aoColumns = array('id', 'orf_id', 'refseq_id',
-			'symbol', 'category', 'definition', 'tf',
-			'operon_id');
+			'symbol', 'category', 'definition', 'tf');
 		$taColumns = array('g.id', 'g.orf_id', 'g.refseq_id',
-			'g.symbol', 'g.category', 'g.definition', 'g.tf',
-			'og.operon_id');
+			'g.symbol', 'g.category', 'g.definition', 'g.tf');
 
 		// If the user only wants the filtered results
 		if ($this->input->post('selgenes') == 'all') {
@@ -44,8 +42,7 @@ class Gene_model extends CI_Model {
 						   CONCAT('<input type=\"checkbox\" id=\"',g.id,'\" />') AS `checkbox`,
 						   CONCAT('<a href=\"gene/details/', g.orf_id, '\">', g.orf_id, '</a>'),
 						   g.refseq_id, g.symbol, g.category, g.definition,
-						   (case when g.tf = 1 then \"&#x2713;\" else \"\" end),
-						   (case when og.operon_id IS NOT NULL then \"&#x2713;\" else \"\" end)",
+						   (case when g.tf = 1 then \"&#x2713;\" else \"\" end)",
 						   FALSE)
 			->from('gene AS g')
 			->join('operon_gene AS og', 'og.gene_id = g.id', 'left');

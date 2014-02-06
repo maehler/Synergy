@@ -11,7 +11,6 @@
 			<th>Category</th>
 			<th>Definition</th>
 			<th>Regulatory function</th>
-			<th>Operon member</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -25,7 +24,6 @@
 			<th>Category</th>
 			<th>Definition</th>
 			<th>Regulatory function</th>
-			<th>Operon member</th>
 		</tr>
 	</tfoot>
 </table>
