@@ -5,3 +5,5 @@
 	<div class="flot-legend"></div>
 	<div id="flot-expression" class="flot with-legend"></div>
 </section>
+
+<script type="text/javascript" src="<?php echo base_url(array('assets', 'js', 'expressionplot.js')); ?>"></script>
