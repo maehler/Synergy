@@ -89,6 +89,9 @@ gene5</pre>
 		<p>In this case, only <code>gene1</code>, <code>gene3</code> and <code>gene5</code>
 		will be searched for, the others will be ignored.
 		</p>
+		<p>By uploading genes, any genes previously in your gene basket will
+		be removed and replaced by the uploaded list of genes.
+		</p>
 	</section>
 
 	<section id="search-genelists">
@@ -98,7 +101,8 @@ gene5</pre>
 		of gene lists are available; genes associated to Gene Ontology terms, genes
 		associated to motifs, genes in co-expression network clusters and genes in the
 		co-expression neighborhood of regulatory genes. By clicking the "Load"
-		button in the last column, the genes will be added to the gene basket.
+		button in the last column, the genes will replace the genes currently in
+		your basket.
 		</p>
 	</section>
 </section>
