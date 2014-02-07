@@ -210,12 +210,12 @@ td, th { padding-right: 10px; }
 	margin-top: 1em;
 }
 
-#noscript-warn, #old-browser-warn {
+#old-browser-warn {
 	display: none;
 }
 
 /* No JS warning and feature detection */
-.no-js #noscript-warn,
+#noscript-warn,
 		.no-canvas #old-browser-warn {
 	display: block;
 	color: #FFF;
@@ -236,7 +236,7 @@ td, th { padding-right: 10px; }
 }
 
 .no-js #noscript-padding,
-		.no-canvas #noscript-padding {
+		.no-canvas #old-browser-padding {
 	display: block;
     padding-top: 20px;
 }
