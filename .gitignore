@@ -11,4 +11,4 @@ application/logs/*
 data/tmp/*
 
 .venv
-
+src/python/config/local.py
