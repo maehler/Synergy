@@ -22,6 +22,7 @@
 	border: 1px solid black;
 	height: 600px;
 	margin-left: 220px;
+	overflow: hidden;
 }
 
 #network-stats {
