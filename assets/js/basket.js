@@ -15,10 +15,11 @@ function emptyBasket() {
 }
 
 function selectAll() {
-	var rows = $('#basket-table').dataTable().fnGetNodes();
-	$.each(rows, function () {
-		$(this).find('input[type="checkbox"]').prop('checked', true);
-	});
+	selectNone();
+	var rows = $('#basket-table').dataTable().$('tr', {
+		filter: 'applied',
+		page: 'all'
+	}).find('input[type="checkbox"]').prop('checked', true);
 	updateCount();
 }
 
