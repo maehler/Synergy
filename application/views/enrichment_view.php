@@ -11,8 +11,18 @@
 			<option value="0.01">0.01</option>
 			<option value="0.05" selected>0.05</option>
 			<option value="0.1">0.1</option>
+			<option value="0.5">0.5</option>
 		</select><br>
 		<button id="start-go-enrichment">Calculate</button>
+
+		<div class="headroom">
+			<label for="go-category-filter">GO category filter</label>
+			<select id="go-category-filter">
+				<option value="Biological process" selected>Biological process</option>
+				<option value="Molecular function">Molecular function</option>
+				<option value="Cellular component">Cellular component</option>
+			</select>
+		</div>
 
 		<table id="go-table" class="dataTable">
 			<thead>

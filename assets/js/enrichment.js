@@ -43,12 +43,16 @@ var enrichmentTools = (function() {
 				}
 				$('td:eq(3)', nRow).html(roundp);
 				return nRow;
-			}
+			},
+			fnInitComplete: filterGO
 		});
 
 		// Enrichment start buttons
 		$('#start-go-enrichment').click(goEnrichment);
 		$('#start-motif-enrichment').click(motifEnrichment);
+
+		// GO filtering
+		$('#go-category-filter').change(filterGO);
 	}
 
 	var enrichmentToggle = function() {
@@ -60,6 +64,11 @@ var enrichmentTools = (function() {
 				$('#'+panes[i]).addClass('hidden');
 			}
 		}
+	}
+
+	var filterGO = function() {
+		var cat = $('#go-category-filter').val();
+		$('#go-table').dataTable().fnFilter(cat, 1);
 	}
 
 	var goEnrichment = function() {
