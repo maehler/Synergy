@@ -12,13 +12,13 @@ var expressionPlot = (function() {
 			$('#draw-expression').remove();
 		} else {
 			// Expression profile draw button
-			$('#flot-expression, .flot-overview').css('display', 'none');
+			$('#flot-expression, .flot-overview').hide();
 			$('#draw-expression').click(drawExpressionProfile);
 		}
 	}
 
 	function plotExpression(data, annot) {
-		$('#flot-expression, .flot-overview').css('display', 'block');
+		$('#flot-expression, .flot-overview').show();
 		var plotOptions = {
 			series: {
 				lines: { show: true, lineWidth: 1 },
@@ -133,6 +133,8 @@ var expressionPlot = (function() {
 	}
 
 	function drawExpressionProfile() {
+		$('#loading-plot').toggleClass('hidden');
+		$('#draw-expression').prop('disabled', true);
 		var sel = selFun();
 		if (sel.length === 0) {
 			alert('No genes selected');
@@ -152,6 +154,8 @@ var expressionPlot = (function() {
 					return;
 				}
 				plotExpression(json.data, json.annot);
+				$('#loading-plot').toggleClass('hidden');
+				$('#draw-expression').prop('disabled', false);
 			}
 		})
 	}

@@ -166,7 +166,7 @@ header nav {
 .italic { font-style: italic; }
 /* End text styles */
 
-.hidden { display: none; }
+.hidden { display: none !important; }
 
 /* Loading animation */
 .loading {
@@ -175,7 +175,6 @@ header nav {
     background-size: 15px;
     margin-bottom: -2px;
     margin-right: 5px;
-    margin-left: 5px;
     height: 15px;
     width: 15px;
 }
@@ -228,6 +227,12 @@ td, th { padding-right: 10px; }
 
 #old-browser-warn {
 	display: none;
+}
+
+/* Loading indicator */
+.load-message {
+	display: inline-block;
+	margin: 0 10px;
 }
 
 /* No JS warning and feature detection */
