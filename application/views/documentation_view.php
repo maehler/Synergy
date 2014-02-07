@@ -33,7 +33,12 @@
 		essential feature cannot be detected, the site will inform you to 
 		update your browser:
 		</p>
-		<img src="<?php echo base_url(array('assets', 'img', 'old_browser_warn.png')) ?>" alt="Incompatible browser warning">
+		<figure class="right">
+			<img src="<?php echo base_url(array('assets', 'img', 'old_browser_warn.png')) ?>" alt="Incompatible browser warning">
+			<figcaption>
+				<p>Message shown if your browser is not supported.</p>
+			</figcaption>
+		</figure>
 		<p>Recommended browsers are:</p>
 		<ul>
 			<li><a href="http://chrome.google.com">Google Chrome</a></li>
