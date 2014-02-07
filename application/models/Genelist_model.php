@@ -74,7 +74,8 @@ class Genelist_model extends CI_Model {
 
 		// Get the counts
 		$query = $this->db->select('FOUND_ROWS() as `found_rows`', FALSE)->get();
-		$iFilteredTotal = $query->row_array()['found_rows'];
+		$iFilteredTotalTmp = $query->row_array();
+		$iFilteredTotal = $iFilteredTotalTmp['found_rows'];
 		$iTotal = $this->db->count_all_results($view);
 
 		$output = array(
