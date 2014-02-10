@@ -129,12 +129,53 @@ gene5</pre>
 		(co-expression). The width of an edge is correlated with the co-expression
 		of the gene pair.</p>
 
-	<section id="network-controls">
+	<p>When visiting the network view, the application will find all co-expression
+	links among the genes in your gene basket. The genes that are currently in
+	your gene basket have a green background in the network view. To explore
+	more interactions than you have in your basket, you can expand the network.
+	Do this by right-clicking a node and select "Expand". This will search for 
+	new nodes that are co-expressed with the current node using the "Expansion
+	threshold" as a cutoff. The genes and edges that are found will be added to 
+	the network, and they will initially be gray. This means they are <em>not</em>
+	part of the gene basket yet. To add them to the basket, either right click
+	each gene and select "Toggle basket" or select all of the genes and click 
+	"Add to basket" in the menu.
+	</p>
+
+	<div class="block-center">
+		<figure class="narrow">
+			<img src="<?php echo base_url(array('assets', 'img', 'node_tf.png')); ?>"
+				alt="Regulatory gene node">
+			<figcaption class="center-caption">
+				<p>Regulatory gene</p>
+			</figcaption>
+		</figure>
+	
+		<figure class="narrow">
+			<img src="<?php echo base_url(array('assets', 'img', 'node_selected.png')); ?>"
+				alt="Selected node">
+			<figcaption class="center-caption">
+				<p>Selected gene</p>
+			</figcaption>
+		</figure>
+	
+		<figure class="narrow">
+			<img src="<?php echo base_url(array('assets', 'img', 'node_nobasket.png')); ?>"
+				alt="Node not in gene basket">
+			<figcaption class="center-caption">
+				<p>Gene not in gene basket</p>
+			</figcaption>
+		</figure>
+		<div class="clear-fix"></div>
+	</div>
+
+	<section id="network-controls" class="clear-fix">
 		<h4>Controls</h4>		
 		<p>Left-click nodes to select them. By holding the <kbd>shift</kbd> key, 
 				multiple genes can be selected. By clicking and dragging on the
-				background, multiple genes can be selected. By clicking and waiting for 
-				one second, the network view can be panned.</p>
+				background, multiple genes can be selected. A gene is selected
+				if it has a red outline. By clicking and waiting for one second, 
+				the network view can be panned.</p>
 		<p>Right clicking a node brings up the node context menu.
 		</p>
 	</section>

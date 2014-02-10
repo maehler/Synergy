@@ -79,6 +79,10 @@ figure {
 		font-size: 0.8em;
 	}
 
+.center-caption {
+	text-align: center;
+}
+
 figure.right {
 	float: right;
 	width: 50%;
@@ -87,6 +91,11 @@ figure.right {
 
 figure.wide {
 	max-width: 100%;
+}
+
+figure.narrow {
+	max-width: 10em;
+	float: left;
 }
 
 /* lists */
@@ -174,6 +183,7 @@ header nav {
 .clear-left { clear: left; }
 .auto-width { display: inline-block; }
 .narrow { width: 200px; }
+.block-center { display: table; margin: 0 auto; }
 /* End alignment */
 
 /* Text styles */
