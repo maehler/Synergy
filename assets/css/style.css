@@ -68,7 +68,7 @@ a:hover { text-decoration: underline; }
 
 /* Images */
 figure {
-	max-width: 100;
+	max-width: 50%;
 }
 	figure img {
 		width: 100%;
