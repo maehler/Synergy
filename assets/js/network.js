@@ -22,10 +22,12 @@ function nodeIds(selector) {
 function redraw() {
 	cy.forceRender();
 	window.setTimeout(updateCount, 50);
-	cy.layout({
-		name: 'arbor',
-		liveUpdate: true
-	});
+	if ($('#expand-animate').prop('checked')) {
+		cy.layout({
+			name: 'arbor',
+			liveUpdate: true
+		});
+	}
 }
 
 function selectAll() {

@@ -20,6 +20,7 @@ class Network extends MY_Controller {
 		$th = $this->input->post('network-threshold');
 		$eth = $this->input->post('expand-threshold');
 		$expand = $this->input->post('expand-network');
+		$animate = $this->input->post('expand-animate');
 		// If no post values are given, try to take them from the session
 		if (!$this->session->userdata('network')) {
 			$this->session->set_userdata(array('network' => array()));
@@ -34,13 +35,15 @@ class Network extends MY_Controller {
 		if (!$eth) {
 			$eth = isset($s_options['eth']) ? $s_options['eth'] : 6;
 		}
+		$animate = $animate === FALSE && isset($s_options['animate']) ? $s_options['animate'] : $animate === 'on';
 		$expand = $expand == NULL ? FALSE : TRUE;
 
 		// Update the session
 		$this->session->set_userdata(array('network' => array(
 			'ntype' => $ntype,
 			'th' => $th,
-			'eth' => $eth
+			'eth' => $eth,
+			'animate' => $animate
 		)));
 
 		$network = $this->network_model->get_network($basket, $ntype, $th, $expand, TRUE);
@@ -61,7 +64,8 @@ class Network extends MY_Controller {
 				'network_type' => $ntype,
 				'network_threshold' => $th,
 				'expand-threshold' => $eth,
-				'expand' => $expand
+				'expand' => $expand,
+				'animate' => $animate
 			),
 			'enrichment_view' => $this->load->view('enrichment_view', NULL, TRUE),
 			'plot_view' => $this->load->view('expressionplot_view', NULL, TRUE)

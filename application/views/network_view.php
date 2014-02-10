@@ -18,6 +18,8 @@
 		<input name="network-threshold" id="network-threshold" type="number" value="<?php echo $settings['network_threshold']; ?>"><br>
 		<label for="expand-threshold">Expansion threshold</label>
 		<input name="expand-threshold" id="expand-threshold" type="number" value="<?php echo $settings['expand-threshold']; ?>"><br>
+		<input type="checkbox" id="expand-animate" name="expand-animate"<?php echo $settings['animate'] ? " checked" : ""; ?>>
+		<label for="expand-animate">Layout on expansion</label><br>
 		<!--<label for="expand-network">Expand network</label>
 		<input type="checkbox" name="expand-network" id="expand-network"<?php echo $settings['expand'] ? " checked" : ""; ?>>-->
 		<button id="submit" type="submit">Redraw</button>
