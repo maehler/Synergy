@@ -12,3 +12,5 @@ data/tmp/*
 
 .venv
 src/python/config/local.py
+
+*.pxm

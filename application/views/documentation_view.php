@@ -17,7 +17,13 @@
 			</ul>
 		</li>
 		<li><a href="#basket">Basket</a></li>
-		<li><a href="#network">Network</a></li>
+		<li>
+			<a href="#network">Network</a>
+			<ul>
+				<li><a href="#network-controls">Controls</a></li>
+				<li><a href="#network-overview">Overview</a></li>
+			</ul>
+		</li>
 		<li><a href="#regtools">Regulation tools</a></li>
 	</ul>
 </nav>
@@ -68,7 +74,7 @@
 <section id="search">
 	<h3>Search</h3>
 	<p>In the <a href="<?php echo base_url('search'); ?>">Gene search</a>, you can search
-	for genes in <i>Synechocystis</i> that you are particulary interested in. In the
+	for genes in <i>Synechocystis</i> that you are particularly interested in. In the
 	first table, you can do free text searches for ORF names and annotations. Whenever
 	something is entered in the search field, the table is filtered on the fly.
 	To add genes to your <a href="#basket">gene basket</a>, just check the checkbox in
@@ -97,7 +103,7 @@ gene5</pre>
 	<section id="search-genelists">
 		<h4>Gene lists</h4>
 		<p>Another, more explorative, way of finding genes of interest is to take a 
-		look at the precompiled gene lists that are available. Four different categories
+		look at the precomputed gene lists that are available. Four different categories
 		of gene lists are available; genes associated to Gene Ontology terms, genes
 		associated to motifs, genes in co-expression network clusters and genes in the
 		co-expression neighborhood of regulatory genes. By clicking the "Load"
@@ -109,10 +115,103 @@ gene5</pre>
 
 <section id="basket">
 	<h3>Basket</h3>
+	In the gene basket all genes that you have previously selected are stored.
+	You can manage your basket and export it as a tab delimited text file, which
+	is compatible with the <a href="#search-upload">upload function</a> in the
+	search page. Perhaps more interesting are the the <a href="#enrichment">enrichment
+	tools</a> and the <a href="#expressionplot">gene expression plot</a>.
 </section>
 
 <section id="network">
 	<h3>Network</h3>
+	<p>On the network page you can explore co-expression patterns among your genes
+		of interest. The network is visualized using nodes (genes) and edges
+		(co-expression). The width of an edge is correlated with the co-expression
+		of the gene pair.</p>
+
+	<section id="network-controls">
+		<h4>Controls</h4>		
+		<p>Left-click nodes to select them. By holding the <kbd>shift</kbd> key, 
+				multiple genes can be selected. By clicking and dragging on the
+				background, multiple genes can be selected. By clicking and waiting for 
+				one second, the network view can be panned.</p>
+		<p>Right clicking a node brings up the node context menu.
+		</p>
+	</section>
+
+	<section id="network-overview">
+		<h4>Overview</h4>
+		<figure class="wide">
+			<img src="<?php echo base_url(array('assets', 'img', 'network.png')); ?>"
+				alt="Network view explained">
+		</figure>
+
+		<ol>
+			<li><b>Network type:</b> choose either the complete or the subset 
+			co-expression networks.</li>
+			<li><b>Correlation threshold: </b>Only draw edges with a co-expression
+			above this threshold.</li>
+			<li><b>Expansion threshold: </b>When expanding a neighborhood, only
+			draw edges with a co-expression above this threshold.</li>
+			<li><b>Layout expansion: </b>When expanding a neighborhood, redo the 
+			layout of the network. If not, just put the expanded nodes in a circle
+			around the original node.</li>
+			<li><b>Redraw: </b>Redraw the network. Only nodes in your gene basket
+			will be drawn.</li>
+			<li>
+				<b>Selection tools:</b>
+				<ul>
+					<li><b>Select all:</b> Select all genes in the network.</li>
+					<li><b>Select none:</b> Deselect all genes in the network.</li>
+					<li><b>Invert selection:</b> Select all deselected genes and
+					vice versa.</li>
+					<li><b>Grow selection:</b> Select the neighbors of the current
+					selection.</li>
+					<li><b>Delete selection:</b> Remove the genes from the network.
+					<strong>Note:</strong> Does not remove the genes from the gene
+					basket.</li>
+				</ul>
+			</li>
+			<li>
+				<b>Basket tools:</b>
+				<ul>
+					<li><b>Add to basket:</b> Add the gene(s) to your gene basket
+					(make the node(s) green).</li>
+					<li><b>Delete from basket:</b> Remove the gene(s) from your 
+					gene basket (make the node(s) gray).</li>
+				</ul>
+			</li>
+			<li>
+				<b>Export tools</b>
+				<ul>
+					<li><b>Export GML:</b> Export the network in 
+					<a href="http://en.wikipedia.org/wiki/Graph_Modelling_Language">
+					Graph Modelling Language</a> (GML) format for import in other
+					software.</li>
+					<li><b>Export PNG:</b> Export an image of the network as PNG.</li>
+					<li><b>Export PDF:</b> Export an image of the network as PDF.</li>
+				</ul>
+			</li>
+			<li><b>Search:</b> Search for a gene in the network. Useful when you are
+			interested in a certain gene in the network, but can't find it. If the
+			gene exists, it is selected.</li>
+			<li><b>Pan and zoom:</b> Pan and zoom the network. Not available on touch
+			devices.</li>
+			<li>
+				<b>Node context menu:</b> Right click a node to show the menu.
+				<ul>
+					<li><b>Expand:</b> Search for new neighbors of the current gene
+					using the threshold in 3.</li>
+					<li><b>Delete:</b> Remove the gene from the network.
+					<strong>Note:</strong> Does not remove the gene from the gene
+					basket.</li>
+					<li><b>Toggle basket:</b> If the gene is in your gene basket,
+					remove it from the basket (make it gray) or vice versa (make
+					it green).</li>
+				</ul>
+			</li>
+		</ol>
+	</section>
 </section>
 
 <section id="regtools">

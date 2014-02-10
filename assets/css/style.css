@@ -2,6 +2,7 @@
 html, body {
 	height: 100%;
 	background-color: #EEE;
+	font-size: 1em;
 }
 .wrapper {
 	min-height: 100%;
@@ -84,23 +85,38 @@ figure.right {
 	margin-left: 20px;
 }
 
+figure.wide {
+	max-width: 100%;
+}
+
 /* lists */
 nav ul { list-style-type: disc; }
-ul ul {
+ul ul, ol ul {
 	margin-top: 0;
 	margin-bottom: 0;
 	margin-left: -1em;
 	list-style-type: circle;
 }
+ol ul { list-style-type: disc; }
 
 /* Headings */
-h1, h2, h3, h4, h5, h6 {
-	font-family: 'Raleway', sans-serif;
-}
+h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', sans-serif; }
 
 .headroom {
 	margin-top: 10px;
 	margin-bottom: 10px;
+}
+
+i { font-style: italic; }
+
+kbd {
+	background-color: #EEE;
+	border: 1px solid #AAA;
+	font-family: helvetica, arial, sans-serif;
+	border-bottom: 2px solid #AAA;
+	padding: 0.1em 0.5em 0 0.5em;
+	font-size: 0.7em;
+	border-radius: 3px;
 }
 
 /* Navigation */
