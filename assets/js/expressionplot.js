@@ -133,8 +133,6 @@ var expressionPlot = (function() {
 	}
 
 	function drawExpressionProfile() {
-		$('#loading-plot').toggleClass('hidden');
-		$('#draw-expression').prop('disabled', true);
 		var sel = selFun();
 		if (sel.length === 0) {
 			alert('No genes selected');
@@ -143,6 +141,8 @@ var expressionPlot = (function() {
 			alert("Don't select more than 30 genes. You won't see anything anyway.")
 			return;
 		}
+		$('#loading-plot').toggleClass('hidden');
+		$('#draw-expression').prop('disabled', true);
 		$.ajax({
 			url: url + 'api/get_multi_flot',
 			type: 'POST',
