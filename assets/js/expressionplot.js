@@ -2,6 +2,8 @@ var expressionPlot = (function() {
 
 	var selFun;
 	var url;
+	var plot;
+	var overview;
 
 	var init = function (fun, siteURL, singleDraw) {
 		selFun = fun;
@@ -12,13 +14,15 @@ var expressionPlot = (function() {
 			$('#draw-expression').remove();
 		} else {
 			// Expression profile draw button
-			$('#flot-expression, .flot-overview').hide();
+			$('#flot-expression, .flot-overview, .flot-buttons').hide();
 			$('#draw-expression').click(drawExpressionProfile);
 		}
+
+		$('#plot-reset').click(resetZoom);
 	}
 
 	function plotExpression(data, annot) {
-		$('#flot-expression, .flot-overview').show();
+		$('#flot-expression, .flot-overview, .flot-buttons').show();
 		var plotOptions = {
 			series: {
 				lines: { show: true, lineWidth: 1 },
@@ -36,9 +40,9 @@ var expressionPlot = (function() {
 			}
 		}
 
-		var plot = $.plot('#flot-expression', data, plotOptions);
+		plot = $.plot('#flot-expression', data, plotOptions);
 
-		var overview = $.plot('.flot-overview', data, {
+		overview = $.plot('.flot-overview', data, {
 			series: { 
 				lines: { show: true, lineWidth: 1 },
 				shadowSize: 0
@@ -158,6 +162,10 @@ var expressionPlot = (function() {
 				$('#draw-expression').prop('disabled', false);
 			}
 		})
+	}
+
+	function resetZoom() {
+		drawExpressionProfile();
 	}
 
 	return init;
