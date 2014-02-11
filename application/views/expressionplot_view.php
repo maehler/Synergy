@@ -7,6 +7,8 @@
 	<div class="flot-overview"></div>
 	<div class="flot-buttons small">
 		<button id="plot-reset">Reset zoom</button>
+		<button id="plot-export-png">Export PNG</button>
+		<button id="plot-export-pdf">Export PDF</button>
 	</div>
 	<div class="flot-legend"></div>
 	<div id="flot-expression" class="flot with-legend"></div>

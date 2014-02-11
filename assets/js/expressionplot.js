@@ -19,6 +19,12 @@ var expressionPlot = (function() {
 		}
 
 		$('#plot-reset').click(resetZoom);
+		$('#plot-export-png').click(function() {
+			exportPlot('png');
+		});
+		$('#plot-export-pdf').click(function() {
+			exportPlot('pdf');
+		});
 	}
 
 	function plotExpression(data, annot) {
@@ -166,6 +172,14 @@ var expressionPlot = (function() {
 
 	function resetZoom() {
 		drawExpressionProfile();
+	}
+
+	function exportPlot(format) {
+		var jsonData = JSON.stringify(plot.getData());
+		$.download(url + 'api/export_plot', {
+			plotData: encodeURI(jsonData),
+			format: format
+		}, 'POST');
 	}
 
 	return init;

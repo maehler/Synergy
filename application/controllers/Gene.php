@@ -29,6 +29,7 @@ class Gene extends MY_Controller {
 		$this->load->view('gene_details', $gene_data);
 		$this->load->view('base/footer', $this->get_foot_data(
 			array(
+				base_url(array('assets', 'js', 'jquery.download.js')),
 				base_url(array('assets', 'js', 'jquery.dataTables.min.js')),
 				base_url(array('assets', 'js', 'jquery.dataTables.sorting.js')),
 				base_url(array('assets', 'js', 'jquery.flot.js')),

@@ -247,6 +247,35 @@ class Api extends MY_Controller {
 			->set_output(json_encode($expression));
 	}
 
+	function export_plot() {
+		$this->load->helper('python_helper');
+		$this->load->helper('download');
+
+		$plot_data = $this->input->post('plotData');
+		$format = $this->input->post('format');
+
+		switch ($format) {
+			case 'png':
+				$this->output->set_content_type('image/png');
+				break;
+
+			case 'pdf':
+				$this->output->set_content_type('application/pdf');
+				break;
+			
+			default:
+				echo 'Invalid image format';
+				return;
+				break;
+		}
+
+		$plot = run_python_stdinpipe('export_expression_plot.py', $plot_data,
+			array('--format', $format));
+
+		$this->output->set_output($plot);
+		// force_download('expression_plot.'.$format);
+	}
+
 	// MEME
 	function run_tomtom() {
 		$pspm = $this->input->post('matrix');
