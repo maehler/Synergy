@@ -291,4 +291,34 @@ class Api extends MY_Controller {
 			$this->output->set_output($data);
 		}
 	}
+
+	function export_motif_logo() {
+		$this->load->helper('python_helper');
+		$this->load->helper('download');
+
+		$pspm = $this->input->post('pspm');
+		$format = $this->input->post('format');
+
+		switch ($format) {
+			case 'png':
+				$this->output->set_content_type('image/png');
+				break;
+
+			case 'eps':
+				$this->output->set_content_type('application/postscript');
+				break;
+			
+			default:
+				echo 'Invalid image format';
+				return;
+				break;
+		}
+
+		$img = run_python_stdinpipe('export_motif_logo.py', $pspm, array(
+			'--format', $format,
+			'--id', $this->session->userdata('session_id')
+		));
+
+		$this->output->set_output($img);
+	}
 }

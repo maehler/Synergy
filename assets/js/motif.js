@@ -26,6 +26,14 @@ function runTOMTOM() {
 	});
 }
 
+function exportLogo(format) {
+	var strData = JSON.stringify(pspm);
+	$.download(baseURL + 'api/export_motif_logo', {
+		'pspm': encodeURI(strData),
+		'format': format
+	}, 'POST');
+}
+
 $(function () {
 	var motifLen = pspm.length;
 	var canvasWidth = 50 * motifLen;
@@ -60,4 +68,8 @@ $(function () {
 
 	// TOMTOM
 	$('#run-tomtom').click(runTOMTOM);
+
+	$('#eps-logo').click(function() {
+		exportLogo('eps');
+	});
 });

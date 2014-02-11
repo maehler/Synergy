@@ -38,6 +38,7 @@ go_def = os.path.join(_base_dir, 'data/goterm_tab_inherited.txt')
 meme = os.path.join(_meme_bin, 'meme')
 tomtom = os.path.join(_meme_bin, 'tomtom')
 iupac2meme = os.path.join(_meme_bin, 'iupac2meme')
+meme2images = os.path.join(_meme_bin, 'meme2images')
 
 # Perl libraries
 perl_lib = os.path.join(_base_dir, 'meme/lib/perl/')

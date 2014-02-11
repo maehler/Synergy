@@ -27,6 +27,8 @@
 <section>
 	<h3>Motif logo</h3>
 	<div id="motif-logo"></div>
+	<div class="clear-fix"></div>
+	<button id="eps-logo" class="small">Download EPS</button>
 </section>
 
 <section>
