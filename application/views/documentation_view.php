@@ -24,6 +24,13 @@
 				<li><a href="#network-overview">Overview</a></li>
 			</ul>
 		</li>
+		<li>
+			<a href="#enrichment">Enrichment tools</a>
+			<ul>
+				<li><a href="#enrichment-go">GO enrichment</a></li>
+				<li><a href="#enrichment-motif">Motif enrichment</a></li>
+			</ul>
+		</li>
 		<li><a href="#regtools">Regulation tools</a></li>
 	</ul>
 </nav>
@@ -126,8 +133,10 @@ gene5</pre>
 	<h3>Network</h3>
 	<p>On the network page you can explore co-expression patterns among your genes
 		of interest. The network is visualized using nodes (genes) and edges
-		(co-expression). The width of an edge is correlated with the co-expression
-		of the gene pair.</p>
+		(co-expression) usin the JavaScript library <a 
+		href="http://cytoscape.github.io/cytoscape.js/">Cytoscape.js</a>. The 
+		width of an edge is correlated with the co-expression of the gene pair.
+	</p>
 
 	<p>When visiting the network view, the application will find all co-expression
 	links among the genes in your gene basket. The genes that are currently in
@@ -253,6 +262,51 @@ gene5</pre>
 			</li>
 		</ol>
 	</section>
+</section>
+
+<section id="enrichment">
+	<h3>Enrichment tools</h3>
+	<p>The enrichment tools are available in the gene basket and in the network
+		view. With the enrichment tools, GO and motif enrichment can be calculated.</p>
+	
+	<section id="enrichment-go">
+		<h4>GO enrichment</h4>
+		<p>GO enrichment requires just two parameters; a set of genes and an FDR
+		threshold. The definition of the set of genes depends on the context.
+		In the network view, select genes in the network by clicking and
+		dragging. In the gene basket, check the checkboxes of the genes that
+		you want to use.</p>
+		<p>The "GO category filter" does not affect the calculation of the 
+		results. This is just a filtering after the results have been 
+		calculated.
+		</p>
+	</section>
+
+	<section id="enrichment-motif">
+		<h4>Motif enrichment</h4>
+		<p>The motif enrichment takes three parameters; an FDR threshold, 
+		a FIMO <i>q</i>-value threshold and whether or not to use central
+		motifs. The FDR threshold is the false discovery rate of the 
+		enrichment results, the FIMO <i>q</i>-value threshold is a threshold
+		that decides how significant a motif must be to be considered in the
+		enrichment calculation. By using central motifs, a subset of motifs is
+		used for the enrichment. This subset was determined by creating a 
+		motif network where each edge represented the degree of similarity 
+		between a pair of motifs. The network was clustered, and the most
+		central motif in each cluster was considered representative of that
+		cluster, and thus classified as a central motif.
+		</p>
+	</section>
+</section>
+
+<section id="expressionplot">
+	<h3>Gene expression plot</h3>	
+	<p>In the network view, the gene basket and on the gene pages, an 
+	expression plot can be generated. On the gene pages it gets generated
+	automatically, but for the network view and the gene basket, it can 
+	be generated from a selection of genes. The plots can be exported as 
+	PNG or PDF.
+	</p>
 </section>
 
 <section id="regtools">
