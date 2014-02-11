@@ -31,6 +31,7 @@
 				<li><a href="#enrichment-motif">Motif enrichment</a></li>
 			</ul>
 		</li>
+		<li><a href="#expressionplot">Gene expression plot</a></li>
 		<li><a href="#regtools">Regulation tools</a></li>
 	</ul>
 </nav>
@@ -304,7 +305,10 @@ gene5</pre>
 	<p>In the network view, the gene basket and on the gene pages, an 
 	expression plot can be generated. On the gene pages it gets generated
 	automatically, but for the network view and the gene basket, it can 
-	be generated from a selection of genes. The plots can be exported as 
+	be generated from a selection of genes. By hovering with the cursor over
+	the different series, more information on the experiments will be shown.
+	You can also zoom in plots by clicking and dragging. To reset the zoom 
+	level, just click the "Reset zoom" button. The plots can be exported as 
 	PNG or PDF.
 	</p>
 </section>
