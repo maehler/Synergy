@@ -110,6 +110,7 @@ ol ul { list-style-type: disc; }
 
 /* Headings */
 h1, h2, h3, h4, h5, h6 { font-family: 'Raleway', sans-serif; }
+header h1 { text-shadow: 0px 1px 1px rgba(255,255,255,0.8); }
 
 .headroom {
 	margin-top: 10px;
