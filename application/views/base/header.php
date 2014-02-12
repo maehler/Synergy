@@ -51,7 +51,7 @@
 		<?php endif ?>
 		<?php if ($cookie_disclaimer): ?>
 			<div class="cookie">
-				<?php echo form_open(base_url(array('home', 'accept_cookies', $this->uri->segment(1, '')))); ?>
+				<?php echo form_open(base_url(array('home', 'accept_cookies?redir='.current_url()))); ?>
 				<p>This site uses <a href="<?php echo base_url('documentation#general-cookies'); ?>">cookies</a>
 				to function properly. <input type="submit" name="submit" value="I accept cookies"></p>
 				<?php echo form_close(); ?>

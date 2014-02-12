@@ -8,7 +8,11 @@ class Home extends MY_Controller {
 		$this->load->view('base/footer');
 	}
 
-	public function accept_cookies($redir='') {
+	public function accept_cookies() {
+		$redir = $this->input->get('redir');
+		if (!$redir) {
+			$redir = '';
+		}
 		$this->session->set_userdata('cookies_accepted', TRUE);
 		redirect($redir, 'refresh');
 	}
