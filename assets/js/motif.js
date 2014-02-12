@@ -72,4 +72,7 @@ $(function () {
 	$('#eps-logo').click(function() {
 		exportLogo('eps');
 	});
+	$('#png-logo').click(function() {
+		exportLogo('png');
+	});
 });

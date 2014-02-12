@@ -29,6 +29,7 @@
 	<div id="motif-logo"></div>
 	<div class="clear-fix"></div>
 	<button id="eps-logo" class="small">Download EPS</button>
+	<button id="png-logo" class="small">Download PNG</button>
 </section>
 
 <section>
