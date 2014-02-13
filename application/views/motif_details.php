@@ -34,6 +34,14 @@
 
 <section>
 	<h3>Genes containing this motif</h3>
+	<label for="q-value-filter"><i>q</i>-value filter</label>
+	<select id="q-value-filter">
+		<option value="0.01">0.01</option>
+		<option value="0.05" selected>0.05</option>
+		<option value="0.10">0.10</option>
+		<option value="0.20">0.20</option>
+		<option value="0.30">0.30</option>
+	</select>
 	<table id="gene-table" class="small">
 		<thead>
 			<tr>

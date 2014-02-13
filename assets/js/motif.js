@@ -1,5 +1,18 @@
 "use strict";
 
+$.fn.dataTableExt.afnFiltering.push(
+    function( oSettings, aData, iDataIndex ) {
+        var qMax = $('#q-value-filter').val() * 1;
+        var qValue = aData[5];
+        if ( qMax == "" ) {
+            return true;
+        } else if ( qMax > qValue ) {
+            return true;
+        }
+        return false;
+    }
+);
+
 function runTOMTOM() {
 	this.disabled = true;
 	var $tomtomRunning = $('#tomtom-running').toggleClass('hidden');
@@ -74,5 +87,8 @@ $(function () {
 	});
 	$('#png-logo').click(function() {
 		exportLogo('png');
+	});
+	$('#q-value-filter').change(function() {
+		$('#gene-table').dataTable().fnDraw();
 	});
 });
