@@ -32,11 +32,11 @@
 					</li><li>
 						<a id="nav-search" class="<?php echo $current_pane == "search" ? "active" : "" ?>" href="<?php echo base_url("search") ?>">Gene search</a>						
 					</li><li>
+						<a id="nav-motifsearch" class="<?php echo $current_pane == "motifsearch" ? "active" : "" ?>" href="<?php echo base_url("motifsearch") ?>">Motif search</a>
+					</li><li>
 						<a id="nav-basket" class="<?php echo $current_pane == "basket" ? "active" : "" ?>" href="<?php echo base_url("basket") ?>">Gene basket</a>
 					</li><li>
 						<a id="nav-network" class="<?php echo $current_pane == "network" ? "active" : "" ?>" href="<?php echo base_url("network") ?>">Network</a>
-					</li><li>
-						<a id="nav-regtools" class="<?php echo $current_pane == "regtools" ? "active" : "" ?>" href="<?php echo base_url("regtools") ?>">Regulation tools</a>
 					</li><li>
 						<a id="nav-documentation" class="<?php echo $current_pane == "documentation" ? "active" : "" ?>" href="<?php echo base_url("documentation") ?>">Documentation</a>
 					</li>

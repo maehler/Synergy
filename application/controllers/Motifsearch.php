@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Regtools extends MY_Controller {
+class Motifsearch extends MY_Controller {
 
 	function index() {
 		$this->load->view('base/header', $this->get_head_data('regtools', 'Regulation tools'));
