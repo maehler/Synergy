@@ -175,7 +175,7 @@ $(function () {
 		style: cytoscape.stylesheet()
 			.selector('node')
 				.css({
-					'content': 'data(orf)',
+					'content': $('#node-labels').val(),
 					'text_align': 'center',
 					'font-family': 'helvetica, arial, sans-serif',
 					'border-width': 1,
@@ -284,7 +284,12 @@ $(function () {
 		if (e.which === 13) {
 			searchNetwork();
 		}
-	})
+	});
+
+	// Node labels
+	$('#node-labels').change(function() {
+		cy.nodes().css({content: $('#node-labels').val()});
+	});
 
 	// Button listeners
 	$('#select-all').click(selectAll);
