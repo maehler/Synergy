@@ -6,7 +6,8 @@ class MY_Controller extends CI_Controller {
         parent::__construct();
     }
 
-    public function get_head_data($current_pane='', $title_prefix='', $stylesheets=NULL) {
+    public function get_head_data($current_pane='', $title_prefix='', 
+            $stylesheets=NULL, $autorefresh=NULL) {
     	$data['current_pane'] = $current_pane;
     	$data['title_prefix'] = $title_prefix;
     	if ($stylesheets !== NULL) {
@@ -22,6 +23,10 @@ class MY_Controller extends CI_Controller {
             $data['cookie_disclaimer'] = TRUE;
         } else {
             $data['cookie_disclaimer'] = FALSE;
+        }
+
+        if ($autorefresh !== NULL) {
+            $data['auto_refresh_time'] = intval($autorefresh);
         }
 
     	return $data;

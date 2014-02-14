@@ -2,6 +2,9 @@
 <html lang="en" class="no-js">
 <head>
 	<meta charset="utf-8">
+	<?php if (isset($auto_refresh_time)): ?>
+	<meta http-equiv="refresh" content="<?php echo $auto_refresh_time; ?>">		
+	<?php endif ?>
 	<title><?php echo !empty($title_prefix) ? "$title_prefix | " : ""; ?>Synergy</title>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(array("assets", "css", "normalize.css")) ?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(array("assets", "css", "style.css")) ?>">
