@@ -13,6 +13,25 @@ $.fn.dataTableExt.afnFiltering.push(
     }
 );
 
+function replaceBasket() {
+	var rows = $('#gene-table').dataTable().$('tr', {
+		filter: 'applied',
+		page: 'all'
+	});
+	var sel = [];
+	$.each(rows, function() {
+		sel.push($(this).find('input').val());
+	});
+	$.ajax({
+		url: baseURL + 'api/replace_basket',
+		type: 'POST',
+		data: { genes: sel },
+		success: function() {
+			console.log('Basket updated');
+		}
+	});
+}
+
 function runTOMTOM() {
 	this.disabled = true;
 	var $tomtomRunning = $('#tomtom-running').toggleClass('hidden');
@@ -91,4 +110,5 @@ $(function () {
 	$('#q-value-filter').change(function() {
 		$('#gene-table').dataTable().fnDraw();
 	});
+	$('#replace-basket').click(replaceBasket);
 });

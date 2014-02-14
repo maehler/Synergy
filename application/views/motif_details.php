@@ -56,7 +56,7 @@
 		<tbody>
 		<?php foreach ($genes as $gene): ?>
 			<tr>
-				<td><?php echo $gene['orf_id']; ?></td>
+				<td><?php echo $gene['orf_id']; ?><input type="hidden" value="<?php echo $gene['id']; ?>"></td>
 				<td><?php echo $gene['startpos'] < $gene['stoppos'] ? 'Forward' : 'Reverse'; ?></td>
 				<td><?php echo $gene['startpos']; ?></td>
 				<td><?php echo $gene['stoppos']; ?></td>
@@ -76,6 +76,7 @@
 			</tr>
 		</tfoot>
 	</table>
+	<button id="replace-basket">Replace basket with filtered table</button>
 </section>
 
 <section>
@@ -92,7 +93,7 @@
     <a href="http://meme.sdsc.edu/meme/cgi-bin/tomtom.cgi" class="external">the 
     TOMTOM website</a>.</p>
 
-	<button class="small" id="run-tomtom">Run TOMTOM</button>
+	<button id="run-tomtom">Run TOMTOM</button>
 	<p id="tomtom-running" class="hidden"><span class="loading"></span>Loading...</p>
 	<p id="tomtom-results"></p>
 </section>

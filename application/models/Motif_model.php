@@ -22,6 +22,11 @@ class Motif_model extends CI_Model {
 			->limit(1);
 
 		$query = $this->db->get();
+
+		if ($query->num_rows() === 0) {
+			return FALSE;
+		}
+
 		$res = $query->row_array();
 
 		$res['pspm'] = $this->format_matrix($res['pspm']);
@@ -30,7 +35,7 @@ class Motif_model extends CI_Model {
 	}
 
 	function get_motif_genes($motif) {
-		$this->db->select('g.orf_id, pm.startpos, pm.stoppos, pm.score, pm.q')
+		$this->db->select('g.id, g.orf_id, pm.startpos, pm.stoppos, pm.score, pm.q')
 			->from('promoter_motif AS pm')
 			->join('motif AS m', 'm.id = pm.motif_id', 'left')
 			->join('promoter AS p', 'p.id = pm.promoter_id')
