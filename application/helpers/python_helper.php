@@ -1,7 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 if (!function_exists('run_python')) {
-    function run_python($script, $params, $implode_char=" ") {
+    function run_python($script, $params, $implode_char=" ",
+            $bg=FALSE) {
         // Escape the shell parameters
         $clean_params = array();
         foreach ($params as $p) {
@@ -18,14 +19,21 @@ if (!function_exists('run_python')) {
         }
         $str_params = implode(' ', $clean_params);
 
-        $cmd = PYTHON . " " . PYTHON_SCRIPTS . "$script $str_params 2>&1";
+        $cmd = PYTHON . " " . PYTHON_SCRIPTS . "$script $str_params";
 
-        $data = "";
-        $handle = popen($cmd, 'r');
-        while (!feof($handle)) {
-            $data .= fgets($handle);
+        if ($bg === FALSE) {
+            $cmd .= ' 2>&1';
+            $data = "";
+            $handle = popen($cmd, 'r');
+            while (!feof($handle)) {
+                $data .= fgets($handle);
+            }
+            fclose($handle);
+        } else {
+            $cmd .= ' > ' . $bg . '/output 2> ' . $bg . '/log.err &';
+            exec($cmd);
+            $data = $bg;
         }
-        fclose($handle);
         
         return $data;
     }
