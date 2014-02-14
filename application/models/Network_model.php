@@ -50,7 +50,7 @@ class Network_model extends CI_Model {
 				}
 			}
 			// Make sure that genes that might be disconnected also are included
-			$this->db->select('id, orf_id, tf')
+			$this->db->select('id, orf_id, tf, symbol')
 				->from('gene')
 				->where_in('id', $genes);
 			$basket_query = $this->db->get();
@@ -60,13 +60,14 @@ class Network_model extends CI_Model {
 					$nodes[$gene['id']] = array(
 						$gene['orf_id'],
 						$gene['tf'] ? TRUE : FALSE,
-						TRUE
+						TRUE,
+						$gene['symbol']
 					);
 				}
 			}
 		} else {
 			// Select genes
-			$this->db->select('id, orf_id, tf')
+			$this->db->select('id, orf_id, tf, symbol')
 				->from('gene')
 				->where_in('id', $genes);
 			$gene_query = $this->db->get();
@@ -76,7 +77,8 @@ class Network_model extends CI_Model {
 				$nodes[$gene['id']] = array(
 					$gene['orf_id'],
 					$gene['tf'] ? TRUE : FALSE,
-					TRUE
+					TRUE,
+					$gene['symbol']
 				);
 			}
 		}
@@ -101,7 +103,8 @@ class Network_model extends CI_Model {
 			$network['nodes'][] = array(
 				'data' => array(
 					'id' => strval($nid),
-					'orf' => $vals[0]
+					'orf' => $vals[0],
+					'symbol' => $vals[3]
 				),
 				'classes' => implode(' ', $classes)
 			);
@@ -125,7 +128,7 @@ class Network_model extends CI_Model {
 	}
 
 	function get_neighbors($orf, $th, $ntype) {
-		$this->db->select("g1.id AS id1, g1.orf_id AS orf1, g1.tf AS tf1, g2.id AS id2, g2.orf_id AS orf2, g2.tf AS tf2")
+		$this->db->select("g1.id AS id1, g1.orf_id AS orf1, g1.tf AS tf1, g1.symbol AS sym1, g2.id AS id2, g2.orf_id AS orf2, g2.tf AS tf2, g2.symbol AS sym2")
 			->from('corr AS c')
 			->join('gene AS g1', 'g1.id = c.gene1_id', 'left')
 			->join('gene AS g2', 'g2.id = c.gene2_id', 'left')
@@ -142,14 +145,16 @@ class Network_model extends CI_Model {
 			$nodes[$edge['id1']] = array(
 				'data' => array(
 					'id' => $edge['id1'],
-					'orf' => $edge['orf1']
+					'orf' => $edge['orf1'],
+					'symbol' => $edge['sym1']
 				),
 				'classes' => $edge['tf1'] ? "tf" : ""
 			);
 			$nodes[$edge['id2']] = array(
 				'data' => array(
 					'id' => $edge['id2'],
-					'orf' => $edge['orf2']
+					'orf' => $edge['orf2'],
+					'symbol' => $edge['sym2']
 				),
 				'classes' => $edge['tf2'] ? "tf" : ""
 			);
