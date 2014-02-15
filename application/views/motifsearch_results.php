@@ -14,5 +14,8 @@
 	later.</p>
 	<p>This page will refresh automatically every 30th second.
 	</p>
+	<h3>Progress</h3>
+<pre class="small"><?php echo file_get_contents($url . '/log.err'); ?>
+</pre>
 <?php endif ?>
 </section>
