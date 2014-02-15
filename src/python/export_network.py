@@ -14,6 +14,7 @@ def as_network(d):
 			{
 				'name': n['data']['orf'],
 				'label': n['data']['orf'],
+				'classes': n['classes'],
 				'graphics': {
 					'x': n['position']['x'],
 					'y': n['position']['y'],
@@ -54,12 +55,20 @@ def get_edge_widths(G):
 	return [x * (2 - 0.1) / (wmax - wmin) for x in w]
 
 def get_node_types(G):
+	color = '#AAAAAA'
+	basket_color = '#219D1A'
 	types = defaultdict(list)
 	for n in G.nodes(data=True):
 		if n[1]['graphics']['type'] == 'rectangle':
-			types['s'].append(n[0])
+			if 'basket' in n[1]['classes'].split():
+				types[('s', basket_color)].append(n[0])
+			else:
+				types[('s', color)].append(n[0])
 		else:
-			types['o'].append(n[0])
+			if 'basket' in n[1]['classes'].split():
+				types[('o', basket_color)].append(n[0])
+			else:
+				types[('o', color)].append(n[0])
 	return types
 
 def parse_args():
@@ -91,11 +100,11 @@ def main():
 				pos=nodepos,
 				edge_color='0.6',
 				width=get_edge_widths(G))
-		for shape, nodes in get_node_types(G).iteritems():
+		for (shape, color), nodes in get_node_types(G).iteritems():
 			nx.draw_networkx_nodes(G,
 				pos=nodepos,
 				nodelist=nodes,
-				node_color='#219D1A',
+				node_color=color,
 				ax=ax,
 				linewidths=0.5,
 				node_size=100,
