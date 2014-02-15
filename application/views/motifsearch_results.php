@@ -8,6 +8,7 @@
 	<ul>
 		<li><a href="<?php echo $url; ?>/tomtom.html">TOMTOM (HTML)</a></li>
 		<li><a href="<?php echo $url; ?>/tomtom.txt">TOMTOM (txt)</a></li>
+		<li><a href="<?php echo $url; ?>/input.meme">Input motifs (MEME format)</a></li>
 	</ul>
 <?php else: ?>
 	<p>Your results are being calculated. You can bookmark this page and return
