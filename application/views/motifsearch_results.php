@@ -7,7 +7,7 @@
 	<p>Your results are ready! These results will be stored for 24 hours.</p>
 	<ul>
 		<li><a href="<?php echo $url; ?>/tomtom.html">TOMTOM (HTML)</a></li>
-		<li><a href="<?php echo $url; ?>/tomtom.txt">TOMTOM (txt)</a></li>
+		<li><a href="<?php echo $url; ?>/tomtom.txt">TOMTOM (plain text)</a></li>
 		<li><a href="<?php echo $url; ?>/input.meme">Input motifs (MEME format)</a></li>
 	</ul>
 <?php else: ?>
