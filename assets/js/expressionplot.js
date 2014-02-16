@@ -36,7 +36,7 @@ var expressionPlot = (function() {
 				// points: { show: true, radius: 2 }
 			},
 			grid: { hoverable: true },
-			selection: { mode: 'x' },
+			selection: { mode: 'xy' },
 			xaxis: { tickDecimals: 0 },
 			yaxis: { axisLabel: 'log<sub>2</sub> expression' },
 			legend: {
@@ -54,7 +54,7 @@ var expressionPlot = (function() {
 				shadowSize: 0
 			},
 			legend: { show: false },
-			selection: { mode: 'x' }
+			selection: { mode: 'xy' }
 		});
 
 		// Range selection
