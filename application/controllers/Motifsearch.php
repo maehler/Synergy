@@ -3,11 +3,32 @@
 class Motifsearch extends MY_Controller {
 
 	function index() {
-		$req_pane = $this->input->get('pane');
-		if ($req_pane !== NULL) {
-			$data['pane'] = $req_pane;
-		} else {
-			$data['pane'] = 'iupac';
+		$this->load->library('form_validation');
+
+		$data['pane'] = 'iupac';
+		$pane = $this->input->post('motif-search-radio');
+
+		if ($pane == 'search-iupac-pane') {
+			$this->form_validation->set_rules('motif-iupac', 'IUPAC motif', 'required');
+			if ($this->form_validation->run() === FALSE) {
+				$data['pane'] = 'iupac';
+			} else {
+				$this->iupac_search();
+			}
+		} else if ($pane == 'search-matrix-pane') {
+			$this->form_validation->set_rules('motif-matrix', 'matrix motif', 'required');
+			if ($this->form_validation->run() === FALSE) {
+				$data['pane'] = 'matrix';
+			} else {
+				$this->matrix_search();
+			}
+		} else if ($pane == 'search-id-pane') {
+			$this->form_validation->set_rules('motif-name', 'Motif name', 'required');
+			if ($this->form_validation->run() === FALSE) {
+				$data['pane'] = 'id';
+			} else {
+				$this->name_search();
+			}
 		}
 
 		$this->load->view('base/header', $this->get_head_data('motifsearch', 'Motif search'));
@@ -21,7 +42,6 @@ class Motifsearch extends MY_Controller {
 		$this->load->helper('python_helper');
 
 		$iupac = trim($this->input->post('motif-iupac'));
-		echo $iupac;
 
 		$unique_id = $this->session->userdata('session_id') . time();
 		$outdir = TMP . $unique_id . '.motifsearch';
@@ -36,12 +56,28 @@ class Motifsearch extends MY_Controller {
 			$iupac
 		), ' ', $outdir);
 
-		echo $output;
 		redirect('motifsearch/results/'.$unique_id);
 	}
 
 	function matrix_search() {
-		redirect('motifsearch?pane=matrix');
+		$this->load->helper('python_helper');
+
+		$matrix = $this->input->post('motif-matrix');
+
+		$unique_id = $this->session->userdata('session_id') . time();
+		$outdir = TMP . $unique_id . '.motifsearch';
+
+		if (!file_exists($outdir)) {
+			mkdir($outdir, 0775);
+		}
+
+		run_python('motifsearch.py', array(
+			'--type', 'matrix',
+			$outdir,
+			$matrix
+		), ' ', $outdir);
+
+		redirect('motifsearch/results/'.$unique_id);
 	}
 
 	function name_search() {

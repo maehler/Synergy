@@ -64,8 +64,8 @@ def main():
 	if args.type == 'iupac':
 		meme = parse_iupac(args.motif, args.outdir)
 	elif args.type == 'matrix':
-		meme = meme_util.create_meme(json.loads(urllib2.unquoute(args.motif.decode('utf-8'))))
-
+		matrix = [map(float, x.split()) for x in args.motif.splitlines()]
+		meme = meme_util.create_meme(matrix, os.path.join(args.outdir, 'input'))
 	run_tomtom(meme, args.outdir)
 
 

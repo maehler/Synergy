@@ -15,7 +15,7 @@ def create_meme(pspm, f_prefix):
 	width = len(pspm)
 	meme_header.append('letter-probability matrix: alength= 4 w= %d E= 0' % (width))
 
-	outmeme = os.path.join(config.tmp_dir, '%s.motif.meme' % (f_prefix))
+	outmeme = os.path.join(config.tmp_dir, '%s.meme' % (f_prefix))
 
 	str_matrix = '\n'.join(' '.join(map(str, row)) for row in pspm)
 
