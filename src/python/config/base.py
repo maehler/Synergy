@@ -26,7 +26,8 @@ python = os.path.join(_base_dir, 'python/')
 prodoric = os.path.join(_db_dir, 'prodoric.meme')
 regtransbase = os.path.join(_db_dir, 'regtransbase.meme')
 prodoric_regtransbase = os.path.join(_db_dir, 'prodoric_rtb.meme')
-all_motifs = os.path.join(_db_dir, 'all_motifs_meme.meme')
+all_motifs = os.path.join(_db_dir, 'all_motifs.meme')
+central_motifs = os.path.join(_db_dir, 'central_motifs.meme')
 
 # GO definitions
 # Old definitions without inferred inheritence
