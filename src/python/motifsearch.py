@@ -10,11 +10,12 @@ import urllib2
 import config
 import meme_util
 
-def run_tomtom(meme, outdir):
+def run_tomtom(meme, outdir, central):
 	args = [
 		config.tomtom,
 		'-oc', outdir,
-		meme, config.all_motifs
+		meme,
+		config.central_motifs if central else config.all_motifs
 	]
 
 	p = Popen(args, shell=False)
@@ -46,6 +47,8 @@ def parse_args():
 
 	parser.add_argument('--type', help='input motif type',
 		choices=('iupac', 'matrix'))
+	parser.add_argument('--central', help='only search central motifs',
+		action='store_true')
 
 	args = parser.parse_args()
 
@@ -66,7 +69,7 @@ def main():
 	elif args.type == 'matrix':
 		matrix = [map(float, x.split()) for x in args.motif.splitlines()]
 		meme = meme_util.create_meme(matrix, os.path.join(args.outdir, 'input'))
-	run_tomtom(meme, args.outdir)
+	run_tomtom(meme, args.outdir, args.central)
 
 
 if __name__ == '__main__':

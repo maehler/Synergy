@@ -17,7 +17,9 @@
 	<div id="search-iupac-pane" class="<?php echo $pane === 'iupac' ? '' : 'hidden' ?>">
 		<p>Search for a motif using the IUPAC one letter abbreviation standard.</p>
 
-		<input name="motif-iupac" type="text" placeholder="IUPAC motif">
+		<input name="motif-iupac" type="text" placeholder="IUPAC motif"><br>
+		<input name="central-motifs" id="central-motifs" type="checkbox" checked>
+		<label for="central-motifs">Search only central motifs</label>
 		<?php if ($pane === 'iupac'): ?>
 			<?php echo validation_errors(); ?>
 		<?php endif ?>

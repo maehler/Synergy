@@ -42,6 +42,7 @@ class Motifsearch extends MY_Controller {
 		$this->load->helper('python_helper');
 
 		$iupac = trim($this->input->post('motif-iupac'));
+		$central = $this->input->post('central-motifs') !== NULL ? TRUE : FALSE;
 
 		$unique_id = $this->session->userdata('session_id') . time();
 		$outdir = TMP . $unique_id . '.motifsearch';
@@ -53,7 +54,8 @@ class Motifsearch extends MY_Controller {
 		$output = run_python('motifsearch.py', array(
 			'--type', 'iupac',
 			$outdir,
-			$iupac
+			$iupac,
+			$central ? '--central' : NULL
 		), ' ', $outdir);
 
 		redirect('motifsearch/results/'.$unique_id);
