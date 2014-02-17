@@ -10,12 +10,13 @@
 			</ul>
 		</li>
 		<li>
-			<a href="#search">Search</a>
+			<a href="#search">Gene search</a>
 			<ul>
 				<li><a href="#search-upload">Upload a gene list</a></li>
 				<li><a href="#search-genelists">Gene lists</a></li>
 			</ul>
 		</li>
+		<li><a href="#motifsearch">Motif search</a></li>
 		<li><a href="#basket">Basket</a></li>
 		<li>
 			<a href="#network">Network</a>
@@ -32,7 +33,6 @@
 			</ul>
 		</li>
 		<li><a href="#expressionplot">Gene expression plot</a></li>
-		<li><a href="#regtools">Regulation tools</a></li>
 	</ul>
 </nav>
 
@@ -80,7 +80,7 @@
 </section>
 
 <section id="search">
-	<h3>Search</h3>
+	<h3>Gene search</h3>
 	<p>In the <a href="<?php echo base_url('search'); ?>">Gene search</a>, you can search
 	for genes in <i>Synechocystis</i> that you are particularly interested in. In the
 	first table, you can do free text searches for ORF names and annotations. Whenever
@@ -118,6 +118,23 @@ gene5</pre>
 		button in the last column, the genes will replace the genes currently in
 		your basket.
 		</p>
+	</section>
+</section>
+
+<section id="motifsearch">
+	<h3>Motif search</h3>
+	<p>On the motif search page you can check whether your favorit motif is present
+	in <i>Syn</i>ergy. You can perform the search using a IUPAC motif, a position
+	specific probability matrix (PSPM), or the name of a <i>Syn</i>ergy motif.</p>
+
+	<section>
+		<h4>IUPAC motifs</h4>
+		<p>
+		</p>
+	</section>
+
+	<section>
+		<h4>PSPM</h4>
 	</section>
 </section>
 
@@ -312,8 +329,3 @@ gene5</pre>
 	PNG or PDF.
 	</p>
 </section>
-
-<section id="regtools">
-	<h3>Regulation tools</h3>
-</section>
-
