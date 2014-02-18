@@ -87,6 +87,7 @@ class Network extends MY_Controller {
 				base_url(array('assets', 'js', 'jquery.flot.js')),
 				base_url(array('assets', 'js', 'jquery.flot.resize.js')),
 				base_url(array('assets', 'js', 'jquery.flot.selection.js')),
+				base_url(array('assets', 'js', 'jquery.flot.axislabels.js')),
 				base_url(array('assets', 'js', 'network.js'))
 			)
 		));

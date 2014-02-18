@@ -246,6 +246,9 @@ td, th { padding-right: 10px; }
 	width: 300px;
 }
 
+.flot-overview { margin-left: 2em; }
+.flot-buttons { margin-left: 4em; }
+
 .flot-legend {
 	float: right;
 	width: 200px;
