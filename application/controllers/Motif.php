@@ -7,7 +7,7 @@ class Motif extends MY_Controller {
 		$this->load->model('motif_model');
 	}
 
-	function details($motif) {
+	function details($motif="") {
 		$motif_data = $this->motif_model->get($motif);
 		if (!isset($motif_data['motif_name'])) {
 			$motif_data['motif_name'] = NULL;
