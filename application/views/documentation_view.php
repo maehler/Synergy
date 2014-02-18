@@ -127,15 +127,16 @@ gene5</pre>
 	in <i>Syn</i>ergy. You can perform the search using a IUPAC motif, a position
 	specific probability matrix (PSPM), or the name of a <i>Syn</i>ergy motif.</p>
 
-	<section>
-		<h4>IUPAC motifs</h4>
-		<p>
-		</p>
-	</section>
+	<p>The IUPAC motifs can contain any of the <a 
+	href="http://en.wikipedia.org/wiki/Nucleic_acid_notation#IUPAC_notation">
+	IUPAC one-letter ambiguity codes for nucleic acids</a>. It also supports 
+	square brackets for setting up simple regular expressions.
+	</p>
 
-	<section>
-		<h4>PSPM</h4>
-	</section>
+	<p>The PSPMs should have 4 columns and <i>n</i> rows. Each column corresponds
+	to each of the four nucleotides A, C, G, T, in that order. Each row corresponds
+	to the position in the motif.
+	</p>
 </section>
 
 <section id="basket">
@@ -224,6 +225,7 @@ gene5</pre>
 			<li><b>Layout expansion: </b>When expanding a neighborhood, redo the 
 			layout of the network. If not, just put the expanded nodes in a circle
 			around the original node.</li>
+			<li><b>Node labels:</b> Choose what should be used as node labels.</li>
 			<li><b>Redraw: </b>Redraw the network. Only nodes in your gene basket
 			will be drawn.</li>
 			<li>
