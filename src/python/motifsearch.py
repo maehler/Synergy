@@ -23,8 +23,8 @@ def run_tomtom(meme, outdir, central=True, th=0.05, minovlp=1, evalue=False):
 	if evalue:
 		args.insert(1, '-evalue')
 
-	p = Popen(args, shell=False)
-	p.communicate()
+	p = Popen(args, shell=False, stdout=PIPE, stderr=PIPE)
+	tt_stdout, tt_stderr = p.communicate()
 
 def parse_iupac(iupac, outdir):
 	p = Popen([
@@ -70,19 +70,31 @@ def parse_args():
 	return args
 
 def main():
+	start_time = time()
 	args = parse_args()
 
 	if not os.path.exists(args.outdir):
 		os.mkdir(args.outdir)
 	os.chmod(args.outdir, 0o775)
 
+	print 'Converting motifs...'
+	sys.stdout.write('Motif is ')
 	if args.type == 'iupac':
+		print 'IUPAC'
 		meme = parse_iupac(args.motif, args.outdir)
 	elif args.type == 'matrix':
+		print 'matrix'
 		matrix = [map(float, x.split()) for x in args.motif.splitlines()]
 		meme = meme_util.create_meme(matrix, os.path.join(args.outdir, 'input'))
+	print 'Running TOMTOM...'
+	print 'Parameters:'
+	print '  -thresh %.2f' % (args.thresh)
+	if args.evalue:
+		print '  -evalue'
+	print '  -min-overlap %d' % (args.min_overlap)
+	print 'Looking among %s motifs' % ('central' if args.central else 'all')
 	run_tomtom(meme, args.outdir, args.central, args.thresh, args.min_overlap, args.evalue)
-
+	print 'Done in %.2fs' % (time() - start_time)
 
 if __name__ == '__main__':
 	main()

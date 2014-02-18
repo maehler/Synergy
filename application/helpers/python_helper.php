@@ -33,7 +33,7 @@ if (!function_exists('run_python')) {
             }
             fclose($handle);
         } else {
-            $cmd .= ' > ' . $bg . '/output 2> ' . $bg . '/log.err &';
+            $cmd .= ' > ' . $bg . '/output.txt 2> ' . $bg . '/log.err &';
             exec($cmd);
             $data = $bg;
         }
