@@ -15,18 +15,9 @@
     <p>
         If you find something that is not working as expected, or
         you come up with some feature you'd like to have, feel free
-        to contact me. You can reach me at <a
-        href="mailto:niklas.mahler@nmbu.no?subject=Synergy">niklas.mahler@nmbu.no</a>.
-        It could be anything, ranging from how data is presented to
-        colors of buttons.
-    </p>
-    <p>
-        Currently there is a <a
-        href="http://en.wikipedia.org/wiki/Git_%28software%29"
-        class="external" target="_blank">git</a> repository available at <a
-        href="https://bitbucket.org/maehler/synergyci/overview"
-        target="_blank" class="external">Bitbucket</a>. At the moment it is private,
-        but a public issue tracker and/or wiki will become public soon
-        enough.
+        to <a href="https://bitbucket.org/maehler/synergy/issues/new">create a 
+        ticket</a> in the issue tracker for <i>Syn</i>ergy.
+        Please take a look at existing issues before creating a new to 
+        avoid duplicates.
     </p>
 </section>
