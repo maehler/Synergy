@@ -56,8 +56,8 @@
 				<td><label for="thresh-type">Treshold type</label></td>
 				<td>
 					<select id="thresh-type" name="thresh-type">
-						<option value="qvalue" <?php echo set_select('thresh-type', 'qvalue', TRUE); ?>><i>q</i>-value</option>
-						<option value="evalue" <?php echo set_select('thresh-type', 'evalue'); ?>><i>E</i>-value</option>
+						<option value="qvalue" <?php echo set_select('thresh-type', 'qvalue', TRUE); ?>>q-value</option>
+						<option value="evalue" <?php echo set_select('thresh-type', 'evalue'); ?>>E-value</option>
 					</select>
 				</td>
 			</tr>	
@@ -67,7 +67,7 @@
 			</tr>
 			<tr>
 				<td><label for="min-overlap">Minimum overlap</label></td>
-				<td><input id="min-overlap" name="min-overlap" type="number" size="10" min="1" step="1" value="<?php echo set_value('min-overlap', '1') ?>"></td>
+				<td><input id="min-overlap" name="min-overlap" type="number" min="1" step="1" value="<?php echo set_value('min-overlap', '1') ?>"></td>
 			</tr>
 		</table>		
 	</div>
