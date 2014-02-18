@@ -6,6 +6,9 @@ if (!function_exists('run_python')) {
         // Escape the shell parameters
         $clean_params = array();
         foreach ($params as $p) {
+            if ($p === NULL) {
+                continue;
+            }
             if (empty($p)) {
                 continue;
             }
@@ -43,6 +46,9 @@ if (!function_exists('run_python_stdinpipe')) {
     function run_python_stdinpipe($script, $input, $params=array(), $implode_char=" ") {
         $clean_params = array();
         foreach ($params as $p) {
+            if ($p === NULL) {
+                continue;
+            }
             if (empty($p)) {
                 continue;
             }

@@ -10,13 +10,18 @@ import urllib2
 import config
 import meme_util
 
-def run_tomtom(meme, outdir, central):
+def run_tomtom(meme, outdir, central=True, th=0.05, minovlp=1, evalue=False):
 	args = [
 		config.tomtom,
 		'-oc', outdir,
+		'-min-overlap', str(minovlp),
+		'-thresh', str(th),
 		meme,
 		config.central_motifs if central else config.all_motifs
 	]
+
+	if evalue:
+		args.insert(1, '-evalue')
 
 	p = Popen(args, shell=False)
 	p.communicate()
@@ -43,12 +48,19 @@ def parse_args():
 	parser = argparse.ArgumentParser()
 
 	parser.add_argument('outdir', help='output directory')
-	parser.add_argument('motif', help='motif in json format (text if iupac)')
+	parser.add_argument('motif', help='motif in plain text format')
 
 	parser.add_argument('--type', help='input motif type',
 		choices=('iupac', 'matrix'))
 	parser.add_argument('--central', help='only search central motifs',
 		action='store_true')
+
+	parser.add_argument('--thresh', type=float, default=0.5,
+		help='TOMTOM: significance threshold (default: 0.5)')
+	parser.add_argument('--evalue', action='store_true',
+		help='TOMTOM: use E-value threshold (default: q-value)')
+	parser.add_argument('--min-overlap', type=int, default=1,
+		help='minimum overlap between query and target (default: 1)')
 
 	args = parser.parse_args()
 
@@ -69,7 +81,7 @@ def main():
 	elif args.type == 'matrix':
 		matrix = [map(float, x.split()) for x in args.motif.splitlines()]
 		meme = meme_util.create_meme(matrix, os.path.join(args.outdir, 'input'))
-	run_tomtom(meme, args.outdir, args.central)
+	run_tomtom(meme, args.outdir, args.central, args.thresh, args.min_overlap, args.evalue)
 
 
 if __name__ == '__main__':

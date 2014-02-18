@@ -9,25 +9,31 @@ class Motifsearch extends MY_Controller {
 		$pane = $this->input->post('motif-search-radio');
 
 		if ($pane == 'search-iupac-pane') {
-			$this->form_validation->set_rules('motif-iupac', 'IUPAC motif', 'required');
+			$this->form_validation->set_rules('motif-iupac', 'IUPAC motif', 'trim|required');
+			$this->form_validation->set_rules('sign-thresh', 'Significance threshold', 'required');
+			$this->form_validation->set_rules('thresh-type', 'Threshold type', 'required');
+			$this->form_validation->set_rules('min-overlap', 'Minimum overlap', 'required');
 			if ($this->form_validation->run() === FALSE) {
 				$data['pane'] = 'iupac';
 			} else {
 				$this->iupac_search();
 			}
 		} else if ($pane == 'search-matrix-pane') {
-			$this->form_validation->set_rules('motif-matrix', 'matrix motif', 'required');
+			$this->form_validation->set_rules('motif-matrix', 'matrix motif', 'trim|required');
+			$this->form_validation->set_rules('sign-thresh', 'Significance threshold', 'required');
+			$this->form_validation->set_rules('thresh-type', 'Threshold type', 'required');
+			$this->form_validation->set_rules('min-overlap', 'Minimum overlap', 'required');
 			if ($this->form_validation->run() === FALSE) {
 				$data['pane'] = 'matrix';
 			} else {
 				$this->matrix_search();
 			}
 		} else if ($pane == 'search-id-pane') {
-			$this->form_validation->set_rules('motif-name', 'Motif name', 'required');
+			$this->form_validation->set_rules('motif-name', 'Motif name', 'trim|required|callback_motif_check');
 			if ($this->form_validation->run() === FALSE) {
 				$data['pane'] = 'id';
 			} else {
-				$this->name_search();
+				redirect('motif/details/'.$this->input->post('motif-name'));
 			}
 		}
 
@@ -41,7 +47,10 @@ class Motifsearch extends MY_Controller {
 	function iupac_search() {
 		$this->load->helper('python_helper');
 
-		$iupac = trim($this->input->post('motif-iupac'));
+		$iupac = $this->input->post('motif-iupac');
+		$th = $this->input->post('sign-thresh');
+		$thtype = $this->input->post('thresh-type');
+		$minovlp = $this->input->post('min-overlap');
 		$central = $this->input->post('central-motifs') !== NULL ? TRUE : FALSE;
 
 		$unique_id = $this->session->userdata('session_id') . time();
@@ -53,9 +62,12 @@ class Motifsearch extends MY_Controller {
 
 		$output = run_python('motifsearch.py', array(
 			'--type', 'iupac',
+			$central ? '--central' : NULL,
+			$thtype == 'evalue' ? '--evalue' : NULL,
+			'--thresh', $th,
+			'--min-overlap', $minovlp,
 			$outdir,
 			$iupac,
-			$central ? '--central' : NULL
 		), ' ', $outdir);
 
 		redirect('motifsearch/results/'.$unique_id);
@@ -65,6 +77,10 @@ class Motifsearch extends MY_Controller {
 		$this->load->helper('python_helper');
 
 		$matrix = $this->input->post('motif-matrix');
+		$th = $this->input->post('sign-thresh');
+		$thtype = $this->input->post('thresh-type');
+		$minovlp = $this->input->post('min-overlap');
+		$central = $this->input->post('central-motifs') !== NULL ? TRUE : FALSE;
 
 		$unique_id = $this->session->userdata('session_id') . time();
 		$outdir = TMP . $unique_id . '.motifsearch';
@@ -75,6 +91,10 @@ class Motifsearch extends MY_Controller {
 
 		run_python('motifsearch.py', array(
 			'--type', 'matrix',
+			$central ? '--central' : NULL,
+			$thtype == 'evalue' ? '--evalue' : NULL,
+			'--thresh', $th,
+			'--min-overlap', $minovlp,
 			$outdir,
 			$matrix
 		), ' ', $outdir);
@@ -82,15 +102,14 @@ class Motifsearch extends MY_Controller {
 		redirect('motifsearch/results/'.$unique_id);
 	}
 
-	function name_search() {
-		$motif_name = trim($this->input->post('motif-name'));
-
+	function motif_check($name) {
 		$this->load->model('motif_model');
-		if ($this->motif_model->get($motif_name)) {
-			redirect('motif/details/'.$motif_name);
+		if ($this->motif_model->get($name) === FALSE) {
+			$this->form_validation->set_message('motif_check',
+				'The motif "' . $name . '" could not be found.');
+			return FALSE;
 		} else {
-			$this->session->set_flashdata('errormessage', 'No motif found.');
-			redirect('motifsearch?pane=id');
+			return TRUE;
 		}
 	}
 
