@@ -91,9 +91,6 @@ $(function () {
 			}
 			$('td:eq(4)', nRow).html(Number(aData[4]).toFixed(2));
 			$('td:eq(5)', nRow).html(roundp);
-			$('td:eq(0)', nRow).empty().append($('<a/>')
-				.attr('href', baseURL + 'gene/details/' + aData[0])
-				.html(aData[0]));
 			return nRow;
 		}
 	});

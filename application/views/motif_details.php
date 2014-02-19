@@ -56,7 +56,7 @@
 		<tbody>
 		<?php foreach ($genes as $gene): ?>
 			<tr>
-				<td><?php echo $gene['orf_id']; ?><input type="hidden" value="<?php echo $gene['id']; ?>"></td>
+				<td><a href="<?php echo base_url(array('gene', 'details', $gene['orf_id'])) ?>"><?php echo $gene['orf_id']; ?></a><input type="hidden" value="<?php echo $gene['id']; ?>"></td>
 				<td><?php echo $gene['startpos'] < $gene['stoppos'] ? 'Forward' : 'Reverse'; ?></td>
 				<td><?php echo $gene['startpos']; ?></td>
 				<td><?php echo $gene['stoppos']; ?></td>
