@@ -17,7 +17,8 @@
         you come up with some feature you'd like to have, feel free
         to <a href="https://bitbucket.org/maehler/synergy/issues/new">create a 
         ticket</a> in the issue tracker for <i>Syn</i>ergy.
-        Please take a look at existing issues before creating a new to 
+        Please take a look at <a href="https://bitbucket.org/maehler/synergy/issues?status=new&amp;status=open">
+        existing issues</a> before creating a new to 
         avoid duplicates.
     </p>
 </section>
