@@ -1,5 +1,13 @@
 <h2>Motif search</h2>
 
+<p>Here you can search for motifs in <i>Syn</i>ergy. Motifs in <i>Syn</i>ergy
+similar to your motif will be identified using the software
+<a href="http://meme.ncbr.net">TOMTOM</a>. You can search using a IUPAC consensus
+sequence or a matrix representation of the motif. If you already know what 
+<i>Syn</i>ergy motif you are after, you can also search for that using the motif
+name.
+</p>
+
 <section>
 	<?php echo form_open('motifsearch'); ?>
 	<input id="search-iupac-radio" type="radio" name="motif-search-radio" 
@@ -12,12 +20,13 @@
 
 	<input id="search-id-radio" type="radio" name="motif-search-radio" 
 		value="search-id-pane"<?php echo set_radio('motif-search-radio', 'search-id-pane'); ?>>
-	<label for="search-id-radio">Motif ID</label>
+	<label for="search-id-radio">Motif name</label>
 
 	<div id="search-iupac-pane" class="<?php echo $pane === 'iupac' ? '' : 'hidden' ?>">
 		<p>Search for a motif using the IUPAC one letter abbreviation standard.</p>
 
-		<input name="motif-iupac" type="text" placeholder="IUPAC motif" value="<?php echo set_value('motif-iupac'); ?>"><br>
+		<button id="load-iupac-example">Load example</button><br>
+		<input id="motif-iupac" name="motif-iupac" type="text" placeholder="IUPAC motif" value="<?php echo set_value('motif-iupac'); ?>"><br>
 		<?php if ($pane === 'iupac'): ?>
 			<?php echo validation_errors(); ?>
 		<?php endif ?>
@@ -30,7 +39,8 @@
 		motif details page</a>.
 		</p>
 
-		<textarea name="motif-matrix" rows="10" placeholder="Matrix"><?php echo set_value('motif-matrix'); ?></textarea><br>
+		<button id="load-matrix-example">Load example</button><br>
+		<textarea class="monospace" id="motif-matrix" name="motif-matrix" rows="10" placeholder="Matrix"><?php echo set_value('motif-matrix'); ?></textarea><br>
 		<?php if ($pane === 'matrix'): ?>
 			<?php echo validation_errors(); ?>
 		<?php endif ?>

@@ -191,6 +191,7 @@ header nav {
 .small { font-size: 0.8em; }
 .bold { font-weight: bold; }
 .italic { font-style: italic; }
+.monospace { font-family: monospace; }
 /* End text styles */
 
 .hidden { display: none !important; }
