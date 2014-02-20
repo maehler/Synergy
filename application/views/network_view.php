@@ -7,34 +7,40 @@
 	<h3>Settings</h3>
 	<hr>
 
-	<?php echo form_open('network'); ?>
-	<div>
-		<label for="network-type">Network type</label><br>
-		<select name="network-type" id="network-type">
-			<option value="clr_complete"<?php echo $settings['network_type'] == 'clr_complete' ? " selected" : ""; ?>>CLR complete</option>
-			<option value="clr_subset"<?php echo $settings['network_type'] == 'clr_subset' ? " selected" : ""; ?>>CLR subset</option>
-		</select><br>
-		<label for="network-threshold">Correlation threshold</label>
-		<input name="network-threshold" id="network-threshold" type="number" value="<?php echo $settings['network_threshold']; ?>"><br>
-		<label for="expand-threshold">Expansion threshold</label>
-		<input name="expand-threshold" id="expand-threshold" type="number" value="<?php echo $settings['expand-threshold']; ?>"><br>
-		<table>
-			<tr>
-				<td><label for="expand-animate">Expansion layout</label></td>
-				<td><input type="checkbox" id="expand-animate" name="expand-animate"<?php echo $settings['animate'] ? " checked" : ""; ?>></td>
-			</tr>
-			<tr>
-				<td><label for="node-labels">Node labels</label></td>
-				<td>
-					<select id="node-labels" name="node-labels">
-						<option value="data(orf)"<?php echo $settings['node_labels'] == 'data(orf)' ? ' selected' : ''; ?>>ORF</option>
-						<option value="data(symbol)"<?php echo $settings['node_labels'] == 'data(symbol)' ? ' selected' : ''; ?>>Symbol</option>
-					</select>
-				</td>
-			</tr>
-		</table>
-		<button id="submit" type="submit">Redraw</button>
-	</div>
+	<?php echo form_open('network', 'class="narrow"'); ?>
+	<fieldset class="clean">
+		<ol>
+			<li>		
+				<label for="network-type">Network type</label>
+				<select name="network-type" id="network-type">
+					<option value="clr_complete"<?php echo $settings['network_type'] == 'clr_complete' ? " selected" : ""; ?>>CLR complete</option>
+					<option value="clr_subset"<?php echo $settings['network_type'] == 'clr_subset' ? " selected" : ""; ?>>CLR subset</option>
+				</select>
+			</li>
+			<li>
+				<label for="network-threshold">Correlation threshold</label>
+				<input name="network-threshold" id="network-threshold" type="number" value="<?php echo $settings['network_threshold']; ?>">
+			</li>
+			<li>
+				<label for="expand-threshold">Expansion threshold</label>
+				<input name="expand-threshold" id="expand-threshold" type="number" value="<?php echo $settings['expand-threshold']; ?>">
+			</li>
+			<li>
+				<label for="expand-animate">Layout on expansion</label>
+				<input type="checkbox" id="expand-animate" name="expand-animate"<?php echo $settings['animate'] ? " checked" : ""; ?>>
+			</li>
+			<li>
+				<label for="node-labels">Node labels</label>
+				<select id="node-labels" name="node-labels">
+					<option value="data(orf)"<?php echo $settings['node_labels'] == 'data(orf)' ? ' selected' : ''; ?>>ORF</option>
+					<option value="data(symbol)"<?php echo $settings['node_labels'] == 'data(symbol)' ? ' selected' : ''; ?>>Symbol</option>
+				</select>
+			</li>
+			<li>
+				<button id="submit" type="submit">Redraw</button>
+			</li>
+		</ol>
+	</fieldset>
 	<?php echo form_close(); ?>
 	
 	<hr>
