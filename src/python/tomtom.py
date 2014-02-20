@@ -64,7 +64,9 @@ def main():
 		print json.dumps({'name': 'TOMTOM results',
 			'file': os.path.relpath(os.path.join(args.outdir, 'tomtom.html'), config.base_path)})
 	else:
-		print json.dumps({'name': 'An error occured (ERROR %d)' % exit_status, 'file': None})
+		print json.dumps({'name': ('An error occured (ERROR %d)'
+			'. Please report this error with the following code: <code>%s</code>') % \
+			(exit_status, os.path.basename(args.outdir)), 'file': None})
 
 if __name__ == '__main__':
 	main()
