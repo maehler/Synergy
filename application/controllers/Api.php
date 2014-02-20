@@ -279,6 +279,7 @@ class Api extends MY_Controller {
 	// MEME
 	function run_tomtom() {
 		$pspm = $this->input->post('matrix');
+		$db = $this->input->post('db');
 		$sid = $this->session->userdata('session_id');
 
 		$this->output->set_content_type('application/json');
@@ -289,7 +290,13 @@ class Api extends MY_Controller {
 			$this->output->set_output(json_encode(array()));
 		} else {
 			$this->load->helper('python_helper');
-			$data = run_python('tomtom.py', array($pspm, $outdir));
+			$data = run_python('tomtom.py', 
+				array(
+					$pspm,
+					$outdir,
+					'--db', $db
+				)
+			);
 			$this->output->set_output($data);
 		}
 	}

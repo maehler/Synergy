@@ -40,7 +40,10 @@ function runTOMTOM() {
 		url: baseURL + 'api/run_tomtom',
 		type: 'POST',
 		dataType: 'json',
-		data: { matrix: JSON.stringify(pspm) },
+		data: {
+			matrix: JSON.stringify(pspm),
+			db: $('#tomtom-db').val()
+		},
 		context: this,
 		success: function(json) {
 			if (!json.file) {

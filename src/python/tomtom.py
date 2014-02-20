@@ -8,7 +8,7 @@ import os
 import config
 from meme_util import create_meme
 
-def run_tomtom(meme, outdir):
+def run_tomtom(meme, outdir, db):
 	args = [
 		config.tomtom,
 		'-oc', outdir,
@@ -19,7 +19,7 @@ def run_tomtom(meme, outdir):
 		'-dist', 'pearson',
 		'-evalue',
 		'-thresh', '10',
-		meme, config.prodoric_regtransbase
+		meme, db
 	]
 
 	p = Popen(args, shell=False, stdout=PIPE, stderr=PIPE)
@@ -45,7 +45,17 @@ def parse_args():
 	parser.add_argument('matrix', help='JSON encoded PSPM')
 	parser.add_argument('outdir', help='output directory')
 
-	return parser.parse_args()
+	parser.add_argument('--db', help='motif database to use (default: prodoric)',
+		choices=('prodoric', 'regtransbase'), default='prodoric')
+
+	args = parser.parse_args()
+
+	if args.db == 'prodoric':
+		args.db = config.prodoric
+	elif args.db == 'regtransbase':
+		args.db = config.regtransbase
+
+	return args
 
 def main():
 	args = parse_args()
@@ -58,7 +68,7 @@ def main():
 
 	meme_fname = create_meme(pspm, os.path.join(args.outdir, 'input'))
 
-	exit_status = run_tomtom(meme_fname, args.outdir)
+	exit_status = run_tomtom(meme_fname, args.outdir, args.db)
 
 	if exit_status == 0:
 		print json.dumps({'name': 'TOMTOM results',
