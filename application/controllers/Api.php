@@ -283,11 +283,13 @@ class Api extends MY_Controller {
 
 		$this->output->set_content_type('application/json');
 
+		$outdir = TMP.$sid.strval(time()).'.tomtom';
+
 		if ($pspm === FALSE) {
 			$this->output->set_output(json_encode(array()));
 		} else {
 			$this->load->helper('python_helper');
-			$data = run_python('tomtom.py', array($pspm, $sid));
+			$data = run_python('tomtom.py', array($pspm, $outdir));
 			$this->output->set_output($data);
 		}
 	}

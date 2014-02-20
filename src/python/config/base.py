@@ -10,6 +10,7 @@ _db_dir = os.path.join(_base_dir, 'data/motif_db/')
 _blast_db_dir = os.path.join(_base_dir, 'data/blastdb/')
 _fasta_dir = os.path.join(_base_dir, 'data/fasta/')
 site_tmp = 'data/tmp'
+base_path = _base_dir
 tmp_dir = os.path.join(_base_dir, site_tmp)
 
 # Database definition. Should be set in a local.py.
