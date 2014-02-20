@@ -13,6 +13,12 @@ def run_tomtom(meme, outdir):
 		config.tomtom,
 		'-oc', outdir,
 		'-png',
+		'-no-ssc',
+		'-mi', '1',
+		'-min-overlap', '5',
+		'-dist', 'pearson',
+		'-evalue',
+		'-thresh', '10',
 		meme, config.prodoric_regtransbase
 	]
 
