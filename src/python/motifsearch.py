@@ -93,8 +93,10 @@ def main():
 		print '  -evalue'
 	print '  -min-overlap %d' % (args.min_overlap)
 	print 'Looking among %s motifs' % ('central' if args.central else 'all')
+	sys.stdout.flush()
 	run_tomtom(meme, args.outdir, args.central, args.thresh, args.min_overlap, args.evalue)
 	print 'Done in %.2fs' % (time() - start_time)
+	sys.stdout.flush()
 
 if __name__ == '__main__':
 	main()
