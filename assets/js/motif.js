@@ -42,7 +42,10 @@ function runTOMTOM() {
 		dataType: 'json',
 		data: {
 			matrix: JSON.stringify(pspm),
-			db: $('#tomtom-db').val()
+			db: $('#tomtom-db').val(),
+			th: $('#tomtom-th').val(),
+			thtype: $('#tomtom-thtype').val(),
+			minovlp: $('#tomtom-minovlp').val()
 		},
 		context: this,
 		success: function(json) {

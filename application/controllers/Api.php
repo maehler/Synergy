@@ -280,6 +280,9 @@ class Api extends MY_Controller {
 	function run_tomtom() {
 		$pspm = $this->input->post('matrix');
 		$db = $this->input->post('db');
+		$th = $this->input->post('th');
+		$thtype = $this->input->post('thtype');
+		$minovlp = $this->input->post('minovlp');
 		$sid = $this->session->userdata('session_id');
 
 		$this->output->set_content_type('application/json');
@@ -292,9 +295,12 @@ class Api extends MY_Controller {
 			$this->load->helper('python_helper');
 			$data = run_python('tomtom.py', 
 				array(
+					'--db', $db,
+					'--th', $th,
+					$thtype == 'evalue' ? '--evalue' : NULL,
+					'--min-overlap', $minovlp,
 					$pspm,
-					$outdir,
-					'--db', $db
+					$outdir
 				)
 			);
 			$this->output->set_output($data);

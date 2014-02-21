@@ -98,12 +98,35 @@
     <a href="http://meme.sdsc.edu/meme/cgi-bin/tomtom.cgi" class="external">the 
     TOMTOM website</a>.</p>
 
-    <label for="tomtom-db">Database</label>
-    <select id="tomtom-db">
-    	<option value="prodoric" selected>Prodoric</option>
-    	<option value="regtransbase">RegTransBase</option>
-    </select><br>
-	<button id="run-tomtom">Run TOMTOM</button>
+   	<form>
+   		<fieldset>
+   			<ol>
+   				<li>
+   					<label for="tomtom-db">Database</label>
+				    <select id="tomtom-db" required>
+				    	<option value="prodoric" selected>Prodoric</option>
+				    	<option value="regtransbase">RegTransBase</option>
+				    </select>	
+   				</li>
+   				<li>
+   					<label for="tomtom-th">Significance threshold</label>
+   					<input id="tomtom-th" type="number" min="0" value="10" required>
+   				</li>
+   				<li>
+   					<label for="tomtom-thtype">Threshold type</label>
+   					<select id="tomtom-thtype" required>
+   						<option value="evalue" selected>E-value</option>
+   						<option value="qvalue">q-value</option>
+   					</select>
+   				</li>
+   				<li>
+   					<label for="tomtom-minovlp">Minimum overlap</label>
+   					<input id="tomtom-minovlp" type="number" min="1" value="5" required>
+   				</li>
+   			</ol>
+		</fieldset>
+		<button id="run-tomtom">Run TOMTOM</button>
+	</form>
 	<p id="tomtom-running" class="hidden"><span class="loading"></span>Loading...</p>
 	<p id="tomtom-results"></p>
 </section>
