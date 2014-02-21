@@ -1,7 +1,33 @@
 "use strict";
 
+$.fn.dataTableExt.afnFiltering.push(
+    function( oSettings, aData, iDataIndex ) {
+        var qMax = $('#motif-q-filter').val() * 1;
+        var qValue = aData[6];
+        if ( qMax == "" ) {
+            return true;
+        } else if ( qMax > qValue ) {
+            return true;
+        }
+        return false;
+    }
+);
+
+$.fn.dataTableExt.afnFiltering.push(
+    function( oSettings, aData, iDataIndex ) {
+        var onlyCentral = $('#motif-only-central').prop('checked');
+        var isCentral = aData[4].length > 0;
+        if ( !onlyCentral ) {
+        	return true;
+        } else if ( onlyCentral && isCentral ) {
+            return true;
+        }
+        return false;
+    }
+);
+
 $(function () {
-	$('#motif-table').dataTable({
+	var motifTable = $('#motif-table').dataTable({
 		aoColumnDefs: [{sType: 'scientific', aTargets: [6]}],
 		aaSorting: [[6, 'asc']],
 		fnRowCallback: function (nRow, aData, iDisplayIndex) {
@@ -17,4 +43,11 @@ $(function () {
 	});
 
 	expressionPlot(function () { return [geneID]; }, baseURL, true);
+
+	$('#motif-q-filter').change(function() {
+		motifTable.fnDraw();
+	});
+	$('#motif-only-central').change(function() {
+		motifTable.fnDraw();
+	});
 });
