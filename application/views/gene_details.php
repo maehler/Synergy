@@ -39,6 +39,7 @@
 	<h3>Promoter profile</h3>
 	<form>
 		<fieldset>
+			<legend>Table filtering</legend>
 			<ol>
 				<li>
 					<label for="motif-q-filter"><i>q</i>-value filter</label>
