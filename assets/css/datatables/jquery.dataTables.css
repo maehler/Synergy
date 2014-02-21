@@ -10,7 +10,7 @@ table.dataTable {
 
 table.dataTable thead th {
 	text-align: left;
-	padding: 3px 18px 3px 10px;
+	padding: 3px 10px 3px 18px;
 	border-bottom: 1px solid #999;
 	font-weight: bold;
 	cursor: pointer;
@@ -198,12 +198,12 @@ table.dataTable td.highlight { background-color: #7FA34D !important; }
 /*
  * Sorting
  */
-.sorting { background: url('images/sort_both.png') no-repeat center right; }
-.sorting_asc { background: url('images/sort_asc.png') no-repeat center right; }
-.sorting_desc { background: url('images/sort_desc.png') no-repeat center right; }
+.sorting { background: url('images/sort_both.png') no-repeat center left; }
+.sorting_asc { background: url('images/sort_asc.png') no-repeat center left; }
+.sorting_desc { background: url('images/sort_desc.png') no-repeat center left; }
 
-.sorting_asc_disabled { background: url('images/sort_asc_disabled.png') no-repeat center right; }
-.sorting_desc_disabled { background: url('images/sort_desc_disabled.png') no-repeat center right; }
+.sorting_asc_disabled { background: url('images/sort_asc_disabled.png') no-repeat center left; }
+.sorting_desc_disabled { background: url('images/sort_desc_disabled.png') no-repeat center left; }
  
 table.dataTable thead th:active,
 table.dataTable thead td:active {
