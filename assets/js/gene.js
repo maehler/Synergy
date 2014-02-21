@@ -2,16 +2,16 @@
 
 $(function () {
 	$('#motif-table').dataTable({
-		aoColumnDefs: [{sType: 'scientific', aTargets: [5]}],
-		aaSorting: [[5, 'asc']],
+		aoColumnDefs: [{sType: 'scientific', aTargets: [6]}],
+		aaSorting: [[6, 'asc']],
 		fnRowCallback: function (nRow, aData, iDisplayIndex) {
-			if (aData[5] > 0.001) {
-				var roundp = Number(aData[5]).toPrecision(2);
+			if (aData[6] > 0.001) {
+				var roundp = Number(aData[6]).toPrecision(2);
 			} else {
-				var roundp = Number(Number(aData[5]).toPrecision(3)).toExponential();
+				var roundp = Number(Number(aData[6]).toPrecision(3)).toExponential();
 			}
-			$('td:eq(5)', nRow).html(roundp);
-			$('td:eq(4)', nRow).html(Number(aData[4]).toPrecision(4));
+			$('td:eq(6)', nRow).html(roundp);
+			$('td:eq(5)', nRow).html(Number(aData[5]).toPrecision(5));
 			return nRow;
 		}
 	});

@@ -3,7 +3,7 @@
 class Motif_model extends CI_Model {
 
 	function get_gene_motifs($gene_id) {
-		$this->db->select('pm.motif_id, m.name, pm.q, pm.startpos, pm.stoppos, pm.score')
+		$this->db->select('pm.motif_id, m.name, m.central, pm.q, pm.startpos, pm.stoppos, pm.score')
 			->from('promoter_motif AS pm')
 			->join('promoter AS p', 'p.id = pm.promoter_id', 'left')
 			->join('motif AS m', 'm.id = pm.motif_id', 'left')

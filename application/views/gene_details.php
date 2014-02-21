@@ -44,6 +44,7 @@
 				<th>Direction</th>
 				<th>Start</th>
 				<th>Stop</th>
+				<th>Central</th>
 				<th>FIMO score</th>
 				<th>FIMO <span class="italic">q-value</span></th>
 			</tr>
@@ -55,6 +56,7 @@
 				<td><?php echo $motif['startpos'] > $motif['stoppos'] ? 'Reverse' : 'Forward'; ?></td>
 				<td><?php echo $motif['startpos']; ?></td>
 				<td><?php echo $motif['stoppos']; ?></td>
+				<td><?php echo $motif['central'] ? '&#x2713;' : ''; ?></td>
 				<td><?php echo $motif['score']; ?></td>
 				<td><?php echo $motif['q']; ?></td>
 			</tr>
@@ -66,6 +68,7 @@
 				<th>Direction</th>
 				<th>Start</th>
 				<th>Stop</th>
+				<th>Central</th>
 				<th>FIMO score</th>
 				<th>FIMO <span class="italic">q-value</span></th>
 			</tr>
