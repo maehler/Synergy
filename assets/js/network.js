@@ -45,6 +45,7 @@ function selectNeighbors() {
 function removeSelected() {
 	cy.remove(cy.nodes(':selected'));
 	updateCount();
+	updateSelectCount();
 }
 
 function invertSelection() {
@@ -106,6 +107,11 @@ function updateCount() {
 	var no_edges = cy.edges().length;
 	$('#node-count').html(no_nodes);
 	$('#edge-count').html(no_edges);
+}
+
+function updateSelectCount() {
+	var no_nodes = cy.nodes(':selected').length;
+	$('#select-count').html(no_nodes);
 }
 
 function expandNode(json) {
@@ -212,7 +218,9 @@ $(function () {
 			console.log('network is ready');
 			cy = this;
 			updateCount();
+			updateSelectCount();
 			$('#load-message .message').html('Calculating layout...');
+			cy.nodes().bind('select unselect', updateSelectCount);
 		},
 		done: function () {
 			console.log('layout done');

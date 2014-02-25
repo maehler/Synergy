@@ -72,6 +72,7 @@
 </div>
 <div id="network-container" class="clear-right">
 	<div id="network-stats" class="small"><span id="node-count">0</span> nodes, <span id="edge-count">0</span> edges</div>
+	<div id="select-stats" class="small"><span id="select-count">0</span> nodes selected</div>
 	<div id="load-message">
 		<span id="load-gif"></span><span class="message">Loading network...</span>
 	</div>
