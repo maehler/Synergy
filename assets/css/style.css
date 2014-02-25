@@ -356,6 +356,9 @@ form em {
 form label {
 	width: 170px; /* Width of labels */
 }
+form.narrow {
+	width: inherit;
+}
 form.narrow label {
 	width: 120px;
 }

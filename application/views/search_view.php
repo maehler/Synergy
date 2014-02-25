@@ -36,13 +36,17 @@
 
 <section>
 	<h3>Upload gene list</h3>
-	<div class="small">
-	<?php echo form_open_multipart('search/upload', array('id' => 'file-upload')); ?>
-		<label for="gene-file">Upload gene list:</label>
-		<input type="file" name="gene-file" id="gene-file">
+	<?php echo form_open_multipart('search/upload', array('id' => 'file-upload', 'class' => 'narrow')); ?>
+		<fieldset>
+			<ol>
+				<li>
+					<label for="gene-file">Gene file</label>
+					<input type="file" name="gene-file" id="gene-file">
+				</li>
+			</ol>
+		</fieldset>
 		<input type="submit" value="Upload">
 	<?php echo form_close(); ?>
-	</div>
 </section>
 
 <section>
