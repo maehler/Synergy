@@ -37,7 +37,7 @@ var expressionPlot = (function() {
 			},
 			grid: { hoverable: true },
 			selection: { mode: 'xy' },
-			xaxis: { tickDecimals: 0 },
+			xaxis: { tickDecimals: 0, axisLabel: 'Experiment' },
 			yaxis: { axisLabel: 'log<sub>2</sub> expression' },
 			legend: {
 				show: true,

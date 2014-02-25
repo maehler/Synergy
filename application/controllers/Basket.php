@@ -34,6 +34,7 @@ class Basket extends MY_Controller {
 				base_url(array('assets', 'js', 'jquery.flot.js')),
 				base_url(array('assets', 'js', 'jquery.flot.resize.js')),
 				base_url(array('assets', 'js', 'jquery.flot.selection.js')),
+				base_url(array('assets', 'js', 'jquery.flot.axislabels.js')),
 				base_url(array('assets', 'js', 'jquery.download.js')),
 				base_url(array('assets', 'js', 'jquery.dataTables.min.js')),
 				base_url(array('assets', 'js', 'jquery.dataTables.sorting.js')),
