@@ -126,8 +126,9 @@ var expressionPlot = (function() {
 
 					previousPoint = x;
 
-					$('<div id="tooltip"><b>Experiment:</b> ' + annot[x.dataIndex][0] + '<br>' +
-							'<b>Sample:</b> ' + annot[x.dataIndex][1] + '<br>' +
+					$('<div id="tooltip"><b>Experiment:</b> ' + annot[x.dataIndex].name + '<br>' +
+							'<b>Title:</b> ' + annot[x.dataIndex].title + '<br>' +
+							'<b>Sample:</b> ' + annot[x.dataIndex].descr + '<br>' +
 							'<b>log<sub>2</sub> expression:</b> ' + y + '<br>' +
 							'</div>').css({
 		                position: 'absolute',
