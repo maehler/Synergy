@@ -1,5 +1,7 @@
 var expressionPlot = (function() {
 
+	var MAX_ANNOT_LENGTH = 30;
+
 	var selFun;
 	var url;
 	var plot;
@@ -46,16 +48,25 @@ var expressionPlot = (function() {
 			}
 		}
 
-		plot = $.plot('#flot-expression', data, plotOptions);
-
-		overview = $.plot('.flot-overview', data, {
+		var overviewOptions = {
 			series: { 
 				lines: { show: true, lineWidth: 1 },
 				shadowSize: 0
 			},
 			legend: { show: false },
 			selection: { mode: 'xy' }
-		});
+		}
+
+		if (data.length > MAX_ANNOT_LENGTH) {
+			plotOptions.grid.hoverable = false;
+			plotOptions.series.color = 'rgba(255,0,0,0.1)';
+			plotOptions.series.lines.lineWidth = 2;
+			overviewOptions.series.color = 'rgba(255,0,0,0.1)';
+		} 
+
+		plot = $.plot('#flot-expression', data, plotOptions);
+
+		overview = $.plot('.flot-overview', data, overviewOptions);
 
 		// Range selection
 		$('#flot-expression').bind('plotselected', function (event, ranges) {
@@ -148,8 +159,13 @@ var expressionPlot = (function() {
 			alert('No genes selected');
 			return;
 		} else if (sel.length > 30) {
-			alert("Don't select more than 30 genes. You won't see anything anyway.")
-			return;
+			// alert("Don't select more than 30 genes. You won't see anything anyway.")
+			$('#flot-expression').removeClass('with-legend');
+			$('.flot-legend').hide();
+			// return;
+		} else {
+			$('#flot-expression').addClass('with-legend');
+			$('.flot-legend').show();
 		}
 		$('#loading-plot').toggleClass('hidden');
 		$('#draw-expression').prop('disabled', true);
@@ -164,6 +180,11 @@ var expressionPlot = (function() {
 					return;
 				}
 				plotExpression(json.data, json.annot);
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert(textStatus + ': ' + errorThrown);
+			},
+			complete: function() {
 				$('#loading-plot').toggleClass('hidden');
 				$('#draw-expression').prop('disabled', false);
 			}
