@@ -233,6 +233,10 @@ class Api extends MY_Controller {
 
 		$genes = $this->input->post('genes');
 
+		if (count($genes) > 300) {
+			show_error('Because of memory limitations, a maximum of 300 genes can be plotted', 403);
+		}
+
 		$expression = $this->expression_model->get_multi_flot_expression($genes);
 
 		$this->output

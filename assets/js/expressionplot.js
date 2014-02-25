@@ -182,8 +182,9 @@ var expressionPlot = (function() {
 				}
 				plotExpression(json.data, json.annot);
 			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert(textStatus + ': ' + errorThrown);
+			error: function(xhr, textStatus, errorThrown) {
+				console.log(xhr);
+				alert(textStatus + ': ' + $('p', xhr.responseText).html());
 			},
 			complete: function() {
 				$('#loading-plot').toggleClass('hidden');
