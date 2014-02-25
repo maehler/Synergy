@@ -118,7 +118,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 
 /*
@@ -433,6 +433,17 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
-
+/*
+|--------------------------------------------------------------------------
+| Site Maintenance
+|--------------------------------------------------------------------------
+|
+| For whatever reason sometimes a site needs to be taken offline.
+| Set $config['is_offline'] to TRUE if the site has to be offline
+|
+| $config['is_offline'] = TRUE; // site is offline
+| $config['is_offline'] = FALSE; // site is online
+*/
+$config['is_offline'] = FALSE;
 /* End of file config.php */
 /* Location: ./application/config/config.php */
