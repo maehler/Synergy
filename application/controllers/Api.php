@@ -270,7 +270,6 @@ class Api extends MY_Controller {
 			array('--format', $format));
 
 		$this->output->set_output($plot);
-		// force_download('expression_plot.'.$format);
 	}
 
 	// MEME
