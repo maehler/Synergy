@@ -11,15 +11,15 @@ var enrichmentTools = (function() {
 		$('#motif-table').dataTable({
 			bProcessing: true,
 			oLanguage: {sProcessing: '<span class="loading"></span>Calculating...'},
-			aoColumnDefs: [{sType: 'scientific', aTargets: [3]}],
-			aaSorting: [[3, 'asc']],
+			aoColumnDefs: [{sType: 'scientific', aTargets: [4]}],
+			aaSorting: [[4, 'asc']],
 			fnRowCallback: function (nRow, aData, iDisplayIndex) {
-				if (aData[3] > 0.001) {
-					var roundp = aData[3].toPrecision(2);
+				if (aData[4] > 0.001) {
+					var roundp = aData[4].toPrecision(2);
 				} else {
-					var roundp = Number(aData[3].toPrecision(3)).toExponential();
+					var roundp = Number(aData[4].toPrecision(3)).toExponential();
 				}
-				$('td:eq(3)', nRow).html(roundp);
+				$('td:eq(4)', nRow).html(roundp);
 				$('td:eq(0)', nRow).empty().append($('<a/>')
 					.attr('href', baseURL + 'motif/details/' + aData[0])
 					.html(aData[0])
@@ -33,15 +33,15 @@ var enrichmentTools = (function() {
 		$('#go-table').dataTable({
 			bProcessing: true,
 			oLanguage: {sProcessing: '<span class="loading"></span>Calculating...'},
-			aoColumnDefs: [{sType: 'scientific', aTargets: [3]}],
-			aaSorting: [[3, 'asc']],
+			aoColumnDefs: [{sType: 'scientific', aTargets: [4]}],
+			aaSorting: [[4, 'asc']],
 			fnRowCallback: function (nRow, aData, iDisplayIndex) {
-				if (aData[3] > 0.001) {
-					var roundp = aData[3].toPrecision(2);
+				if (aData[4] > 0.001) {
+					var roundp = aData[4].toPrecision(2);
 				} else {
-					var roundp = Number(aData[3].toPrecision(3)).toExponential();
+					var roundp = Number(aData[4].toPrecision(3)).toExponential();
 				}
-				$('td:eq(3)', nRow).html(roundp);
+				$('td:eq(4)', nRow).html(roundp);
 				$('td:eq(0)', nRow).empty().append($('<a/>')
 					.attr('href',
 						'http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=' + aData[0])

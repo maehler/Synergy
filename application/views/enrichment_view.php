@@ -37,6 +37,7 @@
 					<th>GO term</th>
 					<th>Category</th>
 					<th>Description</th>
+					<th>Stats</th>
 					<th>FDR</th>
 				</tr>
 			</thead>
@@ -47,6 +48,7 @@
 					<th>GO term</th>
 					<th>Category</th>
 					<th>Description</th>
+					<th>Stats</th>
 					<th>FDR</th>
 				</tr>
 			</tfoot>
@@ -96,6 +98,7 @@
 					<th>Motif</th>
 					<th>Length</th>
 					<th>Central</th>
+					<th>Stats</th>
 					<th>FDR</th>
 				</tr>
 			</thead>
@@ -106,6 +109,7 @@
 					<th>Motif</th>
 					<th>Length</th>
 					<th>Central</th>
+					<th>Stats</th>
 					<th>FDR</th>
 				</tr>
 			</tfoot>

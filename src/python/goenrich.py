@@ -109,7 +109,7 @@ def parse_args():
     parser.add_argument('genes', metavar='gene',
         nargs='+', type=int, help='gene ids to test for enrichment')
 
-    parser.add_argument('-p', dest='pth', metavar='dec', 
+    parser.add_argument('-p', dest='pth', metavar='dec',
         help='p-value threshold', type=float, default=0.05)
 
     args = parser.parse_args()
@@ -126,7 +126,9 @@ def main():
     for go, p, odds, stats, category in enrichment:
         if p > args.pth:
             break
-        results.append([go, category, go_terms[-1][go], p])
+        results.append([go, category, go_terms[-1][go], '%d/%d:%d/%d' % \
+            (stats[0,0], stats[0,0] + stats[1,0],
+                stats[0,1], stats[0,1] + stats[1,1]), p])
 
     print json.dumps(results)
 

@@ -167,7 +167,9 @@ def main():
     for mid, p, odds, stats in enrich:
         if p > args.pth:
             break
-        result.append([mnamedict[mid][0], 10, '&#x2713;' if mnamedict[mid][1] else '', p])
+        result.append([mnamedict[mid][0], 10, '&#x2713;' if mnamedict[mid][1] else '',
+            '%d/%d:%d/%d' % (stats[0,0], stats[0,0] + stats[1,0],
+                stats[0,1], stats[0,1] + stats[1,1]), p])
 
     print json.dumps(result)
 

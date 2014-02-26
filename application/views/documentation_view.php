@@ -300,6 +300,16 @@ gene5</pre>
 		results. This is just a filtering after the results have been 
 		calculated.
 		</p>
+		<p>The "Stats" column in the resulting table shows the numbers behind
+		the calculation on the form <code>a/b:c/d</code>. <code>a</code> is the
+		number of genes in your selection that are annotated to the current term,
+		<code>b</code> is the number of genes in your selection annotated to 
+		the current top category (biological process, molecular function or 
+		cellular process). <code>c</code> is the number of genes annotated
+		to the current GO term, but are not part of your selection. Finally, 
+		<code>d</code> is the number of genes <em>not</em> annotated to the
+		current GO term and <em>not</em> part of your selection.
+		</p>
 	</section>
 
 	<section id="enrichment-motif">
@@ -315,6 +325,16 @@ gene5</pre>
 		between a pair of motifs. The network was clustered, and the most
 		central motif in each cluster was considered representative of that
 		cluster, and thus classified as a central motif.
+		</p>
+		<p>Similarly to the GO enrichment table, the motif enrichment table 
+		has a "Stats" column. In this column the numbers behind the calculation
+		are shown on the form <code>a/b:c/d</code>. <code>a</code> is the number
+		of genes in your selection that has the motif in their promoters (at
+		the given threshold), <code>b</code> is the number of genes in your
+		selection, <code>c</code> is the number of genes <em>not</em> in your
+		selection with the motif and <code>d</code> is the number of genes that
+		does <em>not</em> have the motif and is <em>not</em> a part of your
+		selection.
 		</p>
 	</section>
 </section>
