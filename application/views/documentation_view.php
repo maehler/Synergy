@@ -350,4 +350,10 @@ gene5</pre>
 	level, just click the "Reset zoom" button. The plots can be exported as 
 	PNG or PDF.
 	</p>
+
+	<p>Since it will be very difficult to see annotations and labels when 
+	plotting many genes, labels and annotations will be disabled if you are
+	plotting more than 30 genes. Because of memory limitations, the maximum 
+	number of genes that can be plotted is limited to 300.
+	</p>
 </section>
