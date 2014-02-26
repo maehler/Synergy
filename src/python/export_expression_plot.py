@@ -9,7 +9,7 @@ def plot_data(data, format, output):
 	rgb_pattern = re.compile(r'rgb\((\d+),(\d+),(\d+)\)')
 	rgba_pattern = re.compile(r'rgba\((\d+),(\d+),(\d+),([-+]?\d*.\d+|\d+)\)')
 	legend = []
-	n = len(data[0]['data'])
+	# n = len(data[0]['data'])
 	for series in data:
 		legend.append(series['label'])
 		if len(series['color'].split(',')) == 3:
@@ -26,8 +26,8 @@ def plot_data(data, format, output):
 	if len(data) < 31:
 		plt.legend(legend, bbox_to_anchor=(0.5, -0.17), loc='lower center',
 			columnspacing=1.0, labelspacing=0.0, ncol=10, fontsize=7)
-
-	plt.xlim(0, n)
+	
+	plt.xlim(data[0]['xaxis']['min'], data[0]['xaxis']['max'])
 
 	plt.subplots_adjust(bottom=0.15)
 
