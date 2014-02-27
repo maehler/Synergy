@@ -14,6 +14,7 @@ var expressionPlot = (function() {
 		if (singleDraw !== undefined && singleDraw) {
 			drawExpressionProfile();
 			$('#draw-expression').remove();
+			$('#subset-expression').change(drawExpressionProfile);
 		} else {
 			// Expression profile draw button
 			$('#flot-expression, .flot-overview, .flot-buttons').hide();
@@ -174,7 +175,10 @@ var expressionPlot = (function() {
 			url: url + 'api/get_multi_flot',
 			type: 'POST',
 			dataType: 'json',
-			data: { genes: sel },
+			data: {
+				genes: sel,
+				complete: $('#subset-expression').prop('checked')
+			},
 			success: function(json) {
 				if ($.isArray(json)) {
 					alert(json[0]);

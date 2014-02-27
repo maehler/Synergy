@@ -2,13 +2,18 @@
 
 class Expression_model extends CI_Model {
 
-	function get_multi_flot_expression($gene_ids) {
+	function get_multi_flot_expression($gene_ids, $complete=FALSE) {
 		// Get annotation
 		$this->db->select('s.name AS name, s.descr AS descr, e.title AS title')
 			->from('experiment_sample AS es')
 			->join('sample AS s', 's.id = es.sample_id', 'left')
-			->join('experiment AS e', 'e.id = es.experiment_id', 'left')
-			->order_by('s.id');
+			->join('experiment AS e', 'e.id = es.experiment_id', 'left');
+
+		if ($complete) {
+			$this->db->where('s.complete', TRUE);
+		}
+
+		$this->db->order_by('s.id');
 
 		$annot_query = $this->db->get();
 		$annot = $annot_query->result_array();
@@ -16,8 +21,14 @@ class Expression_model extends CI_Model {
 		// Get expression
 		$this->db->select('sg.exp, g.orf_id')
 			->from('sample_gene AS sg')
-			->join('gene AS g', 'g.id = sg.gene_id', 'left')
-			->where_in('g.id', $gene_ids)
+			->join('gene AS g', 'g.id = sg.gene_id', 'left');
+
+		if ($complete) {
+			$this->db->join('sample AS s', 's.id = sg.sample_id', 'left')
+				->where('s.complete', TRUE);
+		}
+
+		$this->db->where_in('g.id', $gene_ids)
 			->order_by('g.id, sg.sample_id');
 
 		$exp_query = $this->db->get();
