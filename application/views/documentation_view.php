@@ -310,6 +310,11 @@ gene5</pre>
 		<code>d</code> is the number of genes <em>not</em> annotated to the
 		current GO term and <em>not</em> part of your selection.
 		</p>
+		<p>The default settings used for GO enrichment are:
+		</p>
+		<ul>
+			<li><b>FDR threshold:</b> &lt;0.05</li>
+		</ul>
 	</section>
 
 	<section id="enrichment-motif">
@@ -336,6 +341,13 @@ gene5</pre>
 		does <em>not</em> have the motif and is <em>not</em> a part of your
 		selection.
 		</p>
+		<p>The default settings used for motif enrichment are:
+		</p>
+		<ul>
+			<li><b>FDR threshold:</b> &lt;0.05</li>
+			<li><b>FIMO <i>q</i>-value threshold:</b> &lt;0.15</li>
+			<li><b>Central motifs:</b> yes</li>
+		</ul>
 	</section>
 </section>
 

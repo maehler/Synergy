@@ -51,6 +51,11 @@
 
 <section>
 	<h3>Gene lists</h3>
+	<p>Here are four categories of pre-computed gene lists. For each gene
+	list, GO and motif enrichmen has been pre-calculated using the 
+	<a href="<?php echo base_url('documentation#enrichment') ?>">default
+	settings</a>.
+	</p>
 	<div id="list-wrapper" class="small tabs">
 		<ul>
 			<li><a href="#go-tab">GO</a></li>
@@ -60,7 +65,9 @@
 		</ul>
 
 		<div id="go-tab">
-			<p>GO lists</p>
+			<p>Each of these gene lists consist of genes associated to a
+			given GO term.
+			</p>
 			<p class="bold">Filter on FDR &lt; 0.05</p>
 			<input class="list-filter" id="golist-gofilter"
             	type="checkbox" title="GO enrichment FDR &lt; 0.05"
@@ -102,7 +109,9 @@
 		</div>
 
 		<div id="motif-tab">
-			<p>Motif lists</p>
+			<p>Each of these gene lists consist of genes that have a given motif
+			in their promoter regions.
+			</p>
 
 			<p class="bold">Filter on FDR &lt; 0.05</p>
 			<input class="list-filter" id="motiflist-gofilter"
@@ -143,7 +152,11 @@
 		</div>
 
 		<div id="coexp-tab">
-			<p>Co-expression cluster lists</p>
+			<p>Each of these gene lists consist of genes associated to a given
+			co-expression cluster. The network used for the clustering was the
+			complete co-expression network at a CLR threshold of 4. An inflation
+			value of 2.0 was used for MCL.
+			</p>
 
 			<p class="bold">Filter on FDR &lt; 0.05</p>
 			<input class="list-filter" id="coexplist-gofilter"
@@ -184,7 +197,13 @@
 		</div>
 
 		<div id="tf-tab">
-			<p>Regulatory gene neighborhood lists</p>
+			<p>Each of these gene lists consist of genes that are immediate 
+			co-expression neighbors to a given regulatory gene. The network
+			used for this study was the complete co-expression network at a
+			CLR threshold of 4. The regulatory gene is included in each gene
+			list, but it was <em>not</em> considered when performing the 
+			enrichment analysis.
+			</p>
 
 			<p class="bold">Filter on FDR &lt; 0.05</p>
 			<input class="list-filter" id="tflist-gofilter"
