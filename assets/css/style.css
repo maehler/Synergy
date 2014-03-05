@@ -149,6 +149,7 @@ header nav {
 		background-color: #139327;
 		font-size: 12pt;
 		color: #000;
+		border-bottom: 1px solid #FFF;
 		transition: font 0.3s ease;
 	}
 	header nav a:hover {
@@ -157,7 +158,6 @@ header nav {
 	}
 	header nav a.active {
 		background-color: #FFF;
-		border-bottom: 1px solid #FFF;
 	}
 
 @media screen and (max-width: 650px) {
