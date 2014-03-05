@@ -44,11 +44,13 @@
 				<li>
 					<label for="motif-q-filter"><i>q</i>-value filter</label>
 					<select id="motif-q-filter">
-						<option value="0.01">&lt;0.01</option>
-						<option value="0.05" selected>&lt;0.05</option>
-						<option value="0.10">&lt;0.10</option>
-						<option value="0.20">&lt;0.20</option>
-						<option value="0.30">&lt;0.30</option>
+						<option value="0.01">&lt; 0.01</option>
+						<option value="0.05">&lt; 0.05</option>
+						<option value="0.10">&lt; 0.10</option>
+						<option value="0.15" selected>&lt; 0.15</option>
+						<option value="0.20">&lt; 0.20</option>
+						<option value="0.25">&lt; 0.25</option>
+						<option value="0.30">&lt; 0.30</option>
 					</select>
 				</li>
 				<li>
