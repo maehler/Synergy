@@ -4,7 +4,7 @@
 <h2>
 	Details for <?php echo $orf_id; ?>
 	<span id="add-remove-basket"
-		class="<?php echo $in_basket ? 'remove-from-basket' : 'add-to-basket'; ?>"
+		class="<?php echo $in_basket ? 'remove-from-basket' : 'add-to-basket'; ?> hidden"
 		title="<?php echo $in_basket ? 'Remove gene from basket' : 'Add gene to basket'; ?>"></span>
 </h2>
 

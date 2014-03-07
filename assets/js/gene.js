@@ -75,6 +75,7 @@ $(function () {
 		motifTable.fnDraw();
 	});
 
+    $('#add-remove-basket').removeClass('hidden');
     $('#add-remove-basket').click(function() {
         if ($(this).hasClass('add-to-basket')) {
             addToBasket();
