@@ -19,10 +19,17 @@ class Gene extends MY_Controller {
 
 		$gene_data['motifs'] = $motif_data;
 
+		if ($this->session->userdata('basket')) {
+			$gene_data['in_basket'] = in_array(intval($gene_data['id']), $this->session->userdata('basket'));
+		} else {
+			$gene_data['in_basket'] = FALSE;
+		}
+
 		$gene_data['expression_plot'] = $this->load->view('expressionplot_view', NULL, TRUE);
 
-		$this->load->view('base/header', $this->get_head_data('', $orf_id, 
+		$this->load->view('base/header', $this->get_head_data('', $orf_id,
 			array(
+				base_url(array('assets', 'css', 'gene.css')),
 				base_url(array('assets', 'css', 'datatables', 'jquery.dataTables.css'))
 			)
 		));

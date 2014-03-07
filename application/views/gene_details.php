@@ -1,7 +1,12 @@
 <?php if (!isset($orf_id)): ?>
 	<h2>No gene found...</h2>
 <?php else: ?>
-<h2>Details for <?php echo $orf_id; ?></h2>
+<h2>
+	Details for <?php echo $orf_id; ?>
+	<span id="add-remove-basket"
+		class="<?php echo $in_basket ? 'remove-from-basket' : 'add-to-basket'; ?>"
+		title="<?php echo $in_basket ? 'Remove gene from basket' : 'Add gene to basket'; ?>"></span>
+</h2>
 
 <section class="box auto-width">
 	<table>

@@ -26,6 +26,30 @@ $.fn.dataTableExt.afnFiltering.push(
     }
 );
 
+function addToBasket() {
+    $.ajax({
+        url: baseURL + 'api/update_basket',
+        type: 'GET',
+        data: { gene: geneID },
+        success: function() {
+            $('#add-remove-basket').removeClass('add-to-basket')
+                .addClass('remove-from-basket');
+        }
+    });
+}
+
+function removeFromBasket() {
+    $.ajax({
+        url: baseURL + 'api/remove_from_basket',
+        type: 'GET',
+        data: { genes: [geneID] },
+        success: function () {
+            $('#add-remove-basket').removeClass('remove-from-basket')
+                .addClass('add-to-basket');
+        }
+    });
+}
+
 $(function () {
 	var motifTable = $('#motif-table').dataTable({
 		aoColumnDefs: [{sType: 'scientific', aTargets: [6]}],
@@ -50,4 +74,12 @@ $(function () {
 	$('#motif-only-central').change(function() {
 		motifTable.fnDraw();
 	});
+
+    $('#add-remove-basket').click(function() {
+        if ($(this).hasClass('add-to-basket')) {
+            addToBasket();
+        } else {
+            removeFromBasket();
+        }
+    });
 });

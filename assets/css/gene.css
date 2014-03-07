@@ -1,0 +1,17 @@
+#add-remove-basket {
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    background-size: 20px;
+    margin-bottom: -2px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.add-to-basket {
+    background-image: url(img/basket_add.png);
+}
+
+.remove-from-basket {
+    background-image: url(img/basket_remove.png);
+}
