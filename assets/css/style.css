@@ -92,6 +92,19 @@ figure.narrow {
 	float: left;
 }
 
+/* Highlight */
+.circle-highlight {
+	display: inline-block;
+	border-radius: 7px;
+	height: 15px;
+	padding: 0 5px;
+	padding-bottom: 5px;
+	margin-bottom: -5px;
+	overflow: hidden;
+	background-color: #ca3030;
+	color: #ffffff;
+}
+
 /* lists */
 nav ul { list-style-type: disc; }
 ul ul, ol ul {

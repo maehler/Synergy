@@ -10,7 +10,15 @@ class MY_Controller extends CI_Controller {
             $stylesheets=NULL, $autorefresh=NULL) {
     	$data['current_pane'] = $current_pane;
     	$data['title_prefix'] = $title_prefix;
-    	if ($stylesheets !== NULL) {
+
+        $basket_count = 0;
+        $basket = $this->session->userdata('basket');
+        if ($basket) {
+            $basket_count = count($basket);
+        }
+        $data['basket_count'] = $basket_count;
+
+        if ($stylesheets !== NULL) {
     		$data['ssheets'] = $stylesheets;
     	}
         $error_message = $this->session->flashdata('errormessage');

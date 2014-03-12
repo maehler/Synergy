@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<?php if (isset($auto_refresh_time)): ?>
-	<meta http-equiv="refresh" content="<?php echo $auto_refresh_time; ?>">		
+	<meta http-equiv="refresh" content="<?php echo $auto_refresh_time; ?>">
 	<?php endif ?>
 	<link rel="shortcut icon" href="<?php echo base_url(array('assets', 'favicon.ico')) ?>" type="image/x-icon">
 	<title><?php echo !empty($title_prefix) ? "$title_prefix | " : ""; ?>Synergy</title>
@@ -44,11 +44,11 @@
 					<li>
 						<a id="nav-home" class="<?php echo $current_pane == "home" ? "active" : "" ?>" href="<?php echo base_url() ?>">Home</a>
 					</li><li>
-						<a id="nav-search" class="<?php echo $current_pane == "search" ? "active" : "" ?>" href="<?php echo base_url("search") ?>">Gene search</a>						
+						<a id="nav-search" class="<?php echo $current_pane == "search" ? "active" : "" ?>" href="<?php echo base_url("search") ?>">Gene search</a>
 					</li><li>
 						<a id="nav-motifsearch" class="<?php echo $current_pane == "motifsearch" ? "active" : "" ?>" href="<?php echo base_url("motifsearch") ?>">Motif search</a>
 					</li><li>
-						<a id="nav-basket" class="<?php echo $current_pane == "basket" ? "active" : "" ?>" href="<?php echo base_url("basket") ?>">Gene basket</a>
+						<a id="nav-basket" class="<?php echo $current_pane == "basket" ? "active" : "" ?>" href="<?php echo base_url("basket") ?>">Gene basket <span id="basket-count" class="circle-highlight" title="There are <?php echo $basket_count; ?> genes in your basket"><?php echo $basket_count; ?></span></a>
 					</li><li>
 						<a id="nav-network" class="<?php echo $current_pane == "network" ? "active" : "" ?>" href="<?php echo base_url("network") ?>">Network</a>
 					</li><li>
