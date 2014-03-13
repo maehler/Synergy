@@ -89,7 +89,7 @@
 <section>
 	<h3>TOMTOM</h3>
 	
-	<p><a href="http://meme.sdsc.edu/meme/cgi-bin/tomtom.cgi" class="external">TOMTOM</a>
+	<p><a href="http://meme.nbcr.net/meme/cgi-bin/tomtom.cgi" class="external">TOMTOM</a>
     is an application for comparing motifs to known motifs in existing databases. 
     Here's the possibility of running TOMTOM on this motif against the 
     <a href="http://prodoric.de" class="external">Prodoric</a> or 
@@ -97,7 +97,7 @@
     RegTransBase</a> database. It can take up to 1 minute 
     before the results show up, depending on server load. If you want to run TOMTOM
     against other databases, or with more custom settings, please visit
-    <a href="http://meme.sdsc.edu/meme/cgi-bin/tomtom.cgi" class="external">the 
+    <a href="http://meme.nbcr.net/meme/cgi-bin/tomtom.cgi" class="external">the 
     TOMTOM website</a>.</p>
 
    	<form>

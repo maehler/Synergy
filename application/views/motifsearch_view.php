@@ -2,7 +2,7 @@
 
 <p>Here you can search for motifs in <i>Syn</i>ergy. Motifs in <i>Syn</i>ergy
 similar to your motif will be identified using the software
-<a href="http://meme.ncbr.net">TOMTOM</a>. You can search using a IUPAC consensus
+<a href="http://meme.nbcr.net/meme/cgi-bin/tomtom.cgi">TOMTOM</a>. You can search using a IUPAC consensus
 sequence or a matrix representation of the motif. If you already know what 
 <i>Syn</i>ergy motif you are after, you can also search for that using the motif
 name.
