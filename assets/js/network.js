@@ -28,6 +28,9 @@ function redraw() {
 			liveUpdate: true
 		});
 	}
+	$('#load-message, #network-loading').fadeOut(300, function() {
+		$(this).hide();
+	});
 }
 
 function selectAll() {
@@ -147,6 +150,14 @@ function expandNode(json) {
 		success: function (edges) {
 			// Don't do anything if there aren't any new edges
 			if (edges.edges.length === cy.edges("[weight>"+expand_threshold+"]").length) {
+				$('#load-message #load-gif').hide();
+				$('#load-message .message').html('No neighbors found at threshold ' + expand_threshold);
+				setTimeout(function() {
+					$('#load-message, #network-loading').fadeOut(300, function() {
+						$(this).hide();
+						$('#load-message #load-gif').show();
+					});
+				}, 1500);
 				return;
 			}
 			cy.remove(cy.edges("[weight>"+expand_threshold+"]"));
@@ -225,7 +236,7 @@ $(function () {
 		done: function () {
 			console.log('layout done');
 			$('#load-message, #network-loading').fadeOut(300, function () {
-				$(this).remove();
+				$(this).hide();
 			});
 		}
 	});
@@ -246,7 +257,8 @@ $(function () {
 	        }, {
 	            content: 'Expand',
 	            select: function () {
-	                console.log('Expanding neighborhood...');
+	                $('#load-message .message').html('Expanding...');
+	                $('#load-message, #network-loading').show();
 	                $.ajax({
 	                	url: 'api/network_neighbors/' + 
 	                		this.data().orf + '/' + 
