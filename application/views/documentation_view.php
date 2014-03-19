@@ -33,6 +33,7 @@
 			</ul>
 		</li>
 		<li><a href="#expressionplot">Gene expression plot</a></li>
+		<li><a href="#errors">Error reporting</a></li>
 	</ul>
 </nav>
 
@@ -367,5 +368,14 @@ gene5</pre>
 	plotting many genes, labels and annotations will be disabled if you are
 	plotting more than 30 genes. Because of memory limitations, the maximum 
 	number of genes that can be plotted is limited to 300.
+	</p>
+</section>
+
+<section id="errors">
+	<h3>Error reporting</h3>
+	<p>If you find something that doesn't work as it should, you can report
+	this through our <a href="https://bitbucket.org/maehler/synergy/issues?status=new&amp;status=open">
+	issue tracker on Bitbucket</a>. You don't need an account on Bitbucket to 
+	do this, but it is recommended.
 	</p>
 </section>

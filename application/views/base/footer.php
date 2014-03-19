@@ -2,7 +2,7 @@
 		<div class="push"></div>
 	</div> <!-- end wrapper -->
 	<footer class="page-footer align-center">
-		<p>&copy; 2012-2014 | <a href="https://bitbucket.org/maehler/synergy/issues/new">Report an issue</a></p>
+		<p>&copy; 2012-2014 | <a href="https://bitbucket.org/maehler/synergy/issues?status=new&amp;status=open">Report an issue</a></p>
 	</footer>
 
     <script type="text/javascript" src="<?php echo base_url(array('assets', 'js', 'jquery-1.11.0.min.js')); ?>"></script>
