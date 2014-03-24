@@ -71,7 +71,10 @@ class Api extends MY_Controller {
 		if ($genes === NULL) {
 			$genes = $this->input->post('genes');
 		}
-		$this->session->set_userdata(array('basket' => $genes));
+		if (!is_array($genes)) {
+			show_error("Parameter must be an array", 400);
+		}
+		$this->session->set_userdata(array('basket' => array_values(array_unique($genes))));
 	}
 
 	function export_selection() {
