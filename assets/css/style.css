@@ -180,6 +180,15 @@ header nav {
 }
 /* End navigation */
 
+/* Version number */
+#synergy-version {
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	color: #138610;
+	font-size: 0.8em;
+}
+
 /* Alignment */
 .align-center { text-align: center; }
 .align-right { text-align: right; }
