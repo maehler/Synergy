@@ -34,6 +34,9 @@
 
 <section>
 	<h3>Genes containing this motif</h3>
+	<p>Note that a gene can occur multiple times in the table below since
+	a motif can be assigned to more than one position in its promoter.
+	</p>
 	<form>
 		<fieldset>
 			<legend>Table filtering</legend>
