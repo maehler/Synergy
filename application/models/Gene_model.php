@@ -4,9 +4,9 @@ class Gene_model extends CI_Model {
 
 	function get_datatable() {
 		$aoColumns = array('id', 'orf_id', 'refseq_id',
-			'symbol', 'category', 'definition', 'tf');
+			'symbol', 'definition', 'category', 'tf');
 		$taColumns = array('g.id', 'g.orf_id', 'g.refseq_id',
-			'g.symbol', 'g.category', 'g.definition', 'g.tf');
+			'g.symbol', 'g.definition', 'g.category', 'g.tf');
 
 		// If the user only wants the filtered results
 		if ($this->input->post('selgenes') == 'all') {
@@ -41,7 +41,7 @@ class Gene_model extends CI_Model {
 		$this->db->select("SQL_CALC_FOUND_ROWS
 						   CONCAT('<input type=\"checkbox\" id=\"',g.id,'\" />') AS `checkbox`,
 						   CONCAT('<a href=\"gene/details/', g.orf_id, '\">', g.orf_id, '</a>'),
-						   g.refseq_id, g.symbol, g.category, g.definition,
+						   g.refseq_id, CONCAT('<i>', g.symbol, '</i>'), g.definition, g.category,
 						   (case when g.tf = 1 then \"&#x2713;\" else \"\" end)",
 						   FALSE)
 			->from('gene AS g')

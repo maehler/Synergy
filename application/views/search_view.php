@@ -8,8 +8,8 @@
 			<th>ORF</th>
 			<th>Accession</th>
 			<th>Symbol</th>
-			<th>Category</th>
 			<th>Definition</th>
+			<th>Category</th>
 			<th>Regulatory</th>
 		</tr>
 	</thead>
@@ -21,8 +21,8 @@
 			<th>ORF</th>
 			<th>Accession</th>
 			<th>Symbol</th>
-			<th>Category</th>
 			<th>Definition</th>
+			<th>Category</th>
 			<th>Regulatory</th>
 		</tr>
 	</tfoot>
