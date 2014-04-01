@@ -14,3 +14,6 @@ data/tmp/*
 src/python/config/local.py
 
 *.pxm
+
+application/config/development
+application/config/production
