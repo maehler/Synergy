@@ -26,6 +26,12 @@ def run_tomtom(meme, outdir, central=True, th=0.05, minovlp=1, evalue=False):
 	p = Popen(args, shell=False, stdout=PIPE, stderr=PIPE)
 	tt_stdout, tt_stderr = p.communicate()
 
+	for root, dirs, files in os.walk(outdir, topdown=False):
+		for d in dirs:
+			os.chmod(os.path.join(root, d), 0o775)
+		for f in files:
+			os.chmod(os.path.join(root, f), 0o664)
+
 def parse_iupac(iupac, outdir):
 	p = Popen([
 		config.iupac2meme,
