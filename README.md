@@ -31,7 +31,7 @@ that the application can use:
 ```bash
 pip install virtualenv # If not already done
 cd synergy
-python virtualenv .venv # Name is important!
+virtualenv .venv # Create virtual environment. Name is important!
 source .venv/bin/activate # Activate the virtual environment
 pip install -r requirements.txt # Install required modules, will take some time
 ...
