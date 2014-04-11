@@ -112,10 +112,7 @@ def motif_enrich(mgdict, genes, adj_p=True):
             sys.exit(1)
         
         #TODO: Only overrepresentation at the moment
-        if b != 0 and d != 0 and float(a) / b > float(c) / d:
-            enrich.append([mid, p, odds, fentry])
-        elif b == 0 and d != 0:
-            # All of the genes contain this motif
+        if odds > 1:
             enrich.append([mid, p, odds, fentry])
 
     # Adjust p-values

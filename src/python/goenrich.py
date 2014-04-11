@@ -86,14 +86,10 @@ def calc_enrichment(genes, go, set_p, set_m, set_c, underrep=False, adj_p=True):
 
         odds, p = stats.fisher_exact(fentry)
 
-        if underrep:
-            if b != 0 and d != 0 and float(a) / b < float(c) / d:
-                goenrich.append([go, p, odds, fentry, v[1]])
-            if b == 0 and d != 0:
-                goenrich.append([go, p, odds, fentry, v[1]])
-        else:
-            if b != 0 and d != 0 and float(a) / b > float(c) / d:
-                goenrich.append([go, p, odds, fentry, v[1]])
+        if underrep and odds < 1:
+            goenrich.append([go, p, odds, fentry, v[1]])
+        elif not underrep and odds > 1:
+            goenrich.append([go, p, odds, fentry, v[1]])
     
     if adj_p:
         padj = padjust.fdr([x[1] for x in goenrich])
