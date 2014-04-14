@@ -15,6 +15,13 @@ class Motif extends MY_Controller {
 
 		$motif_data['genes'] = $this->motif_model->get_motif_genes($motif);
 
+		$gene_ids = array();
+		foreach ($motif_data['genes'] as $gene) {
+			$gene_ids[] = $gene['id'];
+		}
+
+		$motif_data['unique_genes'] = count(array_unique($gene_ids));
+
 		$this->load->view('base/header', $this->get_head_data('', 
 			$motif_data['motif_name'], array(
 				base_url(array('assets', 'css', 'datatables', 'jquery.dataTables.css'))
