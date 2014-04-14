@@ -373,9 +373,9 @@ gene5</pre>
 
 <section id="errors">
 	<h3>Error reporting</h3>
-	<p>If you find something that doesn't work as it should, you can report
-	this through our <a href="https://bitbucket.org/maehler/synergy/issues?status=new&amp;status=open">
-	issue tracker on Bitbucket</a>. You don't need an account on Bitbucket to 
-	do this, but it is recommended.
+	<p>If you find something that doesn't work as it should, you can check if
+	this is something we are already aware of, or report a new issue through
+	our <a href="https://github.com/maehler/Synergy/issues"> issue tracker on
+	Github</a>.
 	</p>
 </section>
