@@ -1,10 +1,10 @@
-# *Syn*ergy
+# Synergy
 
 ## Introduction
 
-*Syn*ergy is a web application for exploring gene regulation in *Synechocystis*.
+Synergy is a web application for exploring gene regulation in Synechocystis.
 The following documentation is mainly meant for developers. Documentation on how
-to use *Syn*ergy you can find over at http://synergy.plantgenie.org/documentation.
+to use Synergy you can find over at http://synergy.plantgenie.org/documentation.
 
 ## Requirements
 
@@ -68,7 +68,7 @@ DATABASE = {
 
 ### Other constants
 
-There are some other constants that *Syn*ergy needs to function properly.
+There are some other constants that Synergy needs to function properly.
 
 In PHP you have to set the paths to the bin-directory of your MEME installation
 and a temporary directory for storing e.g. TOMTOM results. Add the following
@@ -79,5 +79,5 @@ define('MEME', '/absolute/path/to/meme/bin');
 define('TMP', '/absolute/path/to/tmp/directory');
 ```
 
-Preferably set the temporary directory to `data/tmp` in the *Syn*ergy
+Preferably set the temporary directory to `data/tmp` in the Synergy
 repository, i.e. `/path/to/synergy/data/tmp`.
