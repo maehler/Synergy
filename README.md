@@ -3,6 +3,8 @@
 ## Introduction
 
 *Syn*ergy is a web application for exploring gene regulation in *Synechocystis*.
+The following documentation is mainly meant for developers. Documentation on how
+to use *Syn*ergy you can find over at http://synergy.plantgenie.org/documentation.
 
 ## Requirements
 
