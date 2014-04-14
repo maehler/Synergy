@@ -23,7 +23,7 @@ Synergy is based on [CodeIgniter](http://ellislab.com/codeigniter).
 First of all, clone the repository (or just download it):
 
 ```bash
-git clone https://bitbucket.org/maehler/synergy.git
+git clone https://github.com/maehler/Synergy.git
 ```
 
 Of course, you will have to point you web server to this directory in order to
