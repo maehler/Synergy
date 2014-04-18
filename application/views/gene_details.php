@@ -15,6 +15,10 @@
 			<td><?php echo $orf_id ?></td>
 		</tr>
 		<tr>
+			<th class="align-right">Accession</th>
+			<td><?php echo $refseq_id ?></td>
+		</tr>
+		<tr>
 			<th class="align-right">Symbol</th>
 			<td><em><?php echo $symbol ?></em></td>
 		</tr>
