@@ -189,6 +189,7 @@ var expressionPlot = (function() {
 				} else {
 					console.log('No expression');
 					$('#flot-expression, .flot-subset-control, .flot-overview, .flot-buttons').hide();
+					$('.expression-profile p').remove();
 					$('.expression-profile').append($('<p/>')
 						.html('No expression data available'))
 				}
