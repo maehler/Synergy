@@ -184,7 +184,14 @@ var expressionPlot = (function() {
 					alert(json[0]);
 					return;
 				}
-				plotExpression(json.data, json.annot);
+				if (json.data.length > 0) {
+					plotExpression(json.data, json.annot);
+				} else {
+					console.log('No expression');
+					$('#flot-expression, .flot-subset-control, .flot-overview, .flot-buttons').hide();
+					$('.expression-profile').append($('<p/>')
+						.html('No expression data available'))
+				}
 			},
 			error: function(xhr, textStatus, errorThrown) {
 				console.log(xhr);

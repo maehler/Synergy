@@ -1,8 +1,10 @@
-<section>
+<section class="expression-profile">
 	<h3>Expression profile</h3>
 	<button id="draw-expression" class="small">Draw expression profile</button>
-	<label for="subset-expression">Only subset samples</label>
-	<input type="checkbox" id="subset-expression" value="true">
+	<div class="flot-subset-control">
+		<label for="subset-expression">Only subset samples</label>
+		<input type="checkbox" id="subset-expression" value="true">
+	</div>
 	<div id="loading-plot" class="hidden load-message">
 		<span class="loading"></span>Loading plot...
 	</div>
