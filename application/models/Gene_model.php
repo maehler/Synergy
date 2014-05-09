@@ -134,6 +134,18 @@ class Gene_model extends CI_Model {
 		return $gene[0];
 	}
 
+	function get_promoter_seq($id) {
+		$this->db->select('sequence')
+			->from('promoter')
+			->where('gene_id', $id);
+		$query = $this->db->get();
+		if ($query->num_rows() == 0) {
+			return FALSE;
+		}
+		$res = $query->row_array();
+		return $res['sequence'];
+	}
+
 	function get_all() {
 		$this->db->select('id', 'orf_id', 'refseq_id', 'symbol', 'category', 'definition', 'tf')
 			->from('gene');

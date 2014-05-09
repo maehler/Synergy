@@ -111,6 +111,13 @@
 
 <?php echo $expression_plot; ?>
 
+<section>
+	<h3>Sequences</h3>
+
+	<h4>Promoter</h4>
+	<pre class="sequence"><?php echo $promoter_sequence; ?></pre>
+</section>
+
 <script type="text/javascript">
 	var baseURL = "<?php echo base_url(); ?>";
 	var geneID = <?php echo $id; ?>;
