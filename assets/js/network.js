@@ -117,6 +117,27 @@ function updateSelectCount() {
 	$('#select-count').html(no_nodes);
 }
 
+function initTooltips() {
+	cy.nodes().each(function() {
+		console.log(this);
+		this.qtip({
+			content: {
+				title: this.data('orf'),
+				text: '<b>Symbol:</b> <i>'+this.data('symbol')+'</i>'
+			},
+			show: {
+				event: 'mouseover'
+			},
+			hide: {
+				event: 'mouseout'
+			},
+			style: {
+				classes: 'network-tooltip'
+			}
+		})
+	});
+}
+
 function expandNode(json) {
 	// Calculate the positions of the objects
 	var n_nodes = json.nodes.length;
@@ -230,6 +251,7 @@ $(function () {
 			cy = this;
 			updateCount();
 			updateSelectCount();
+			initTooltips();
 			$('#load-message .message').html('Calculating layout...');
 			cy.nodes().bind('select unselect', updateSelectCount);
 		},
