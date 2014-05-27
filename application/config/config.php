@@ -432,6 +432,7 @@ $config['minify_output'] = FALSE;
 |
 */
 $config['time_reference'] = 'local';
+date_default_timezone_set('CET');
 
 
 /*
