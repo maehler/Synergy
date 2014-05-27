@@ -26,8 +26,16 @@ function replaceBasket() {
 		url: baseURL + 'api/replace_basket',
 		type: 'POST',
 		data: { genes: sel },
-		success: function() {
-			console.log('Basket updated');
+		success: function(res) {
+			$('#basket-load-indicator').remove();
+			$('#replace-basket').after($('<p/>')
+				.html(res + ' genes added to basket')
+				.prop('id', 'basket-load-indicator')
+				.css({
+					'display': 'inline',
+					'margin-left': '10px'
+				})
+			);
 		}
 	});
 }

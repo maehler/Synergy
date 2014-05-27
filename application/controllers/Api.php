@@ -75,6 +75,7 @@ class Api extends MY_Controller {
 			show_error("Parameter must be an array", 400);
 		}
 		$this->session->set_userdata(array('basket' => array_values(array_unique($genes))));
+		echo json_encode(count(array_unique($genes)));
 	}
 
 	function export_selection() {
