@@ -119,7 +119,6 @@ function updateSelectCount() {
 
 function initTooltips() {
 	cy.nodes().each(function() {
-		console.log(this);
 		this.qtip({
 			content: {
 				title: this.data('orf'),
@@ -308,7 +307,7 @@ $(function () {
 	        }, {
 	        	content: '<span class="cxt-label">Gene page in new tab</span>',
 	        	select: function () {
-	        		var win = window.open(baseURL + '/gene/details/' + this.data().orf);
+	        		var win = window.open(baseURL + 'gene/details/' + this.data().orf);
 	        	}
 	        }
 	    ], 
