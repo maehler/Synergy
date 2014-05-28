@@ -277,7 +277,7 @@ $(function () {
 	            	cy.remove(this);
 	            }
 	        }, {
-	            content: 'Expand',
+	            content: '<span class="cxt-label">Expand</span>',
 	            select: function () {
 	                $('#load-message .message').html('Expanding...');
 	                $('#load-message, #network-loading').show();
@@ -293,7 +293,7 @@ $(function () {
 	                });
 	            }
 	        }, {
-	        	content: 'Toggle basket',
+	        	content: '<span class="cxt-label">Toggle basket</span>',
 	        	select: function () {
 	        		$.ajax({
 	        			url: 'api/update_basket',
@@ -304,6 +304,11 @@ $(function () {
 		        			this.toggleClass('basket');
 		        		}
 	        		});
+	        	}
+	        }, {
+	        	content: '<span class="cxt-label">Gene page in new tab</span>',
+	        	select: function () {
+	        		var win = window.open(baseURL + '/gene/details/' + this.data().orf);
 	        	}
 	        }
 	    ], 
