@@ -14,6 +14,7 @@ data/tmp/*
 src/python/config/local.py
 
 synergy_dump.sh
+*.sql
 
 *.pxm
 
