@@ -9,6 +9,16 @@ NOTE: In the `corr` table, gene1_id is ALWAYS larger than gene2_id!
 class Network_model extends CI_Model {
 
 	function get_network($genes, $ntype='clr_complete', $th=5, $expand=FALSE, $json=TRUE) {
+		/**
+		 * Get a gene network for the given genes and network type.
+		 *
+		 * @return array|string Returns a cytoscape.js compatible network representation either as JSON or as an array
+		 * @param array $genes The array of gene ids to build the network for
+		 * @param string $ntype The column in the `corr` table to use
+		 * @param float $th Correlation threshold, only use correlations above this
+		 * @param bool $expand If TRUE, expand the network to include the first neighbors of each gene
+		 * @param bool $json If TRUE, return a JSON representation of the network, otherwise return an array
+		 */
 		$network = array(
 			'nodes' => array(),
 			'edges' => array()
@@ -128,6 +138,14 @@ class Network_model extends CI_Model {
 	}
 
 	function get_neighbors($orf, $th, $ntype) {
+		/**
+		 * Given a gene, get its network neighbors given a threshold and a 
+		 * network type.
+		 * @return array A nested array of nodes formatted for cytoscape.js
+		 * @param string $orf The ORF id of the gene to get neighbors for
+		 * @param float $th Correlation threshold
+		 * @param string $ntype Column in the `corr` table to use
+		 */
 		$this->db->select("g1.id AS id1, g1.orf_id AS orf1, g1.tf AS tf1, g1.symbol AS sym1, g2.id AS id2, g2.orf_id AS orf2, g2.tf AS tf2, g2.symbol AS sym2")
 			->from('corr AS c')
 			->join('gene AS g1', 'g1.id = c.gene1_id', 'left')
@@ -164,6 +182,13 @@ class Network_model extends CI_Model {
 	}
 
 	function get_edges($genes, $th, $ntype) {
+		/**
+		 * Get all edges among a set of genes compatible with cytoscape.js
+		 * @return array A nested array of edges compatible with cytoscape.js
+		 * @param array $genes An array of gene ids
+		 * @param float $th Correlation threshold
+		 * @param string $ntype Column in the `corr` table to use
+		 */
 		$this->db->select("g1.id AS id1, g1.orf_id AS orf1, g2.id AS id2, g2.orf_id AS orf2, $ntype")
 			->from('corr AS c')
 			->join('gene AS g1', 'g1.id = c.gene1_id', 'left')
