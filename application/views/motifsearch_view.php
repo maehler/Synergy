@@ -77,13 +77,13 @@ name.
 		<ol>
 			<li>
 				<label for="sign-thresh">Significance threshold</label>
-				<input type="number" name="sign-thresh" id="sign-thresh" value="<?php echo set_value('sign-thresh', '0.05'); ?>" step="0.01" min="0">
+				<input type="number" name="sign-thresh" id="sign-thresh" value="<?php echo set_value('sign-thresh', '10'); ?>" step="0.01" min="0">
 			</li>
 			<li>
 				<label for="thresh-type">Treshold type</label>
 				<select id="thresh-type" name="thresh-type">
-					<option value="qvalue" <?php echo set_select('thresh-type', 'qvalue', TRUE); ?>>q-value</option>
-					<option value="evalue" <?php echo set_select('thresh-type', 'evalue'); ?>>E-value</option>
+					<option value="qvalue" <?php echo set_select('thresh-type', 'qvalue'); ?>>q-value</option>
+					<option value="evalue" <?php echo set_select('thresh-type', 'evalue', TRUE); ?>>E-value</option>
 				</select>
 			</li>	
 			<li>
