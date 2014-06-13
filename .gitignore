@@ -13,6 +13,8 @@ data/tmp/*
 .venv
 src/python/config/local.py
 
+synergy_dump.sh
+
 *.pxm
 
 application/config/development
