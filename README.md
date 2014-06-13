@@ -44,9 +44,9 @@ deactivate # Deactivate the virtual environment
 
 ### Database
 
-Currently, to get a dump of the database, please contact me at
-niklas.mahler@nmbu.no. After you have the dump, load it into a database that
-you have created, e.g. `synergy_db`
+You can download a dump of the database here: http://synergy.plantgenie.org/data/synergy.sql.
+When you have the dump, load it into a database that you have created, e.g.
+`synergy_db`
 
 ```bash
 mysql -u user -p synergy_db < synergy_dump.sql
