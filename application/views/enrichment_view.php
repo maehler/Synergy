@@ -10,7 +10,7 @@
 			<fieldset>
 				<ol>
 					<li>
-						<label for="go-p-th">FDR threshold</label>
+						<label for="go-p-th"><i>q</i>-value threshold</label>
 						<select id="go-p-th">
 							<option value="0.01">&lt;0.01</option>
 							<option value="0.05" selected>&lt;0.05</option>
@@ -38,7 +38,7 @@
 					<th>Category</th>
 					<th>Description</th>
 					<th>Stats</th>
-					<th>FDR</th>
+					<th><i>q</i>-value</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -49,7 +49,7 @@
 					<th>Category</th>
 					<th>Description</th>
 					<th>Stats</th>
-					<th>FDR</th>
+					<th><i>q</i>-value</th>
 				</tr>
 			</tfoot>
 		</table>
@@ -60,7 +60,7 @@
 			<fieldset>
 				<ol>
 					<li>
-						<label for="motif-p-th">FDR threshold</label>
+						<label for="motif-p-th"><i>q</i>-value threshold</label>
 						<select id="motif-p-th">
 							<option value="0.01">&lt;0.01</option>
 							<option value="0.05" selected>&lt;0.05</option>
@@ -99,7 +99,7 @@
 					<th>Length</th>
 					<th>Central</th>
 					<th>Stats</th>
-					<th>FDR</th>
+					<th><i>q</i>-value</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -110,7 +110,7 @@
 					<th>Length</th>
 					<th>Central</th>
 					<th>Stats</th>
-					<th>FDR</th>
+					<th><i>q</i>-value</th>
 				</tr>
 			</tfoot>
 		</table>
