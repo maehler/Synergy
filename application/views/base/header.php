@@ -39,7 +39,7 @@
 	<div class="wrapper">
 		<header class="page-header">
 			<h1><span class="italic">Syn</span>ergy</h1>
-			<div id="synergy-version"><?php echo `git describe`; ?></div>
+			<div id="synergy-version"><a href="<?php echo base_url("changelog") ?>"><?php echo `git describe`; ?></a></div>
 			<nav>
 				<ul>
 					<li>
