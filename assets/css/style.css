@@ -379,9 +379,3 @@ form.narrow label {
 form fieldset fieldset label {
 	margin-left: 173px; /* Width plus 3 (html space) */
 }
-
-/* Sequences */
-pre.sequence {
-	padding: 10px;
-	background-color: #EEE;
-}
