@@ -115,7 +115,10 @@
 	<h3>Sequences</h3>
 
 	<h4>Promoter</h4>
-	<pre class="sequence"><?php echo $promoter_sequence; ?></pre>
+	<pre class="sequence"><?php echo !is_null($promoter_sequence) ? $promoter_sequence : "No sequence available"; ?></pre>
+
+	<h4>CDS</h4>
+	<pre class="sequence"><?php echo !is_null($cds) ? $cds : "No sequence available"; ?></pre>
 </section>
 
 <script type="text/javascript">

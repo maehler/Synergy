@@ -19,6 +19,7 @@ class Gene extends MY_Controller {
 
 		$gene_data['motifs'] = $motif_data;
 		$gene_data['promoter_sequence'] = $this->gene_model->get_promoter_seq($gene_data['id']);
+		$gene_data['cds'] = $this->gene_model->get_cds($gene_data['id']);
 
 		if ($this->session->userdata('basket')) {
 			$gene_data['in_basket'] = in_array(intval($gene_data['id']), $this->session->userdata('basket'));
