@@ -119,6 +119,9 @@
 
 	<h4>CDS</h4>
 	<pre class="sequence"><?php echo !is_null($cds) ? $cds : "No sequence available"; ?></pre>
+
+	<h4>Protein</h4>
+	<pre class="sequence"><?php echo !is_null($protein) ? $protein : "No sequence available"; ?></pre>
 </section>
 
 <script type="text/javascript">

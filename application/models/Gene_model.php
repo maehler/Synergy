@@ -158,6 +158,18 @@ class Gene_model extends CI_Model {
 		return $res['cds'];
 	}
 
+	function get_protein($id) {
+		$this->db->select('protein')
+			->from('gene')
+			->where('id', $id);
+		$query = $this->db->get();
+		if ($query->num_rows() == 0) {
+			return FALSE;
+		}
+		$res = $query->row_array();
+		return $res['protein'];
+	}
+
 	function get_all() {
 		$this->db->select('id', 'orf_id', 'refseq_id', 'symbol', 'category', 'definition', 'tf')
 			->from('gene');
