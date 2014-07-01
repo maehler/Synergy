@@ -195,6 +195,21 @@ class Api extends MY_Controller {
 			->set_output($output);
 	}
 
+	/**
+	 * Given a GO term and a list of genes, print a json representation of
+	 * the list of genes that are annotated with that GO term, or an empty 
+	 * list if none are annotated to it.
+	 */
+	function go_genes() {
+		$this->load->model('gene_model');
+		$go = $this->input->post('go');
+		$genelist = $this->input->post('genelist');
+		$genes = $this->gene_model->get_go_genes($go, $genelist);
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($genes));
+	}
+
 	// Gene lists
 	function genelist($type) {
 		$this->load->model('genelist_model');

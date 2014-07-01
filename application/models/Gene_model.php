@@ -108,6 +108,22 @@ class Gene_model extends CI_Model {
 		return $genes;
 	}
 
+	function get_go_genes($go, $gene_ids=array()) {
+		$this->db->select('gene_id')
+			->from('go_gene')
+			->join('go', 'go.id = go_gene.go_id');
+		if (!empty($gene_ids)) {
+			$this->db->where_in('gene_id', $gene_ids);
+		}
+		$this->db->where('go.go', $go);
+		$query = $this->db->get();
+		$genes = array();
+		foreach ($query->result_array() as $row) {
+			$genes[] = intval($row['gene_id']);
+		}
+		return array_values($genes);
+	}
+
 	function get_orf_gene($orf_id) {
 		$this->db->select('id, orf_id, refseq_id, symbol, category, definition, tf')
 			->from('gene')
