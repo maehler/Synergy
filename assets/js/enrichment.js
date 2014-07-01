@@ -3,9 +3,12 @@
 var enrichmentTools = (function() {
 
 	var selFun;
+	var highlightEnabled = false;
 
-	var init = function (fun) {
-		selFun = fun;
+	var init = function (selectionFun, goHighlightFun, motifHighlightFun) {
+		selFun = selectionFun;
+		highlightEnabled = goHighlightFun !== undefined &&
+			motifHighlightFun !== undefined;
 
 		// Motif enrichment
 		$('#motif-table').dataTable({
@@ -24,6 +27,12 @@ var enrichmentTools = (function() {
 					.attr('href', baseURL + 'motif/details/' + aData[0])
 					.html(aData[0])
 				);
+				if (highlightEnabled) {
+					$(nRow).append($('<button/>')
+						.html('Highlight')
+						.prop('id', 'highlight-' + aData[0])
+						.click(motifHighlightFun));
+				}
 				return nRow;
 			}
 		});
@@ -47,6 +56,12 @@ var enrichmentTools = (function() {
 						'http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=' + aData[0])
 					.html(aData[0])
 				);
+				if (highlightEnabled) {
+					$(nRow).append($('<button/>')
+						.html('Highlight')
+						.prop('id', 'highlight-' + aData[0])
+						.click(goHighlightFun));
+				}
 				return nRow;
 			},
 			fnInitComplete: filterGO
