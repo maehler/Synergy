@@ -210,6 +210,16 @@ class Api extends MY_Controller {
 			->set_output(json_encode($genes));
 	}
 
+	function motif_genes() {
+		$this->load->model("gene_model");
+		$motif = $this->input->post("motif");
+		$genelist = $this->input->post("genelist");
+		$genes = $this->gene_model->get_motif_genes($motif, $genelist);
+		$this->output
+			->set_content_type("application/json")
+			->set_output(json_encode($genes));
+	}
+
 	// Gene lists
 	function genelist($type) {
 		$this->load->model('genelist_model');

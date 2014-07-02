@@ -124,6 +124,24 @@ class Gene_model extends CI_Model {
 		return array_values($genes);
 	}
 
+	function get_motif_genes($motif, $gene_ids=array()) {
+		$this->db->select("g.id")
+			->from("gene AS g")
+			->join("promoter AS p", "p.gene_id = g.id")
+			->join("promoter_motif AS pm", "pm.promoter_id = p.id")
+			->join("motif AS m", "m.id = pm.motif_id");
+		if (!empty($gene_ids)) {
+			$this->db->where_in("g.id", $gene_ids);
+		}
+		$this->db->where("m.name", $motif);
+		$query = $this->db->get();
+		$genes = array();
+		foreach ($query->result_array() as $row) {
+			$genes[] = intval($row["id"]);
+		}
+		return array_values($genes);
+	}
+
 	function get_orf_gene($orf_id) {
 		$this->db->select('id, orf_id, refseq_id, symbol, category, definition, tf')
 			->from('gene')
