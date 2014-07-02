@@ -1,5 +1,8 @@
 "use strict";
 
+var lastGOGenes = [];
+var lastMotifGenes = [];
+
 var enrichmentTools = (function() {
 
 	var selFun;
@@ -93,6 +96,7 @@ var enrichmentTools = (function() {
 
 	var goEnrichment = function() {
 		var gids = selFun();
+		lastGOGenes = gids;
 		if (gids.length == 0) {
 			alert('No genes selected');
 			return;
@@ -122,6 +126,7 @@ var enrichmentTools = (function() {
 
 	var motifEnrichment = function() {
 		var gids = selFun();
+		lastMotifGenes = gids;
 		if (gids.length == 0) {
 			alert('No genes selected');
 			return;
