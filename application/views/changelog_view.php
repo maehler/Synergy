@@ -1,6 +1,16 @@
 <h2>Changelog</h2>
 
 <div>
+    <h3>v0.9.8</h3>
+    <p>Highlighting of enrichment results in the network view enabled.</p>
+</div>
+
+<div>
+    <h3>v0.9.7</h3>
+    <p>Changelog added to the site and sequences added to the gene pages.</p>
+</div>
+
+<div>
     <h3>v0.9.6</h3>
     <p>Added tooltips to the network and the possibility to go directly to
     a gene page from a node. TOMTOM paramters in the motif search were updated
