@@ -190,6 +190,58 @@ function expandNode(json) {
 	});
 }
 
+function highlightNodes(id, enrichType) {
+	// Remove previous highlight
+	var origHighlight = cy.nodes(".highlighted");
+	if (origHighlight.length !== 0) {
+		origHighlight.animate({css: {
+			height: 20,
+			width: 20
+		}}, {
+			duration: 50,
+			complete: function() {
+				this.removeClass("highlighted");
+			}
+		});
+	}
+	var ajaxParam = {
+		type: "POST",
+		datatype: "json",
+		success: function(res) {
+			var nodes = cy.filter(function(i, ele) {
+				if (!isNaN(ele.id())) {
+					return $.inArray(parseInt(ele.id()), res) !== -1;
+				} else {
+					return false;
+				}
+			});
+			nodes.animate({css: {
+				height: 30,
+				width: 30
+			}}, {
+				duration: 50,
+				complete: function() {
+					this.addClass("highlighted");
+				}
+			})
+		}
+	};
+	if (enrichType === "go") {
+		ajaxParam.url = "api/go_genes";
+		ajaxParam.data = {
+			go: id,
+			genelist: lastGOGenes
+		};
+	} else if (enrichType === "motif") {
+		ajaxParam.url = "api/motif_genes";
+		ajaxParam.data = {
+			motif: id,
+			genelist: lastMotifGenes
+		};
+	}
+	$.ajax(ajaxParam);
+}
+
 $(function () {
 	$('#network-container').cytoscape({
 		elements: network_data,
@@ -352,7 +404,11 @@ $(function () {
 	$('#export-pdf').click(exportPDF);
 
 	// Initiate enrichment tools
-	enrichmentTools(getSelection);
+	enrichmentTools(getSelection, function() {
+		highlightNodes(this.id.replace("highlight-", ""), "go");
+	}, function() {
+		highlightNodes(this.id.replace("highlight-", ""), "motif");
+	});
 
 	// Initiate expression plot
 	expressionPlot(getSelection, baseURL);

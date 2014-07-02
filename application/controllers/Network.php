@@ -72,7 +72,8 @@ class Network extends MY_Controller {
 				'animate' => $animate,
 				'node_labels' => $node_labels
 			),
-			'enrichment_view' => $this->load->view('enrichment_view', NULL, TRUE),
+			'enrichment_view' => $this->load->view('enrichment_view',
+				array('enrichHighlight' => TRUE), TRUE),
 			'plot_view' => $this->load->view('expressionplot_view', NULL, TRUE)
 		));
 		$this->load->view('base/footer', $this->get_foot_data(
