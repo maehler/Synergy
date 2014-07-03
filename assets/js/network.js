@@ -197,18 +197,7 @@ function expandNode(json) {
 
 function highlightNodes(id, enrichType) {
 	// Remove previous highlight
-	var origHighlight = cy.nodes(".highlighted");
-	if (origHighlight.length !== 0) {
-		origHighlight.animate({css: {
-			height: 20,
-			width: 20
-		}}, {
-			duration: 50,
-			complete: function() {
-				this.removeClass("highlighted");
-			}
-		});
-	}
+	cy.nodes().removeClass("highlighted");
 	var ajaxParam = {
 		type: "POST",
 		datatype: "json",
@@ -220,15 +209,7 @@ function highlightNodes(id, enrichType) {
 					return false;
 				}
 			});
-			nodes.animate({css: {
-				height: 30,
-				width: 30
-			}}, {
-				duration: 50,
-				complete: function() {
-					this.addClass("highlighted");
-				}
-			})
+			nodes.addClass("highlighted");
 		}
 	};
 	if (enrichType === "go") {
@@ -293,6 +274,11 @@ $(function () {
 					'border-color': '#CA281D',
 					'border-width': 3,
 					'box-shadow': '2px 2px 2px 2px black'
+				})
+			.selector('node.highlighted')
+				.css({
+					height: 30,
+					width: 30
 				})
 			.selector('edge')
 				.css({
