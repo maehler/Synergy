@@ -7,17 +7,20 @@
 </aside>
 <p>
     This is a set of tools for exploring the gene regulation in the
-    cyanobacterium <i>Synechocystis</i>.
+    cyanobacterium <i>Synechocystis</i>. To get started, go to the
+    <a href="search">Gene search</a> tool and find your favorite gene,
+    or maybe upload a list of differentially expressed genes. From there
+    you can explore the co-expression network of those genes, perform
+    Gene Ontology (GO) and motif enrichment and get more detailed
+    information about the genes and motifs found.
 </p>
 
-<section>
-    <h3>Something not working?</h3>
-    <p>
-        If you find something that is not working as expected, or
-        you come up with some feature you'd like to have, feel free
-        to <a href="https://github.com/maehler/Synergy/issues">create a 
-        ticket</a> in the issue tracker for <i>Syn</i>ergy.
-        Please take a look at existing issues before creating a new to 
-        avoid duplicates.
-    </p>
-</section>
+<p>
+    Below you can find a video describing case study 2 from our paper
+    (Mähler <i>et al.</i> 2014, Synergy: A web resource for investigating
+    gene expression in <i>Synechocystis</i> sp. PCC6803, Submitted). It
+    describes how you can perform an integrated analysis of both regulatory
+    motifs and co-expression.
+</p>
+
+<iframe class="youtube" width="560" height="315" src="//www.youtube.com/embed/rAfmhwuWw-U" frameborder="0" allowfullscreen></iframe>

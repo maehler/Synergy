@@ -385,3 +385,9 @@ pre.sequence {
 	padding: 10px;
 	background-color: #EEE;
 }
+
+/* Youtube */
+.youtube {
+	margin: 0 auto;
+	display: block;
+}
