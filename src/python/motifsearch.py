@@ -14,6 +14,7 @@ def run_tomtom(meme, outdir, central=True, th=0.05, minovlp=1, evalue=False):
 	args = [
 		config.tomtom,
 		'-oc', outdir,
+		'-png',
 		'-min-overlap', str(minovlp),
 		'-thresh', str(th),
 		meme,
