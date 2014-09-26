@@ -56,10 +56,14 @@ main {
 
 /* Anchors */
 a {
-	color: #005B0C;
+	color: #3C7113;
 	text-decoration: none;
+	border-bottom: 1px dotted;
 }
-a:hover { text-decoration: underline; }
+a:hover {
+	text-decoration: none;
+	border-bottom: 1px solid;
+}
 
 /* Images */
 figure {
@@ -157,6 +161,7 @@ header nav {
 	header nav a {
 		display: block;
 		border-radius: 5px 5px 0 0;
+		border: none;
 		text-decoration: none;
 		padding: 5px;
 		background-color: #139327;
@@ -168,6 +173,7 @@ header nav {
 	header nav a:hover {
 		background-color: #FFF;
 		text-decoration: none;
+		border: none;
 	}
 	header nav a.active {
 		background-color: #FFF;

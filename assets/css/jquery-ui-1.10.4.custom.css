@@ -114,6 +114,7 @@
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
 	float: left;
 	/*padding: .5em 1em;*/
+	border: none;
 	padding: 5px;
 	text-decoration: none;
 	color: #000;
