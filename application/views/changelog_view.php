@@ -1,6 +1,15 @@
 <h2>Changelog</h2>
 
 <div>
+    <h3>v0.9.9</h3>
+    <ul>
+        <li>Added examples to the documentation</li>
+        <li>Added video describing case study 2</li>
+        <li>Fixed error in logo generation for the motif search</li>
+    </ul>
+</div>
+
+<div>
     <h3>v0.9.8</h3>
     <p>Highlighting of enrichment results in the network view enabled.</p>
 </div>
