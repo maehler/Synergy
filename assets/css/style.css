@@ -69,6 +69,7 @@ a:hover {
 figure {
 	max-width: 50%;
 }
+
 	figure img {
 		width: 100%;
 	}
@@ -82,13 +83,22 @@ figure {
 }
 
 figure.right {
-	float: right;
+	float: right !important;
 	width: 50%;
 	margin-left: 20px;
 }
 
+figure.center {
+	display: block;
+	margin: 0 auto;
+}
+
 figure.wide {
 	max-width: 100%;
+}
+
+figure.width25 {
+	max-width: 25%;
 }
 
 figure.narrow {

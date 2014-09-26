@@ -1,12 +1,24 @@
 <h2>Documentation</h2>
 
+<h3>Contents</h3>
+
 <nav>
 	<ul>
 		<li>
 			<a href="#general">General</a>
 			<ul>
+				<li><a href="#citing">Citing <i>Syn</i>ergy</a></li>
 				<li><a href="#general-requirements">Requirements</a></li>
 				<li><a href="#general-cookies">Cookies</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#workflow">Typical workflows</a>
+			<ul>
+				<li><a href="#workflow-de">Differentially expressed genes</a></li>
+				<li><a href="#workflow-motif">Regulatory motifs</a></li>
+				<li><a href="#workflow-function">Functional category</a></li>
+				<li><a href="#workflow-case-study">Case study 2 video</a></li>
 			</ul>
 		</li>
 		<li>
@@ -39,6 +51,17 @@
 
 <section id="general">
 	<h3>General</h3>
+	
+	<section id="citing">
+		<h4>Citing <i>Syn</i>ergy</h4>
+		<p>If you use <i>Syn</i>ergy for publication, please cite:</p>
+		<blockquote>
+			Niklas Mähler, Otilia Cheregi, Christiane Funk, Sergiu Netotea and
+			Torgeir R. Hvidsten (2014): <i>Syn</i>ergy: A web resource for
+			exploring gene regulation in <i>Synechocystis</i> sp. PCC6803, Submitted
+		</blockquote>
+	</section>
+
 	<section id="general-requirements">
 		<h4>Requirements</h4>
 		<p><span class="italic">Syn</span>ergy is highly dependent on JavaScript.
@@ -77,6 +100,90 @@
 		selected genes and settings on the site. No personal information is 
 		stored. The site will not work properly if cookies are not allowed.
 		By using the site, you agree to allow cookies.
+	</section>
+</section>
+
+<section id="workflow">
+	<h3>Typical workflows</h3>
+	<p><i>Syn</i>ergy is a flexible application, and there are multiple ways
+	of starting an analysis. Here we will briefly explain a couple of common
+	user scenarios.
+	</p>
+
+	<section id="workflow-de">
+		<h4>Differentially expressed genes</h4>
+		<figure class="right width25">
+			<img src="<?php echo base_url(array('assets', 'img',
+				'genelist_upload.png')) ?>" alt="Gene list upload">
+			<figcaption>
+				<p>Uploading a gene list on the gene search page.</p>
+			</figcaption>
+		</figure>
+		<p>If you have a list of differentially expressed genes from some
+		experimental setup, one easy way of getting started is simply to upload
+		the genes using the <a href="#search-upload">Gene search</a> tool. All
+		genes will then be added to the <a href="#basket">Gene basket</a> and
+		you can continue from there. For example, you could look at the
+		<a href="#network">Co-expression Network</a> of those genes, and also
+		perform <a href="#enrichment">motif or GO enrichment</a> on that set of
+		genes to see if the genes have any regulatory motif in common or if they
+		belong to the same functional category.
+		</p>
+	</section>
+
+	<section id="workflow-motif">
+		<h4>Regulatory motifs</h4>
+		<p>If you have a regulatory motif identified in <i>Synechocystis</i>
+		(or any other species), you can search for similar motifs in
+		<i>Synechocystis</i> using the <a href="#motifsearch">Motif search</a>
+		tools. From these results, you will find motif matches, and for each
+		motif you will find the genes to which these motifs are associated.
+		</p>
+		<figure class="right width25">
+			<img src="<?php echo base_url(array('assets', 'img',
+				'tomtom_results.png')) ?>" alt="TOMTOM example results">
+			<figcaption>Example of results output from TOMTOM.</figcaption>
+		</figure>
+	</section>
+
+	<section id="workflow-function">
+		<h4>Functional category</h4>
+		<p>If you are interested in a certain functional category of genes,
+		or a Gene Ontology term, you can use this information to find genes in
+		<i>Syn</i>ergy. From the <a href="#search-genelist">Gene lists</a> on 
+		the <a href="#search">Gene search</a> page you can search for a Gene
+		Ontology term to find the genes associated with it. Simply click the
+		"Load" button next to the term you are interested in to add that gene
+		set to the <a href="#basket">Gene basket</a>.
+		</p>
+
+		<p>In some cases, the functional categorization can be a bit blurry.
+		For this, you can use the gene search table on the Gene search page.
+		Just search for the term you are interested in, e.g. "photosystem", and
+		all genes that are annotated as photosystem in any way will show up.
+		To add the genes to the gene basket, simply click the checkbox for each
+		gene. If you want to add all genes to the basket, click the "Select all"
+		button.
+		</p>
+
+		<p>For an example on how an analysis based on functional categories,
+		take a look at the <a href="#workflow-case-study">video for Case study 
+		2</a> from our publication.
+		</p>
+
+		<figure class="">
+			<img src="<?php echo base_url(array('assets', 'img',
+				'gene_lists.png')) ?>" alt="Gene lists">
+			<figcaption>Precompiled gene lists available on the gene search page.</figcaption>
+		</figure>
+	</section>
+
+	<section id="workflow-case-study">
+		<h4>Case study 2 video</h4>
+		<p>Below is a video describing how to replicate the results from
+		Case study 2 from our publication.
+		</p>
+		<iframe class="youtube" width="560" height="315" src="//www.youtube.com/embed/rAfmhwuWw-U" frameborder="0" allowfullscreen></iframe>
 	</section>
 </section>
 
