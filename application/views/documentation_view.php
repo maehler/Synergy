@@ -18,7 +18,7 @@
 				<li><a href="#workflow-de">Differentially expressed genes</a></li>
 				<li><a href="#workflow-motif">Regulatory motifs</a></li>
 				<li><a href="#workflow-function">Functional category</a></li>
-				<li><a href="#workflow-case-study">Case study 2 video</a></li>
+				<li><a href="#workflow-new-function">Propose functions for genes with unknown function</a></li>
 			</ul>
 		</li>
 		<li>
@@ -144,6 +144,11 @@
 				'tomtom_results.png')) ?>" alt="TOMTOM example results">
 			<figcaption>Example of results output from TOMTOM.</figcaption>
 		</figure>
+
+		Below you'll find a video for case study 1 of our paper where this
+		approach is demonstrated.
+
+		<iframe class ="youtube" width="560" height="315" src="//www.youtube.com/embed/ackXW8v4610?list=PLLnu__vW1ugPpj669W0YNB6VfDNl1_-La" frameborder="0" allowfullscreen></iframe>
 	</section>
 
 	<section id="workflow-function">
@@ -171,19 +176,44 @@
 		2</a> from our publication.
 		</p>
 
-		<figure class="">
+		<figure class="right">
 			<img src="<?php echo base_url(array('assets', 'img',
 				'gene_lists.png')) ?>" alt="Gene lists">
 			<figcaption>Precompiled gene lists available on the gene search page.</figcaption>
 		</figure>
+	
+		<p>Below, you'll find a video for case study 2 from our paper that describes
+		this approach.</p>
+
+		<iframe class="youtube" width="560" height="315" src="//www.youtube.com/embed/rAfmhwuWw-U" frameborder="0" allowfullscreen></iframe>
 	</section>
 
-	<section id="workflow-case-study">
-		<h4>Case study 2 video</h4>
-		<p>Below is a video describing how to replicate the results from
-		Case study 2 from our publication.
-		</p>
-		<iframe class="youtube" width="560" height="315" src="//www.youtube.com/embed/rAfmhwuWw-U" frameborder="0" allowfullscreen></iframe>
+	<section id="workflow-new-function">
+		<h4>Propose functions for genes with unkown function</h4>
+		<p>Many of the genes in <i>Synechocystis</i> are annotated with an
+		hypothetical or unknown function. In <i>Syn</i>ergy we can infer function
+		for these genes using co-expressed genes with known function.</p>
+
+		<p>In the video below, you'll find an example of how to study the function
+		of the ORF ssl3364 (<i>cp12</i>) by using co-expression and genes with
+		known function.</p>
+
+		<iframe class="youtube" width="560" height="315" src="//www.youtube.com/embed/ke1xhE-RyTU?list=PLLnu__vW1ugPpj669W0YNB6VfDNl1_-La" frameborder="0" allowfullscreen></iframe>
+	</section>
+
+	<section id="workflow-tf-neighborhood">
+		<h4>Transcription factor neighborhoods</h4>
+		<p>With the help of co-expression, we can analyze the co-expression
+		neighborhoods of transcription factors. In our paper, we have shown
+		that co-expressed neighbors of transcription factors have more motifs
+		in common than expected by chance. In <i>Syn</i>ergy we can also match
+		these motifs against external databases to see whether it has a known
+		regulatory role in other species.</p>
+
+		<p>The video below demonstrates how this can be done using the ORF
+		sll0998 which has a known regulatory function.</p>
+
+		<iframe class="youtube" width="560" height="315" src="//www.youtube.com/embed/yvZJywYR4cY?list=PLLnu__vW1ugPpj669W0YNB6VfDNl1_-La" frameborder="0" allowfullscreen></iframe>
 	</section>
 </section>
 
