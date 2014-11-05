@@ -35,6 +35,8 @@ if (!function_exists('run_python')) {
         } else {
             $cmd .= ' > ' . $bg . '/output.txt 2> ' . $bg . '/log.err &';
             exec($cmd);
+            chmod($bg . '/output.txt', 0664);
+            chmod($bg . '/output.err', 0664);
             $data = $bg;
         }
         
