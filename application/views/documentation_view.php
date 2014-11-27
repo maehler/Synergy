@@ -56,9 +56,10 @@
 		<h4>Citing <i>Syn</i>ergy</h4>
 		<p>If you use <i>Syn</i>ergy for publication, please cite:</p>
 		<blockquote>
-			Niklas Mähler, Otilia Cheregi, Christiane Funk, Sergiu Netotea and
-			Torgeir R. Hvidsten (2014): <i>Syn</i>ergy: A web resource for
-			exploring gene regulation in <i>Synechocystis</i> sp. PCC6803, Submitted
+			<a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0113496">
+			Mähler, N., Cheregi, O., Funk, C., Netotea, S., &amp; Hvidsten, T. R. (2014).
+			<i>Syn</i>ergy: A Web Resource for Exploring Gene Regulation in
+			<i>Synechocystis</i> sp. PCC6803. PLoS ONE, 9(11):e113496</a>
 		</blockquote>
 	</section>
 

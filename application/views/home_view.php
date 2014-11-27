@@ -17,8 +17,9 @@
 
 <p>
     Below you can find a video describing case study 2 from our paper
-    (Mähler <i>et al.</i> 2014, Synergy: A web resource for investigating
-    gene regulation in <i>Synechocystis</i> sp. PCC6803, Submitted). It
+    (<a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0113496">
+    Mähler <i>et al.</i> (2014). <i>Syne</i>rgy: A web resource for exploring
+    gene regulation in <i>Synechocystis</i> sp. PCC6803. PLOS ONE 9(11):e113496</a>). It
     describes how you can perform an integrated analysis of both regulatory
     motifs and co-expression.
 </p>
