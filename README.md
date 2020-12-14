@@ -1,5 +1,7 @@
 # Synergy
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4320999.svg)](https://doi.org/10.5281/zenodo.4320999)
+
 ## Introduction
 
 Synergy is a web application for exploring gene regulation in Synechocystis.
