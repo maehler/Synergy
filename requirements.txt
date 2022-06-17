@@ -3,7 +3,7 @@ GDAL==1.10.0
 MySQL-python==1.2.5
 matplotlib==1.2.1
 networkx==1.8.1
-numpy==1.8.0
+numpy==1.21.0
 pygraphviz==1.2
 python-dateutil==2.2
 scipy==0.13.1
